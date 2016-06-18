@@ -19,6 +19,7 @@ library(ggplot2)
 library(ggmap)
 library(ggspectra)
 library(hyperSpec)
+library(colorSpec)
 library(pavo)
 library(readr)
 
@@ -37,6 +38,7 @@ my_version <- packageVersion("photobiologyInOut")
 #  library(ggmap)
 #  library(ggspectra)
 #  library(hyperSpec)
+#  library(colorSpec)
 #  library(pavo)
 #  library(readr)
 
@@ -191,6 +193,30 @@ laser.mspct <-
 ggplot(laser.mspct[[1]]) +
   geom_line() +
   stat_peaks(geom = "text", vjust = -1, label.fmt = "%.6g nm", color = "red")
+
+## ----------------------------------------------------
+fluorescent.mspct <- colorSpec2mspct(Fs.5nm)
+print(fluorescent.mspct, n = 3, n.members = 3)
+
+## ----------------------------------------------------
+colorSpec2mspct(Hoya)
+
+## ----------------------------------------------------
+fluorescent.spct <- colorSpec2spct(Fs.5nm)
+plot(fluorescent.spct) + aes(linetype = spct.idx)
+
+## ----------------------------------------------------
+colorSpec2chroma_spct(xyz1931.5nm)
+
+## ----------------------------------------------------
+sun.cspec <- spct2colorSpec(sun.spct)
+plot(sun.cspec, col = "blue")
+
+## ----------------------------------------------------
+spct2colorSpec(yellow_gel.spct)
+
+## ----------------------------------------------------
+chroma_spct2colorSpec(beesxyzCMF.spct)
 
 ## ----------------------------------------------------
 data(sicalis)

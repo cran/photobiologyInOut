@@ -5,12 +5,26 @@ Add support for StellarNet spectrometers and Bentham spectrometers.
 Add a generic reader of files into a collection of spectra.
 Add alternative reader of TUV output files into a collection of spectra.
 
+photobiologyInOut 0.4.5
+=======================
+
+Fix existing bug for compatibility with 'dplyr' (>= 0.4.3.9000). Explicit 
+import was missing.
+Add functions to exchange data with package 'colorSpec':
+colorSpec2spct(), colorSpec2chroma_spct(), colorSpec2mspct(), spct2colorSpec(),
+chroma_spct2colorSpec(), and mspct2colorSpec().
+Add or revise functions to exchange data with package 'hyperSpec':
+spct2hyperSpec(), mspct2hyperSpec(), hyperSpec2spct() and hyperSpec2mspct().
+Add import function for raw counts from Ocean Optics instruments accessed
+through server running on a Raspberry Pi board: read_oo_pidata().
+
 photobiologyInOut 0.4.4
 =======================
 
 Add 'readr::locale' support to all functions that could make use of it.
 Add 'label' parameter to all file import functions.
-Add function read_oo_ssdata() for reading SpectraSuite files containing raw counts.
+Add function read_oo_ssdata() for reading SpectraSuite files containing raw 
+counts.
 Add function read_libradtran_vesa() for reading libRadtran output file with 
 multiple solar spectrum simulations (as preprocessed by Vesa's script).
 Add metadata as consistently as possible to the objects returned by all the 

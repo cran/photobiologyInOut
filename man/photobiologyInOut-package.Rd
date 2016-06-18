@@ -8,7 +8,8 @@
 \description{
 Functions for reading and writing foreign files containing
 spectral data from spectrometers and their associated software, and output
-from simulation models in common use.
+from simulation models in common use. As well as functions for exchange
+of spectral data with other R packages.
 }
 \note{
 From version 0.4.4 the time zone (tz) used for decoding dates

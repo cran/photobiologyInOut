@@ -2,12 +2,18 @@
 % Please edit documentation in R/foreign-conversion.r
 \name{hyperSpec2mspct}
 \alias{hyperSpec2mspct}
+\alias{hyperSpec2spct}
 \alias{mspct2hyperSpec}
+\alias{spct2hyperSpec}
 \title{Convert 'hyperSpec::hyperSpec' objects}
 \usage{
 hyperSpec2mspct(x, member.class, spct.data.var, multiplier = 1, ...)
 
+hyperSpec2spct(x, multiplier = 1, ...)
+
 mspct2hyperSpec(x, spct.data.var, multiplier = 1, ...)
+
+spct2hyperSpec(x, spct.data.var = NULL, multiplier = 1, ...)
 }
 \arguments{
 \item{x}{hyperSpec object}
@@ -26,15 +32,38 @@ scale conversion. For example "a.u." units in some examples in package
 \item{...}{currently ignored.}
 }
 \description{
-Convert between 'hyperSpec::hyperSpec' objects and collection of spectra
-objects (xxxx_mspct) as defined in package 'photobiology' preserving all
-information. Collection of spectra objects can be easily converted into
-long spectral objects or into tidy data frames.
+Convert \code{hyperSpec::hyperSpec} objects containing VIS and UV radiation
+data into spectral objects (xxxx_spct, xxxx_mspct) as defined in package 
+'photobiology' and vice versa, preserving as much information as possible. As
+\code{hyperSpec} can contain other kinds of spectral data, it does make sense
+to use these functions only with objects containing data that can be handled
+by both packages.
 }
 \note{
-hyperSpec objects use memory more efficiently than spectral objects
-of the classes defined in package 'photobiology' while these are more
-flexible as they are derived from 'tbl_df' and in turn from 'data.frame'.
+Objects of class \code{hyperSpec::hyperSpec} contain metadata or class 
+  data from which the quantity measured and the units of expression can be 
+  obtained. However, units as included in the objects are not well 
+  documented making automatic conversion difficult. When using this function
+  the user may need to use parameter \code{multiplier} to scale the data to
+  what is expected by the object constructors defined in package
+  'photobiology' and use parameter \code{spct.data.var} to select the
+  quantity.
+  
+  \code{hyperSpec::hyperSpec} objects may use memory more efficiently
+  than spectral objects of the classes for collections of spectra defined in
+  package 'photobiology' as wavelengths are assumed to be the same for all
+  member spectra, and stored only once while this assumption is not made for
+  collections of spectra, allowing different wavelengths and lengths for the
+  component spectra. Wavelengths are stored for each spectrum, but as
+  spectral classes are derived from 'tbl_df' in many cases no redundant
+  copies of wavelength data will be made in memory in spite of the more
+  flexible semantics of the objects.
+}
+\section{Warning!}{
+ Always check the sanity of the imported or exported data
+  values, as guessing is needed when matching the different classes, and the
+  functions defined here are NOT guaranteed to return valid data wihtout help
+  from the user through optional function arguments.
 }
 \examples{
 

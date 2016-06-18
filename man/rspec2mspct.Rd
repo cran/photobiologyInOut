@@ -2,42 +2,56 @@
 % Please edit documentation in R/foreign-conversion.r
 \name{rspec2mspct}
 \alias{rspec2mspct}
-\title{Convert "pavo::rspec' objects}
+\alias{rspec2spct}
+\title{Convert "pavo::rspec" objects}
 \usage{
 rspec2mspct(x, member.class = "reflector_spct", spct.data.var = "Rpc",
   multiplier = 1, ...)
+
+rspec2spct(x, multiplier = 1, ...)
 }
 \arguments{
-\item{x}{rpec object}
+\item{x}{rspec object}
 
-\item{member.class}{character One of the spectrum classes defined in package
+\item{member.class}{character One of the spectrum classes defined in package 
 'photobiology'.}
 
-\item{spct.data.var}{character The name to be used for the 'spc' data when
+\item{spct.data.var}{character The name to be used for the 'spc' data when 
 constructing the spectral objects.}
 
-\item{multiplier}{numeric A multiplier to be applied to the 'rspc' data 
-to do unit or scale conversion.}
+\item{multiplier}{numeric A multiplier to be applied to the 'rspc' data to do
+unit or scale conversion.}
 
 \item{...}{currently ignored.}
 }
 \description{
-Convert between 'pavo::rspec' objects and collection of spectra
-objects (xxxx_mspct) as defined in package 'photobiology' preserving all
-information. Collection of spectra objects can be easily converted into
-long spectral objects or into tidy data frames.
+Convert between 'pavo::rspec' objects containing spectral reflectance data 
+into spectral objects (xxxx_spct, xxxx_mspct) as defined in package
+'photobiology'.
 }
 \note{
-hyperSpec objects use memory more efficiently than spectral objects
-of the classes defined in package 'photobiology' while these are more
-flexible as they are derived from 'tbl_df' and in turn from 'data.frame'.
-
-Objects of class "pavo::rspec" do not contain metadata or class data
-  from which the quantity measured and the units of expression could be 
+Objects of class \code{pavo::rspec} do not contain metadata or class 
+  data from which the quantity measured and the units of expression could be 
   obtained. When using this function the user needs to use parameter 
-  \code{multiplier} to convert the data to what is expected by the object
-  constructors defined in package 'photobiology' and use parameter
+  \code{multiplier} to convert the data to what is expected by the object 
+  constructors defined in package 'photobiology' and use parameter 
   \code{spct.data.var} to select the quantity.
+  
+  \code{pavo::rspec} objects may use memory more efficiently than spectral 
+  objects of the classes for collections of spectra defined in package 
+  'photobiology' as wavelengths are assumed to be the same for all member 
+  spectra, and stored only once while this assumption is not made for 
+  collections of spectra, allowing different wavelengths and lengths for the 
+  component spectra. Wavelengths are stored for each spectrum, but as 
+  spectral classes are derived from 'tbl_df' in many cases no redundant 
+  copies of wavelength data will be made in memory in spite of the more 
+  flexible semantics of the objects.
+}
+\section{Warning!}{
+ Always check the sanity of the imported or exported data 
+  values, as guessing is needed when matching the different classes, and the 
+  functions defined here are NOT guaranteed to return valid data wihtout help
+  from the user through optional function arguments.
 }
 \examples{
 
@@ -45,6 +59,14 @@ library(pavo)
 data(sicalis)
 sicalis.mspct <- rspec2mspct(sicalis)
 class(sicalis.mspct)
+
+data(teal)
+teal.spct <- rspec2spct(teal)
+class(teal.spct)
+levels(teal.spct[["spct.idx"]])
+angles <- seq(from = 15, to = 75, by = 5) # from teal's documentation
+teal.spct[["angle"]] <- angles[as.numeric(teal.spct[["spct.idx"]])]
+teal.spct
 
 }
 

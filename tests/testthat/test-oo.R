@@ -163,3 +163,29 @@ test_that("SpectraSuite", {
   expect_equal(getTimeUnit(ss.spct), "second")
   expect_gt(length(comment(ss.spct)), 0)
 })
+
+test_that("pi_raw", {
+  
+  my.date <- now(tz = "EET")
+  pi.spct <- read_oo_pidata(file = "data-test/spectrum.pi", 
+                            date = my.date,
+                            npixels = 2048)
+  
+  expect_equal(nrow(pi.spct), 2048)
+  expect_equal(ncol(pi.spct), 2)
+  expect_equal(pi.spct[1, 1], 188.41408000, tolerance = 0.000001)
+  expect_equal(pi.spct[2048, 1], 1035.61297366, tolerance = 0.000001)
+  expect_is(pi.spct[[1]], "numeric")
+  expect_equal(sum(is.na(pi.spct[[1]])), 0)
+  expect_true(all(sign(pi.spct[[1]]) > 0))
+  expect_is(pi.spct[[2]], "numeric")
+  expect_equal(sum(is.na(pi.spct[[2]])), 0)
+  expect_is(pi.spct, "raw_spct")
+  expect_named(pi.spct, c("w.length", "counts"))
+  expect_equal(as.numeric(getWhenMeasured(pi.spct), tz = "EET"),
+               as.numeric(my.date, tz = "EET"))
+  expect_equal(getWhereMeasured(pi.spct), 
+               data.frame(lon = NA_real_, lat = NA_real_))
+  expect_equal(getWhatMeasured(pi.spct), "File: data-test/spectrum.pi")
+  expect_gt(length(comment(pi.spct)), 0)
+})
