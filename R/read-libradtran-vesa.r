@@ -74,7 +74,5 @@ read_libradtran_vesa <- function(file,
 
 # Allows function to work with either dplyr 0.4 (which ignores value of
 # starts_with), and 0.5 which exports it as a proper function
-if (packageVersion("dplyr") > '0.4.3') {
-  starts_with <- function(...) dplyr::starts_with(...)
-}
+starts_with <- function(...) dplyr::starts_with(...)
 

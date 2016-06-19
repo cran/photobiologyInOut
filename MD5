@@ -1,11 +1,11 @@
-abf51446a38a2ccbd051bf5f7e5fafa6 *DESCRIPTION
+aede9e92478f7c6441ac8fa6c6a8ce61 *DESCRIPTION
 24117baef5a5b484e4d0657a1920494b *NAMESPACE
-0600174f6aa858d9125763ab27c3231e *NEWS
+c8417cba8da9758deed9b2d298e21717 *NEWS
 196fde669944b7107c9a92cf2df38ae3 *R/foreign-conversion.r
 f147b94db7d16c682a9100119b7b70df *R/photobiologyInOut.r
 ff2032a669bcaf6ca09d0309dfde3b9e *R/read-avaspec-csv.r
 30bd8d8c940faef4fe1046412d9df259 *R/read-fmi-cum.R
-255125f65b51df5dbb93244b97e5d55b *R/read-libradtran-vesa.r
+51ba3c71008a3fdeb9045baa949ce454 *R/read-libradtran-vesa.r
 5e60990dc644eda7c3e7bf2f1c6a1553 *R/read-licor-prn.r
 93327e4544247a1511fc284b19242658 *R/read-macam-dta.r
 f6e3b467c4e374385ca98ad73b2df93e *R/read-oojaz-file.r
@@ -13,10 +13,10 @@ f6e3b467c4e374385ca98ad73b2df93e *R/read-oojaz-file.r
 254c7de9641c9055a93e1ef7fcf00a30 *R/read-ooss-file.r
 a91544332be4a1113b79c5436ce8895b *R/read-tuv-file.r
 2eca97a83021939bfc3111bfea24ad8a *README.md
-86f1ae72721a450923c6a16c1951288b *build/vignette.rds
+a20a651fc29285ec3d84df31c7f7f2a2 *build/vignette.rds
 804a16629a06b70cbd2c9be956d5d132 *inst/doc/user-guide.R
 439cadb7460434bfa2700d7a48847308 *inst/doc/user-guide.Rnw
-e0369c9c0dda7be46264ad033e36b8ad *inst/doc/user-guide.pdf
+344169a98c1c1ca3a5b86ce96152e00b *inst/doc/user-guide.pdf
 e7e16f9abebda97bdab49e42f5363aff *man/colorSpec2mspct.Rd
 33dfe2fcecde2277149a01550bb91dfa *man/hyperSpec2mspct.Rd
 27c9fd7ff1ebe006a4c9310c509c8fdc *man/photobiologyInOut-package.Rd
