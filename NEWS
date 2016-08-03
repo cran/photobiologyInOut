@@ -4,6 +4,14 @@ TODO
 Add support for StellarNet spectrometers and Bentham spectrometers.
 Add a generic reader of files into a collection of spectra.
 Add alternative reader of TUV output files into a collection of spectra.
+Add test cases for new functions for exchange of foreign data (currently
+tested through examples in vignette).
+
+photobiologyInOut 0.4.7
+=======================
+
+Add functions mspct2matrix() and matrix2mspct for convertion of collections 
+of spectra into R matrixes and vice-versa.
 
 photobiologyInOut 0.4.6
 =======================

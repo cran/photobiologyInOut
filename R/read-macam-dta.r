@@ -1,4 +1,4 @@
-#' Read \code{.DTA} File Saved by Macam's Software.
+#' Read '.DTA' File Saved by Macam's Software.
 #'
 #' Reads and parses the header of a processed data file as output by the PC
 #' program to extract the time and date fields and a user label if present,

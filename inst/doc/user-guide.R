@@ -43,8 +43,8 @@ my_version <- packageVersion("photobiologyInOut")
 #  library(readr)
 
 ## ----------------------------------------------------
-options(dplyr.print_max = 5)
-options(dplyr.print_min = 3)
+options(tibble.print_max = 5)
+options(tibble.print_min = 3)
 
 ## ----------------------------------------------------
 jazraw.spct <- read_oo_jazdata(file = "data-vignettes/spectrum.jaz")
@@ -155,7 +155,8 @@ getWhenMeasured(z.mspct)
 z.mspct
 
 ## ----------------------------------------------------
-files <- system("ls ./data-vignettes/*cum.hel", intern = TRUE)
+files <- list.files("./data-vignettes/", "*cum.hel")
+files <- paste("./data-vignettes/", files, sep = "")
 z1.mspct <- read_m_fmi_cum(files)
 class(z1.mspct)
 getWhenMeasured(z1.mspct)
@@ -170,6 +171,37 @@ class(z2.mspct)
 getWhenMeasured(z2.mspct)
 getWhereMeasured(z2.mspct)
 z2.mspct
+
+## ----------------------------------------------------
+x <- matrix(1:100, ncol = 2)
+wl <- 501:550 # in nanometres
+z <- mat2mspct(x, wl, "filter_spct", "Tpc")
+z
+
+## ----------------------------------------------------
+z <- mat2mspct(x, wl, "filter_spct", "Tpc", spct.names = c("A", "B"))
+z
+
+## ----------------------------------------------------
+xrow <- matrix(1:100, nrow = 2, byrow = TRUE)
+z1 <- mat2mspct(xrow, wl, "filter_spct", "Tpc")
+z1
+
+## ----------------------------------------------------
+z2c.mat <- mspct2mat(z2.mspct, "s.e.irrad")
+class(z2c.mat)
+dim(z2c.mat)
+head(dimnames(z2c.mat)$spct)
+head(dimnames(z2c.mat)$w.length)
+head(attr(z2c.mat, "w.length"))
+
+## ----------------------------------------------------
+z2r.mat <- mspct2mat(z2.mspct, "s.e.irrad", byrow = TRUE)
+class(z2r.mat)
+dim(z2r.mat)
+head(dimnames(z2r.mat)$spct)
+head(dimnames(z2r.mat)$w.length)
+head(attr(z2r.mat, "w.length"))
 
 ## ----------------------------------------------------
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")

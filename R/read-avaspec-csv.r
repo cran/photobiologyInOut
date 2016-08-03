@@ -1,4 +1,4 @@
-#' Read \code{.csv} File Saved by Aavnates' Software for AvaSpec.
+#' Read '.csv' File Saved by Aavnates' Software for AvaSpec.
 #' 
 #' Reads and parses the header of a processed data file as output by the
 #' program Avaspec and then imports wavelength and spectral irradiance

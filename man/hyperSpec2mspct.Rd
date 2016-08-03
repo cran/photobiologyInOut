@@ -24,10 +24,9 @@ spct2hyperSpec(x, spct.data.var = NULL, multiplier = 1, ...)
 \item{spct.data.var}{character The name to be used for the 'spc' data when
 constructing the spectral objects.}
 
-\item{multiplier}{numeric A multiplier to be applied to the 'spc' data to
-do unit or
-scale conversion. For example "a.u." units in some examples in package
-'hyperSpec' seem to have scale factors applied.}
+\item{multiplier}{numeric A multiplier to be applied to the 'spc' data to do
+unit or scale conversion. For example "a.u." units in some examples in
+package 'hyperSpec' seem to have scale factors applied.}
 
 \item{...}{currently ignored.}
 }

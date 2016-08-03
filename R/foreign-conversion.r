@@ -9,6 +9,166 @@
 # the object is to be converted to depends on the information stored as
 # attributes in a "colorSpec" object rather than on the class it belongs to. 
 
+# R matrix ----------------------------------------------------------------
+
+#' Convert a collection of spectra into a matrix
+#' 
+#' Convert an object of class \code{generic_mspct} or a derived class into an R
+#' matrix with wavelengths saved as an attribute and spectral data in rows
+#' or columns.
+#' 
+#' @note Only collections of spectra containing spectra with exactly the same
+#' \code{w.length} values can by converted. If needed, the spectra can be
+#' re-expressed before attempting the conversion to a matrix.
+#' 
+#' @param x generic_mspct object.
+#' @param spct.data.var character The name of the variable containing the spectral data.
+#' @param byrow logical. If FALSE (the default) the matrix is filled with the
+#'   spectra stored by columns, otherwise the matrix is filled by rows.
+#' @param ... currently ignored.
+#' 
+#' @section Warning!: This conversion preserves the spectral data but discards
+#'   almost all the metadata contained in the spectral objects. In other words a
+#'   matrix created with this function cannot be used to recreate the original
+#'   object unless the same metadata is explicitly supplied when converting the
+#'   matrix into new collection of spectra.
+#' 
+#' @export
+#' 
+mspct2mat <- function(x, 
+                      spct.data.var,
+                      byrow = attr(x, "mspct.byrow"),
+                      ...) {
+  stopifnot(is.any_mspct(x))
+  if (length(x) == 0L) {
+    return(matrix(numeric()))
+  }
+  spct.names <- names(x)
+  spct.selector <- rep(TRUE, length(x))
+  mat <- numeric()
+  for (i in seq_along(x)) {
+    temp <- x[[i]]
+    s.column <- temp[[spct.data.var]]
+    wl.current <- temp[["w.length"]]
+    if (i == 1L) {
+      wl.prev <- wl.current
+    } 
+    if (!all(wl.current == wl.prev) || length(s.column) == 0L) {
+      spct.selector[i] <- FALSE
+      next()
+    }
+    mat <- c(mat, s.column) # one long numeric vector
+  }
+  if (any(!spct.selector)) {
+    warning("Spectra dropped: ", sum(!spct.selector), " out of ", length(spct.selector), ".")
+  }
+  if (byrow) {
+    z <- matrix(mat, nrow = sum(spct.selector), byrow = byrow,
+                dimnames = list(spct = c(spct.names[spct.selector]), 
+                                w.length = wl.prev))
+  } else {
+    z <- matrix(mat, ncol = sum(spct.selector), byrow = byrow,
+                dimnames = list(w.length = wl.prev,
+                                spct = c(spct.names[spct.selector])))
+  }
+  attr(z, "w.length") <- wl.prev
+  comment(z) <- comment(x)
+  z
+}
+
+#' Convert a matrix into a collection of spectra
+#' 
+#' Convert an R object of class matrix into a \code{generic_mspct} or a derived 
+#' class.
+#' 
+#' @note Only \code{matrix} objects that have rows or columns of the same length
+#'   as the numeric vector of walengths supplied can be converted. The resulting
+#'   spectra will be built using the constructors and subjected to the same
+#'   checks as if built individually. Only collections with all members of the
+#'   same class can be built with this function. Additional named arguments can
+#'   be supplied to set the same metadata attributes to all the member spectra.
+#'   In the case of square matrices, an explicit argument is needed for
+#'   \code{byrow} making it good practice for scripts and package code to not
+#'   rely on the automatic default.
+#'   
+#' @param x matrix object.
+#' @param w.length numeric A vector of walength values sorted in strictly ascending
+#'   order (nm).
+#' @param spct.data.var character The name of the variable that will contain the 
+#'   spectral data. This indicates what physical quantity is stored in the matrix 
+#'   and the units of expression used.
+#' @param member.class character The name of the class of the individual spectra
+#'   to be constructed.
+#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
+#'   unit or scale conversion.
+#' @param byrow logical Flag indicating whether each spectrum is stored in a row or
+#'   a column of the matrix. By default this value is set based on the length of
+#'   \code{w.length} and the dimensions of \code{x}.
+#' @param spct.names character Vector of names to be assigned to collection members,
+#'   either of length 1, or with length equal to the number of spectra.
+#' @param ... other arguments passed to the constructor of collection members.
+#' 
+#' @export
+#' 
+#' @examples 
+#' 
+#' x <- matrix(1:100, ncol = 2)
+#' wl <- (301:350)
+#' z <- mat2mspct(x, wl, "filter_spct", "Tpc")
+#' 
+#' x <- matrix(1:100, nrow = 2, byrow = TRUE)
+#' wl <- (301:350)
+#' z <- mat2mspct(x, wl, "filter_spct", "Tpc", byrow = TRUE, spct.name = c("A", "B"))
+#' 
+mat2mspct <- function(x,
+                      w.length,
+                      member.class,
+                      spct.data.var,
+                      multiplier = 1,
+                      byrow = NULL,
+                      spct.names = "spct_",
+                      ...) {
+  stopifnot(is.matrix(x))
+  if (length(spct.names) == 0) {
+    spct.names = "spct"
+  }
+  if (is.null(byrow)) {
+    if (nrow(x) == ncol(x)) {
+      stop("For square matrices an argument for 'byrow' is mandatory")
+    } else if (nrow(x) == length(w.length)) {
+      byrow <- FALSE
+    } else if (ncol(x) == length(w.length)) {
+      byrow <- TRUE
+    } else {
+      stop("Length of 'w.length' vector is different to that of spectral data.")
+    }
+  }
+  # spc data (spectra) can be stored as rows or as colums in a matrix, 
+  # consequently if stored by rows we transpose the matrix.
+  if (byrow) {
+    x <- t(x)
+  }
+  ncol <- ncol(x)
+  stopifnot(nrow(x) == length(w.length))
+  y <- cbind(w.length, x * multiplier)
+  y <- tibble::as_data_frame(y)
+  if (length(spct.names) == ncol) {
+    colnames(y) <- c("w.length", spct.names)
+  } else {
+    colnames(y) <- c("w.length", paste(spct.names[1], 1:ncol, sep = ""))
+  }
+  z <- split2mspct(x = y, 
+                   member.class = member.class, 
+                   spct.data.var = spct.data.var,
+                   ncol = ncol,
+                   ...)
+  comment(z) <- paste('Converted from an R "matrix" object\n',
+                      'with ', length(z), ' spectra stored ',
+                      ifelse(byrow, "in rows.", "in columns."),
+                      sep = "")
+  z
+}
+
 # hyperSpec ---------------------------------------------------------------
 
 #' Convert 'hyperSpec::hyperSpec' objects
@@ -49,10 +209,9 @@
 #'   'photobiology'.
 #' @param spct.data.var character The name to be used for the 'spc' data when
 #'   constructing the spectral objects.
-#' @param multiplier numeric A multiplier to be applied to the 'spc' data to
-#'   do unit or
-#'   scale conversion. For example "a.u." units in some examples in package
-#'   'hyperSpec' seem to have scale factors applied.
+#' @param multiplier numeric A multiplier to be applied to the 'spc' data to do
+#'   unit or scale conversion. For example "a.u." units in some examples in
+#'   package 'hyperSpec' seem to have scale factors applied.
 #' @param ... currently ignored.
 #' 
 #' @export

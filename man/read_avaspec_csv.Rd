@@ -2,7 +2,7 @@
 % Please edit documentation in R/read-avaspec-csv.r
 \name{read_avaspec_csv}
 \alias{read_avaspec_csv}
-\title{Read \code{.csv} File Saved by Aavnates' Software for AvaSpec.}
+\title{Read '.csv' File Saved by Aavnates' Software for AvaSpec.}
 \usage{
 read_avaspec_csv(file, date = NULL, geocode = NULL, label = NULL,
   tz = NULL, locale = readr::default_locale())

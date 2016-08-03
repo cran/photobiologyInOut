@@ -80,8 +80,8 @@ my_version <- packageVersion("photobiologyInOut")
 @
 
 <<>>=
-options(dplyr.print_max = 5)
-options(dplyr.print_min = 3)
+options(tibble.print_max = 5)
+options(tibble.print_min = 3)
 @
 
 This package defines functions for importing spectral data from
@@ -468,7 +468,7 @@ libradtran.spct <- source_spct(w.length = lrt.df$w.length,
 plot(libradtran.spct, range = c(250, 2500), unit.out = "photon")
 @
 
-We give two additional examples, which will most likely need some adjustment by users, as these are for output from libRadtran postprocessed to add additional information. These are included in the package because myself and collaborators use these formats heavily. In fact users could develop shell scripts or Perl scripts using the same output format.
+We give two additional examples, which will most likely need some adjustment by users, as these are for output from libRadtran post-processed to add additional information. These are included in the package because myself and collaborators use these formats heavily. In fact users could develop shell scripts or Perl scripts using the same output format.
 
 \subsection{Output enriched with time and date data}
 
@@ -541,7 +541,8 @@ z.mspct
 Above we gave the names of the files explicitly, but as we show here, one can build on-the-fly a list of file names matching some pattern.
 
 <<>>=
-files <- system("ls ./data-vignettes/*cum.hel", intern = TRUE)
+files <- list.files("./data-vignettes/", "*cum.hel")
+files <- paste("./data-vignettes/", files, sep = "")
 z1.mspct <- read_m_fmi_cum(files)
 class(z1.mspct)
 getWhenMeasured(z1.mspct)
@@ -563,9 +564,68 @@ z2.mspct
 
 \section{Other R packages}
 
-\subsection{To 'hyperSpec'}
+A general way of exchanging data with other R packages or for use with base R functions is to create a matrix from a collection of spectra, or a collection of spectra from a matrix. However, a matrix
+is only guaranteed to contain numeric data and a \texttt{"dim"} attribute.
 
-Can export to "hyperSpec" objects only collections of spectra where all members have identical \texttt{w.length} vectors, as objects of class \texttt{hypeSpec} store a single vector of wavelengths for the whole collection of spectra.
+\subsection{From R matrix}
+
+Spectral data can be stored in a matrix either by row or by column, and the user must supply this information explicitly. We also assume, that wavelengths are not stored as part of the matrix, and so the user needs to supply these values as a separate vector.
+
+We here use artificial data, in this first example with spectra saved by column.
+
+<<>>=
+x <- matrix(1:100, ncol = 2)
+wl <- 501:550 # in nanometres
+z <- mat2mspct(x, wl, "filter_spct", "Tpc")
+z
+@
+
+In this second example we supply explicit names for the spectra.
+
+<<>>=
+z <- mat2mspct(x, wl, "filter_spct", "Tpc", spct.names = c("A", "B"))
+z
+@
+
+There is no change in the call for data stored by row. To demonstrate this, we create a new matrix, with the same data as above, but stored by row, as some other packages do.
+
+<<>>=
+xrow <- matrix(1:100, nrow = 2, byrow = TRUE)
+z1 <- mat2mspct(xrow, wl, "filter_spct", "Tpc")
+z1
+@
+
+There is only one case when an explict argument for \texttt{byrow} is needed: square matrices (same number of spectra as of wavelength values in each spectrum).
+
+\subsection{To R matrix}
+
+In this case, the metadata contained in the individual spectral objects is discarded, and only the \texttt{"comment"} attribute of the collection of spectra copied to the returned object. The wavelength values are preserved in an attribute named "w.length", but are not included as part of the matrix.
+
+<<>>=
+z2c.mat <- mspct2mat(z2.mspct, "s.e.irrad")
+class(z2c.mat)
+dim(z2c.mat)
+head(dimnames(z2c.mat)$spct)
+head(dimnames(z2c.mat)$w.length)
+head(attr(z2c.mat, "w.length"))
+@
+
+Collections of spectra have a \texttt{spct.byrow} attribute but it is discarded as it describes dimensions would require spectral data to be stored in a three dimensional array and cannot be mapped to a matrix. The argument \code{byrow} in the conversion function has the same meaning as in the \texttt{matrix} constructor function.
+
+<<>>=
+z2r.mat <- mspct2mat(z2.mspct, "s.e.irrad", byrow = TRUE)
+class(z2r.mat)
+dim(z2r.mat)
+head(dimnames(z2r.mat)$spct)
+head(dimnames(z2r.mat)$w.length)
+head(attr(z2r.mat, "w.length"))
+@
+
+These functions are not fully automatic, the user needs to provide the name of the variable to extract from each spectrum. If the wavelength values are not consistent among spectra, only those with the same values as the first spectrum in the collection are retained and the remaining ones dropped with a warning.
+
+\subsection{To `hyperSpec'}
+
+Can export to "hyperSpec" objects only collections of spectra where all members have identical \texttt{w.length} vectors, as objects of class \texttt{hyperSpec} store a single vector of wavelengths for the whole collection of spectra.
 
 <<>>=
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")
@@ -573,7 +633,7 @@ class(z2.hspct)
 plot(z2.hspct)
 @
 
-\subsection{From 'hyperSpec'}
+\subsection{From `hyperSpec'}
 
 Can import only data with wavelength in nanometres. Other quantities and units are not supported by the 'photobiology' classes for spectral data. See package 'hyperSpec' vignette "laser" for details on the data and the conversion of the original wavelength units into nanometres.
 
@@ -603,7 +663,7 @@ ggplot(laser.mspct[[1]]) +
   stat_peaks(geom = "text", vjust = -1, label.fmt = "%.6g nm", color = "red")
 @
 
-\subsection{From 'colorSpec'}
+\subsection{From `colorSpec'}
 
 <<>>=
 fluorescent.mspct <- colorSpec2mspct(Fs.5nm)
@@ -623,7 +683,7 @@ plot(fluorescent.spct) + aes(linetype = spct.idx)
 colorSpec2chroma_spct(xyz1931.5nm)
 @
 
-\subsection{To 'colorSpec'}
+\subsection{To `colorSpec'}
 
 <<>>=
 sun.cspec <- spct2colorSpec(sun.spct)
@@ -638,7 +698,7 @@ spct2colorSpec(yellow_gel.spct)
 chroma_spct2colorSpec(beesxyzCMF.spct)
 @
 
-\subsection{From 'pavo'}
+\subsection{From `pavo'}
 
 In this example we convert an \texttt{rspec} object from package `pavo' into a collection of spectra and then we plot it with \texttt{ggplot} methods from package `ggspectra' (an extension to `ggplot2'). The data are the spectral reflectance of the plumage from seven different individual birds of the same species, measured in three different body parts.
 
@@ -677,7 +737,7 @@ ggplot(rbindspct(sicalis.mspct[c(TRUE, FALSE, FALSE)])) +
   ggtitle("'crown' reflectance spectra")
 @
 
-We we calculate the mean reflectance in wavebands corresponding to ISO colors obtaining a data frame. We then add to this returned data frame a factor indicating the body parts.
+We calculate the mean reflectance in wavebands corresponding to ISO colors obtaining a data frame. We then add to this returned data frame a factor indicating the body parts.
 
 <<>>=
 refl.by.band <- reflectance(sicalis.mspct, w.band = list(Red(), Green(), Blue(), UVA()))
@@ -697,7 +757,7 @@ ggplot(refl.red, aes(x = body.part, y = red.reflectance)) +
 
 \subsection{Using locales}
 
-Most functions in this package have a parameter \texttt{locale}, that accepts \texttt{readr::locole} objects as arguments. At the moment only the time zone and decimal mark are respected. This allows files using comma for decimal marker be easily imported, or the dates and times \textbf{in the input file} be interpreted in a given time zone. Setting the correct time zone is very important to avoid errors. Time coordinates are always stored in the created objects using universal time coordiantes ("UTC").
+Most functions in this package have a parameter \texttt{locale}, that accepts \texttt{readr::locale} objects as arguments. At the moment only the time zone and decimal mark are respected. This allows files using comma for decimal marker be easily imported, or the dates and times \textbf{in the input file} be interpreted in a given time zone. Setting the correct time zone is very important to avoid errors. Time coordinates are always stored in the created objects using universal time coordinates ("UTC").
 
 <<>>=
 my.locale <- locale(decimal_mark = ",", tz = "EET")
@@ -743,4 +803,4 @@ jaz04.spct
 getWhereMeasured(jaz04.spct)
 @
 
-\end{document} 
+\end{document}

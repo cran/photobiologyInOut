@@ -3,7 +3,7 @@
 \name{read_licor_prn}
 \alias{read_licor_prn}
 \alias{read_m_licor_prn}
-\title{Read \code{.PRN} File(s) Saved by LI-COR's PC1800 Program.}
+\title{Read '.PRN' File(s) Saved by LI-COR's PC1800 Program.}
 \usage{
 read_licor_prn(file, date = NULL, geocode = NULL, label = NULL,
   tz = NULL, locale = readr::default_locale())

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read-macam-dta.r
 \name{read_macam_dta}
 \alias{read_macam_dta}
-\title{Read \code{.DTA} File Saved by Macam's Software.}
+\title{Read '.DTA' File Saved by Macam's Software.}
 \usage{
 read_macam_dta(file, date = NULL, geocode = NULL, label = NULL,
   tz = NULL, locale = readr::default_locale())

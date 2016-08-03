@@ -188,4 +188,12 @@ test_that("pi_raw", {
                data.frame(lon = NA_real_, lat = NA_real_))
   expect_equal(getWhatMeasured(pi.spct), "File: data-test/spectrum.pi")
   expect_gt(length(comment(pi.spct)), 0)
+
+  # pi2.spct <- read_oo_pidata(file = "data-test/vk-open-b00.txt", 
+  #                           date = my.date,
+  #                           npixels = 2048)
+  # 
+  # pi3.spct <- read_oo_pidata(file = "data-test/vk-open-b-dark.txt", 
+  #                           date = my.date,
+  #                           npixels = 2048)
 })

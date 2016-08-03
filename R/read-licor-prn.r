@@ -1,4 +1,4 @@
-#' Read \code{.PRN} File(s) Saved by LI-COR's PC1800 Program.
+#' Read '.PRN' File(s) Saved by LI-COR's PC1800 Program.
 #' 
 #' Reads and parses the header of a processed data file as output by the PC1800
 #' program to extract the whole header remark field and also check whether data
