@@ -35,9 +35,6 @@ Reads and parses the header of a processed data file as output by the PC
 program to extract the time and date fields and a user label if present,
 and then imports wavelengths and spectral energy irradiance values.
 }
-\author{
-Pedro J. Aphalo
-}
 \references{
 \url{http://www.r4photobiology.info}
 }

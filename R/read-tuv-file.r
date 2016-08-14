@@ -20,7 +20,6 @@
 #'   a factor \code{spct.idx}, and variables \code{zenith.angle} and
 #'   \code{date}.
 #'   
-#' @author Pedro J. Aphalo
 #' @references \url{http://www.r4photobiology.info}
 #' @keywords misc
 #'

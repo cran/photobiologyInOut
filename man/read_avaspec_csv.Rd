@@ -2,7 +2,7 @@
 % Please edit documentation in R/read-avaspec-csv.r
 \name{read_avaspec_csv}
 \alias{read_avaspec_csv}
-\title{Read '.csv' File Saved by Aavnates' Software for AvaSpec.}
+\title{Read '.csv' File Saved by Avantes' Software for AvaSpec.}
 \usage{
 read_avaspec_csv(file, date = NULL, geocode = NULL, label = NULL,
   tz = NULL, locale = readr::default_locale())
@@ -34,9 +34,6 @@ A source_spct object.
 Reads and parses the header of a processed data file as output by the
 program Avaspec and then imports wavelength and spectral irradiance
 values. The file header has little useful metadata information.
-}
-\author{
-Pedro J. Aphalo
 }
 \references{
 \url{http://www.r4photobiology.info}

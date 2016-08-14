@@ -38,9 +38,6 @@ extract the header and spectral data. The time field is converted to a date.
 \note{
 Tested only with TUV versison 5.0.
 }
-\author{
-Pedro J. Aphalo
-}
 \references{
 \url{http://www.r4photobiology.info}
 }

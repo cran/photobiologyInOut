@@ -1,4 +1,4 @@
-#' Read '.csv' File Saved by Aavnates' Software for AvaSpec.
+#' Read '.csv' File Saved by Avantes' Software for AvaSpec.
 #' 
 #' Reads and parses the header of a processed data file as output by the
 #' program Avaspec and then imports wavelength and spectral irradiance
@@ -20,7 +20,6 @@
 #'   
 #' @return A source_spct object.
 #' @export
-#' @author Pedro J. Aphalo
 #' @references \url{http://www.r4photobiology.info}
 #' @keywords misc
 #' 
@@ -51,7 +50,7 @@ read_avaspec_csv <- function(file,
   dots <- list(~s.e.irrad * mult)
   z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
   
-  old.opts <- options("photobiology.strict.range" = NA)
+  old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.source_spct(z, time.unit = "second")
   options(old.opts)
   

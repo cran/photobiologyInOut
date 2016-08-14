@@ -24,7 +24,6 @@
 #'   
 #' @return A source_spct object.
 #' @export
-#' @author Pedro J. Aphalo
 #' @references \url{http://www.r4photobiology.info}
 #' @keywords misc
 #' 
@@ -87,7 +86,7 @@ read_oo_jazirrad <- function(file,
   dots <- list(~s.e.irrad * 1e-2) # uW cm-2 nm-1 -> W m-2 nm-1
   z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
   
-  old.opts <- options("photobiology.strict.range" = NA)
+  old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.source_spct(z, time.unit = "second")
   options(old.opts)
 
@@ -211,7 +210,7 @@ read_oo_jazdata <- function(file,
   dots <- list(~W, ~S)
   z <- dplyr::select_(z, .dots = stats::setNames(dots, c("w.length", "counts")))
   
-  old.opts <- options("photobiology.strict.range" = NA)
+  old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.raw_spct(z)
   options(old.opts)
   

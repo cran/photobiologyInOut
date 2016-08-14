@@ -40,9 +40,6 @@ Reads and parses the header of a processed data file as output by
 SpectraSuite to extract the whole header remark field. The time field is
 retrieved and decoded.
 }
-\author{
-Pedro J. Aphalo
-}
 \references{
 \url{http://www.r4photobiology.info}
 }

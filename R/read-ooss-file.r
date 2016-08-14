@@ -19,7 +19,6 @@
 #'   
 #' @return A source_spct object.
 #' @export
-#' @author Pedro J. Aphalo
 #' @references \url{http://www.r4photobiology.info}
 #' @keywords misc
 #' 
@@ -35,7 +34,7 @@ read_oo_ssirrad <- function(file,
   line01 <- scan(file = file, nlines =  1, skip = 0, what="character")
   if (line01[1] != "SpectraSuite") {
     warning("Input file was not created by SpectrSuite as expected: skipping")
-    return(NA)
+    return(source_spct())
   }
   file_header <- scan(file = file, nlines = 16, 
                       skip = 0, what="character", sep = "\n")
@@ -65,7 +64,7 @@ read_oo_ssirrad <- function(file,
   dots <- list(~s.e.irrad * 1e-2) # uW cm-2 nm-1 -> W m-2 nm-1
   z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
 
-  old.opts <- options("photobiology.strict.range" = NA)
+  old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.source_spct(z, time.unit = "second")
   options(old.opts)
 
@@ -100,7 +99,7 @@ read_oo_ssdata<- function(file,
   line01 <- scan(file = file, nlines =  1, skip = 0, what="character")
   if (line01[1] != "SpectraSuite") {
     warning("Input file was not created by SpectrSuite as expected: skipping")
-    return(NA)
+    return(raw_spct())
   }
   file_header <- scan(file = file, nlines = 16, 
                       skip = 0, what="character", sep = "\n")
@@ -130,7 +129,7 @@ read_oo_ssdata<- function(file,
   comment(z) <-
     paste("Ocean Optics:", paste(file_header, collapse = "\n"), sep = "\n")
   
-  old.opts <- options("photobiology.strict.range" = NA)
+  old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.raw_spct(z)
   options(old.opts)
 

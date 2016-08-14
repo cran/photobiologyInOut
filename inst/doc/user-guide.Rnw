@@ -80,8 +80,9 @@ my_version <- packageVersion("photobiologyInOut")
 @
 
 <<>>=
-options(tibble.print_max = 5)
-options(tibble.print_min = 3)
+options(tibble.print_max = 5,
+        tibble.print_min = 3,
+        photobiology.strict.range = NA_integer_)
 @
 
 This package defines functions for importing spectral data from
@@ -610,7 +611,7 @@ head(dimnames(z2c.mat)$w.length)
 head(attr(z2c.mat, "w.length"))
 @
 
-Collections of spectra have a \texttt{spct.byrow} attribute but it is discarded as it describes dimensions would require spectral data to be stored in a three dimensional array and cannot be mapped to a matrix. The argument \code{byrow} in the conversion function has the same meaning as in the \texttt{matrix} constructor function.
+Collections of spectra have a \texttt{spct.byrow} attribute but it is discarded as it describes dimensions would require spectral data to be stored in a three dimensional array and cannot be mapped to a matrix. The argument \texttt{byrow} in the conversion function has the same meaning as in the \texttt{matrix} constructor function.
 
 <<>>=
 z2r.mat <- mspct2mat(z2.mspct, "s.e.irrad", byrow = TRUE)

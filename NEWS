@@ -7,11 +7,22 @@ Add alternative reader of TUV output files into a collection of spectra.
 Add test cases for new functions for exchange of foreign data (currently
 tested through examples in vignette).
 
+photobiologyInOut 0.4.9
+=======================
+
+Fix LaTeX error in vignette.
+
+photobiologyInOut 0.4.8
+=======================
+
+Replace a couple of NA returned by read fucntions with empty spectral objects.
+Improve handling of strict.range to avoid spurious warnings.
+
 photobiologyInOut 0.4.7
 =======================
 
-Add functions mspct2matrix() and matrix2mspct for convertion of collections 
-of spectra into R matrixes and vice-versa.
+Add functions mspct2matrix() and matrix2mspct for conversion of collections 
+of spectra into R matrices and vice-versa.
 
 photobiologyInOut 0.4.6
 =======================

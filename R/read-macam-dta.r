@@ -20,7 +20,6 @@
 #'
 #' @return A source_spct object.
 #' @export
-#' @author Pedro J. Aphalo
 #' @references \url{http://www.r4photobiology.info}
 #' @keywords misc
 #'
@@ -49,7 +48,7 @@ read_macam_dta <- function(file,
                    what = list(w.length = double(), s.e.irrad = double()),
                    skip = 3)
 
-  old.opts <- options("photobiology.strict.range" = NA)
+  old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.source_spct(z, time.unit = "second")
   options(old.opts)
 

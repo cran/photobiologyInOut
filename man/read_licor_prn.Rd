@@ -57,9 +57,6 @@ The LI-1800 spectroradiometer does not store the year as part of the
 data, only month, day, and time of day. Because of this, in the current
 version, if \code{NULL} is the argument to date, year is set to 0000.
 }
-\author{
-Pedro J. Aphalo
-}
 \references{
 \url{http://www.r4photobiology.info}
 }

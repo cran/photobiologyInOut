@@ -43,8 +43,9 @@ my_version <- packageVersion("photobiologyInOut")
 #  library(readr)
 
 ## ----------------------------------------------------
-options(tibble.print_max = 5)
-options(tibble.print_min = 3)
+options(tibble.print_max = 5,
+        tibble.print_min = 3,
+        photobiology.strict.range = NA_integer_)
 
 ## ----------------------------------------------------
 jazraw.spct <- read_oo_jazdata(file = "data-vignettes/spectrum.jaz")
