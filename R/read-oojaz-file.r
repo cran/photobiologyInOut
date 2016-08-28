@@ -69,7 +69,7 @@ read_oo_jazirrad <- function(file,
   if (is.null(date)) {
     line03 <- sub("Date: [[:alpha:]]{3} ", "", file_header[3])
     date <-
-      lubridate::parse_date_time(line03, "m*!d! hms y", tz = tz)
+      lubridate::parse_date_time(line03, "mdHMSy", tz = tz)
   }
   
   #  data_header <- scan(file = file, nlines = 1, skip = 20, what = "character")
@@ -92,7 +92,7 @@ read_oo_jazirrad <- function(file,
 
   comment(z) <-
     paste(paste("Ocean Optics Jaz irradiance file '", file, "' imported on ", 
-                lubridate::now(tz = "UTC"), " UTC", sep = ""),
+                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
     photobiology::setWhenMeasured(z, date)
@@ -147,7 +147,7 @@ read_oo_jazdata <- function(file,
   if (is.null(date)) {
     line03 <- sub("Date: [[:alpha:]]{3} ", "", file_header[3])
     date <-
-      lubridate::parse_date_time(line03, "m*!d! hms y", tz = tz)
+      lubridate::parse_date_time(line03, "mdHMSy", tz = tz)
   }
   
   spectrometer.sn <- sub("Spectrometers: ", "", file_header[8])
@@ -216,7 +216,7 @@ read_oo_jazdata <- function(file,
   
   comment(z) <-
     paste(paste("Ocean Optics Jaz raw counts file '", file, "' imported on ", 
-                lubridate::now(tz = "UTC"), " UTC", sep = ""),
+                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
 

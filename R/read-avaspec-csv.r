@@ -56,7 +56,7 @@ read_avaspec_csv <- function(file,
   
   comment(z) <-
     paste(paste("Avantes AvaSpec irradiance file '", file, "' imported on ", 
-                lubridate::now(tz = "UTC"), " UTC", sep = ""),
+                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
   photobiology::setWhenMeasured(z, date)
@@ -64,3 +64,65 @@ read_avaspec_csv <- function(file,
   photobiology::setWhatMeasured(z, label)
   z
 }
+
+#' @rdname read_avaspec_csv
+#' 
+#' @param path Path to the xls/xlsx file
+#' 
+#' @export
+#' 
+read_avaspec_xls <- function(path,
+                             date = NULL,
+                             geocode = NULL,
+                             label = NULL,
+                             tz = NULL,
+                             locale = readr::default_locale()) {
+  if (is.null(tz)) {
+    tz <- locale$tz
+  }
+  if (is.null(label)) {
+    label <- paste("File:", path)
+  }
+  
+  file_header <- readxl::read_excel(path, skip = 0, col_names = FALSE)[1:4, 1]
+
+  column_names <- readxl::read_excel(path, skip = 4, col_names = FALSE)[1, ]
+  column_names <- as.vector(as.matrix(column_names))
+  column_names <- gsub("Wave.*", "w.length", column_names)
+  column_names <- gsub("Absolute Irradiance.*", "s.e.irrad", column_names)
+  column_names <- gsub("Photon Count.*", "s.q.irrad", column_names)
+
+  z <- readxl::read_excel(path,
+                          col_names = column_names,
+                          skip = 6)
+  
+  z <- z[!is.na(z["w.length"]),
+         names(z) %in% c("w.length", "s.e.irrad", "s.q.irrad")]
+  
+  z["s.e.irrad"] <- z["s.e.irrad"] * 1e-2 # 1e4 * 1e-6
+  z["s.q.irrad"] <- z["s.q.irrad"] * 1e-6
+  
+  # if (length(grep("Watt/cm", file_header[2], fixed = TRUE))) {
+  #   mult <- 10e-4
+  # } else {
+  #   mult <- NA
+  # }
+  
+  # dots <- list(~s.e.irrad * mult)
+  # z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
+  
+  old.opts <- options("photobiology.strict.range" = NA_integer_)
+  z <- photobiology::as.source_spct(z, time.unit = "second")
+  options(old.opts)
+  
+  comment(z) <-
+    paste(paste("Avantes AvaSpec irradiance file (Excel)'", path, "' imported on ", 
+                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
+          paste(file_header, collapse = "\n"), 
+          sep = "\n")
+  photobiology::setWhenMeasured(z, date)
+  photobiology::setWhereMeasured(z, geocode)
+  photobiology::setWhatMeasured(z, label)
+  z
+}
+

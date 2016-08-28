@@ -2,9 +2,13 @@
 % Please edit documentation in R/read-avaspec-csv.r
 \name{read_avaspec_csv}
 \alias{read_avaspec_csv}
+\alias{read_avaspec_xls}
 \title{Read '.csv' File Saved by Avantes' Software for AvaSpec.}
 \usage{
 read_avaspec_csv(file, date = NULL, geocode = NULL, label = NULL,
+  tz = NULL, locale = readr::default_locale())
+
+read_avaspec_xls(path, date = NULL, geocode = NULL, label = NULL,
   tz = NULL, locale = readr::default_locale())
 }
 \arguments{
@@ -26,6 +30,8 @@ default locale is US-centric (like R), but you can use
 \code{\link[readr]{locale}} to create your own locale that controls things
 like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
+
+\item{path}{Path to the xls/xlsx file}
 }
 \value{
 A source_spct object.

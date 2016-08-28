@@ -69,7 +69,7 @@ read_tuv_usrout <- function(file,
   photobiology::setSourceSpct(z, time.unit = "second", multiple.wl = num.spectra)
 
   comment(z) <- paste(paste("TUV file '", file, "' imported on ", 
-                            lubridate::now(tz = "UTC"), " UTC", sep = ""), 
+                            lubridate::now(tzone = "UTC"), " UTC", sep = ""), 
                       paste(file_header, collapse = "\n"), sep = "\n")
   photobiology::setWhatMeasured(z, paste("TUV spectral simulation", label))
   photobiology::setWhenMeasured(z, geocode)

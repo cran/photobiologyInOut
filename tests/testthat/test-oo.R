@@ -166,7 +166,7 @@ test_that("SpectraSuite", {
 
 test_that("pi_raw", {
   
-  my.date <- now(tz = "EET")
+  my.date <- now(tzone = "EET")
   pi.spct <- read_oo_pidata(file = "data-test/spectrum.pi", 
                             date = my.date,
                             npixels = 2048)

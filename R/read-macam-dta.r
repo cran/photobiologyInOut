@@ -54,7 +54,7 @@ read_macam_dta <- function(file,
 
   comment(z) <-
     paste(paste("MACAM file '", file, "' imported on ", 
-                lubridate::now(tz = "UTC"), " UTC", sep = ""),
+                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
   photobiology::setWhenMeasured(z, date)

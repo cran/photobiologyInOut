@@ -64,7 +64,7 @@ read_libradtran_vesa <- function(file,
   }
   photobiology::setSourceSpct(z, time.unit = "second", multiple.wl = num.spectra)
   comment(z) <- paste("libRadtran file '", file,
-                      "' imported on ", lubridate::now(tz = "UTC"), " UTC",
+                      "' imported on ", lubridate::now(tzone = "UTC"), " UTC",
                       sep = "")
   photobiology::setWhenMeasured(z, datetimes)
   photobiology::setWhereMeasured(z, geocode)

@@ -52,7 +52,7 @@ read_licor_prn <- function(file,
   
   if (is.null(date)) {
     line05 <- sub("Date:", "", file_header[5])
-    date <- lubridate::parse_date_time(line05, "m*!d! hm", tz = tz)
+    date <- lubridate::parse_date_time(line05, "mdHM", tz = tz)
   }
   
   if (!is.na(match("(QNTM)", file_header[2], nomatch = FALSE))) {
@@ -86,7 +86,7 @@ read_licor_prn <- function(file,
   options(old.opts)
   comment(z) <-
     paste(paste("LICOR LI-1800 file '", file, "' imported on ", 
-                lubridate::now(tz = "UTC"), " UTC", sep = ""),
+                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
   

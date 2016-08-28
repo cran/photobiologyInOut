@@ -7,6 +7,15 @@ Add alternative reader of TUV output files into a collection of spectra.
 Add test cases for new functions for exchange of foreign data (currently
 tested through examples in vignette).
 
+photobiologyInOut 0.4.10
+========================
+
+Make compatible with upcoming version of package 'lubridate' (pull request by
+vspinu NA).
+Add function read_avaspec_xls() which can import spectral data form Excel
+files exported from Avantes software.
+Fix code to avoid partial matches of function parameter names (tz -> tzone).
+
 photobiologyInOut 0.4.9
 =======================
 

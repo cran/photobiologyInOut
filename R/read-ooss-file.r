@@ -50,7 +50,7 @@ read_oo_ssirrad <- function(file,
         tz <- sub("S", "", tz)
       }
     }
-    date <- lubridate::parse_date_time(line03, "m*!d! hms y", tz = tz)
+    date <- lubridate::parse_date_time(line03, "mdHMSy", tz = tz)
   }
   
   z <- readr::read_tsv(
@@ -70,7 +70,7 @@ read_oo_ssirrad <- function(file,
 
   comment(z) <-
     paste(paste("Ocean Optics Spectra Suite irradiance file '", file, "' imported on ", 
-                lubridate::now(tz = "UTC"), " UTC", sep = ""),
+                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
   
@@ -115,7 +115,7 @@ read_oo_ssdata<- function(file,
         tz <- sub("S", "", tz)
       }
     }
-    date <- lubridate::parse_date_time(line03, "m*!d! hms y", tz = tz)
+    date <- lubridate::parse_date_time(line03, "mdHMSy", tz = tz)
   }
   
   z <- readr::read_tsv(
@@ -135,7 +135,7 @@ read_oo_ssdata<- function(file,
 
   comment(z) <-
     paste(paste("Ocean Optics Spectra Suite raw counts file '", file, "' imported on ", 
-                lubridate::now(tz = "UTC"), " UTC", sep = ""),
+                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
 
