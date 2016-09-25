@@ -3,7 +3,7 @@
 #' Reads and parses the header of a processed data file as output by the PC1800
 #' program to extract the whole header remark field and also check whether data
 #' is in photon or energy based units. The time field is ignored as it does not
-#' contain year information.
+#' contain year information. This instrument is no longer being manufactured.
 #' 
 #' @param file Path to file as a character string.
 #' @param date a \code{POSIXct} object, but if \code{NULL} the date stored in
@@ -23,7 +23,8 @@
 #'   \code{time.unit} attribute set to \code{"second"} and \code{when.measured}
 #'   attribute set to the date-time extracted from the file name, or supplied.
 #' @export
-#' @references \url{http://www.r4photobiology.info}
+#' @references \url{http://www.r4photobiology.info} \url{http://www.licor.com}
+#' 
 #' @keywords misc
 #'   
 #' @note The LI-1800 spectroradiometer does not store the year as part of the
@@ -69,13 +70,23 @@ read_licor_prn <- function(file,
     mult <- 1.0 # joule -> joule
   }
   
-  z <-
-    readr::read_table(file,
-                      col_names = col_names,
-                      col_types = "dd",
-                      skip = 7,
-                      locale = locale)
+  # does not decode first column correctly if it includes values >= 1000
+  # z <-
+  #   readr::read_table(file,
+  #                     col_names = col_names,
+  #                     col_types = "dd",
+  #                     skip = 7,
+  #                     locale = locale)
   
+  z <- 
+    utils::read.table(file,
+                      header = FALSE,
+                      dec = ".",
+                      row.names = NULL,
+                      col.names = col_names,
+                      colClasses = "double",
+                      skip = 7
+                      )
   if (mult != 1) {
     dots <- list(~s.q.irrad * mult)
     z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.q.irrad"))

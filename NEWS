@@ -7,12 +7,19 @@ Add alternative reader of TUV output files into a collection of spectra.
 Add test cases for new functions for exchange of foreign data (currently
 tested through examples in vignette).
 
+photobiologyInOut 0.4.11
+========================
+
+Edit read_licor_prn() to work around a bug in readr::read_table() that results
+in missread data (wrong numbers).
+Add read_csi_dat() to read data saved from modern Campbell Scientific loggers.
+
 photobiologyInOut 0.4.10
 ========================
 
 Make compatible with upcoming version of package 'lubridate' (pull request by
 vspinu NA).
-Add function read_avaspec_xls() which can import spectral data form Excel
+Add function read_avaspec_xls() which can import spectral data from Excel
 files exported from Avantes software.
 Fix code to avoid partial matches of function parameter names (tz -> tzone).
 

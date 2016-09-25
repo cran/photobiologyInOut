@@ -4,7 +4,7 @@
 \name{photobiologyInOut-package}
 \alias{photobiologyInOut}
 \alias{photobiologyInOut-package}
-\title{Read Spectral Data from Foreign Files}
+\title{Read Spectral and Logged Data from Foreign Files}
 \description{
 Functions for reading and writing foreign files containing
 spectral data from spectrometers and their associated software, and output

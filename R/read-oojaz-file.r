@@ -24,7 +24,7 @@
 #'   
 #' @return A source_spct object.
 #' @export
-#' @references \url{http://www.r4photobiology.info}
+#' @references \url{http://www.r4photobiology.info} \url{http://oceanoptics.com/}
 #' @keywords misc
 #' 
 read_oo_jazirrad <- function(file,

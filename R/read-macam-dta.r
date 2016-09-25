@@ -20,7 +20,7 @@
 #'
 #' @return A source_spct object.
 #' @export
-#' @references \url{http://www.r4photobiology.info}
+#' @references \url{http://www.r4photobiology.info} \url{http://www.irradian.co.uk/}
 #' @keywords misc
 #'
 read_macam_dta <- function(file,

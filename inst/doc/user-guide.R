@@ -113,6 +113,14 @@ cat(comment(licor.spct))
 plot(licor.spct, unit.out = "photon")
 
 ## ----------------------------------------------------
+day.dat <- read_csi_dat(file = "data-vignettes/cr6-day.dat")
+day.dat
+
+## ----------------------------------------------------
+hour.dat <- read_csi_dat(file = "data-vignettes/cr6-hour.dat")
+ggplot(hour.dat, aes(TIMESTAMP, PAR_Den_Avg)) + geom_line()
+
+## ----------------------------------------------------
 tuv.spct <- read_tuv_usrout(file = "data-vignettes/usrout.txt",
                             date = ymd("2014-03-21"))
 summary(subset(tuv.spct, spct.idx == "A"))

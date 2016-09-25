@@ -22,7 +22,7 @@
 #' @return a source_spct object, possibly containing several spectra in long
 #'  form and a datetime column.
 #'   
-#' @references \url{http://www.r4photobiology.info}
+#' @references \url{http://www.r4photobiology.info} \url{http://www.libradtran.org}
 #'
 #' @note Tested only libRadtran version 2.0
 #' 

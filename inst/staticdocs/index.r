@@ -17,6 +17,13 @@ sd_section("Import data files from spectrometers",
   )
 )
 
+sd_section("Import data files from dataloggers",
+           "We provide functions for importing data from some common brands and types of instruments.",
+           c(
+             "read_csi_dat"
+           )
+)
+
 sd_section("Import data from simulation models",
            "We provide functions for importing spectral data from models we use. As the file format may vary depending on settings, these are mainly provided as examples.",
   c(

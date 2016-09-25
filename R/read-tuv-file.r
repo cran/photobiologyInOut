@@ -20,7 +20,7 @@
 #'   a factor \code{spct.idx}, and variables \code{zenith.angle} and
 #'   \code{date}.
 #'   
-#' @references \url{http://www.r4photobiology.info}
+#' @references \url{http://www.r4photobiology.info} \url{https://www2.acom.ucar.edu/modeling/tuv-download}
 #' @keywords misc
 #'
 #' @note Tested only with TUV versison 5.0.

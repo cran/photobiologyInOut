@@ -47,7 +47,7 @@ Although the parameter is called \code{date} a date time is accepted
   and expected. Time resolution is 1 s.
 }
 \references{
-\url{http://www.r4photobiology.info}
+\url{http://www.r4photobiology.info} \url{http://oceanoptics.com/}
 }
 \keyword{misc}
 

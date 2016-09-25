@@ -1,8 +1,6 @@
 # photobiologyInOut #
 
-[![](http://www.r-pkg.org/badges/version/photobiologyInOut)](https://cran.r-project.org/package=photobiologyInOut) [![](http://cranlogs.r-pkg.org/badges/photobiologyInOut)](https://cran.r-project.org/package=photobiologyInOut) [![](http://cranlogs.r-pkg.org/badges/grand-total/photobiologyInOut)](https://cran.r-project.org/package=photobiologyInOut)
-
-Package '**photobiologyInOut**' provides functions for importing spectral data from diverse sources including instrument-specific files, as well as spectral data output by solar-radiation simulation models. It also includes functions for exchanging spectral data with other R packages. Package '**photobiologyInOut**' complements other packages in the '**r4photobiology suite**' by allowing reading and writing "foreign" spectral data as well as reading data saved from data loggers.
+Package '**photobiologyInOut**' provides functions for importing spectral data from diverse sources including instrument-specific files, as well as spectral data output by solar-radiation simulation models. It also includes functions for exchanging spectral data with other R packages. Package '**photobiologyInOut**' complements other packages in the '**r4photobiology suite**' by allowing reading and writing _foreign_ spectral data as well as reading data saved from data loggers.
 
 Developing a package like this is a never-ending task as I have only a limited sample of output files for testing and formats are quite variable. The functions may not work with different software or firmware versions used for acquiring spectral data from instruments. Even the format of files can depend on the current locale and operating system.
 

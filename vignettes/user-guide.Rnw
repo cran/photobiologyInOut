@@ -398,6 +398,27 @@ cat(comment(licor.spct))
 plot(licor.spct, unit.out = "photon")
 @
 
+\section{Data from loggers}
+
+\subsection{Campbell Scientific}
+
+The functions in the package have been tested with a very recent datalogger
+model, the CR6, and using current versions of programs PC400 and PC200W to
+download the data. The currently used format of .DAT files is easy to decode
+and one function can automatically detect the number and type of columns and
+the number of rows. All information is preserved in the returned 
+\texttt{tibble::tibble} object, which is derived from \texttt{data.frame}.
+
+<<>>=
+day.dat <- read_csi_dat(file = "data-vignettes/cr6-day.dat")
+day.dat
+@
+
+<<>>=
+hour.dat <- read_csi_dat(file = "data-vignettes/cr6-hour.dat")
+ggplot(hour.dat, aes(TIMESTAMP, PAR_Den_Avg)) + geom_line()
+@
+
 \section{Output from simulation models}
 
 \subsection{TUV}
