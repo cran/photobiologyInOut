@@ -35,9 +35,9 @@ or PC200W programmes extracting variable names, units and quantities from the
 header. Uses the comment attribute to store the metadata.
 }
 \note{
-This function is not useful for .DAT and .PRN from old CSI loggers
-  and software. Those were simple files, lacking metadata, which was stored
-  in separate .FLD files.
+This function is not useful for .DAT and .PRN files from old CSI
+  loggers and software. Those were simple files, lacking metadata, which was
+  stored in separate .FLD files.
 }
 \references{
 \url{http://www.r4photobiology.info} \url{http://www.campbellsci.eu/}

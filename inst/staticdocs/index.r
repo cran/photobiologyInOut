@@ -27,8 +27,9 @@ sd_section("Import data files from dataloggers",
 sd_section("Import data from simulation models",
            "We provide functions for importing spectral data from models we use. As the file format may vary depending on settings, these are mainly provided as examples.",
   c(
+    "read_uvspec_disort",
+    "read_uvspec_disort_vesa",
     "read_fmi_cum",
-    "read_libradtran_vesa",
     "read_tuv_usrout"
     )
 )

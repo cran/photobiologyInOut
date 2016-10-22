@@ -139,15 +139,33 @@ tuv_nd.spct <- read_tuv_usrout(file = "data-vignettes/usrout.txt")
 tuv_nd.spct
 
 ## ----------------------------------------------------
-lrt.df <- read.table(file = "data-vignettes/libradtran-plain-2col.dat",
+lrt.df <- read.table(file = "data-vignettes/uvspec-plain-2col.dat",
                      col.names = c("w.length", "s.e.irrad"))
-summary(lrt.df)
-libradtran.spct <- source_spct(w.length = lrt.df$w.length,
+uvspec.01.spct <- source_spct(w.length = lrt.df$w.length,
                                s.e.irrad = lrt.df$s.e.irrad * 1e-3)
-plot(libradtran.spct, range = c(250, 2500), unit.out = "photon")
+summary(uvspec.01.spct)
+cat(comment(uvspec.01.spct))
+plot(uvspec.01.spct, range = c(250, 2500), unit.out = "photon")
 
 ## ----------------------------------------------------
-lbr.multi.spct <- read_libradtran_vesa("data-vignettes/libradtran-multi.dat")
+uvspec.02.spct <- read_uvspec_disort("data-vignettes/uvspec-disort.dat")
+summary(uvspec.02.spct)
+cat(comment(uvspec.02.spct))
+plot(uvspec.02.spct, unit.out = "photon")
+
+## ----------------------------------------------------
+ggplot(uvspec.02.spct) +
+  geom_line() +
+  geom_line(aes(y = s.e.irrad.diff), linetype = "dashed")
+
+## ----------------------------------------------------
+comment(uvspec.02.spct) <- paste(comment(uvspec.02.spct),
+                                 read_file("data-vignettes/uvspec-disort.inp"),
+                                 sep = "\n\n")
+cat(comment(uvspec.02.spct))
+
+## ----------------------------------------------------
+lbr.multi.spct <- read_uvspec_disort_vesa("data-vignettes/uvspec-multi.dat")
 print(lbr.multi.spct, n = 5)
 
 ## ----------------------------------------------------
@@ -298,8 +316,11 @@ ggplot(refl.red, aes(x = body.part, y = red.reflectance)) +
 
 ## ----------------------------------------------------
 my.locale <- locale(decimal_mark = ",", tz = "EET")
-read_oo_jazirrad(file = "data-vignettes/spectrum-comma.JazIrrad",
-                 locale = my.locale)
+jaz00.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum-comma.JazIrrad",
+                               locale = my.locale)
+
+## ----------------------------------------------------
+jaz00.spct
 
 ## ----warning=FALSE-----------------------------------
 jaz01.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad",

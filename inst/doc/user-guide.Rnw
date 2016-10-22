@@ -112,9 +112,10 @@ read\_m\_licor\_file() & LI-COR LI-1800            & PC1800 (MS-DOS)  & source\_
 R function & Simulation model & Version & \texttt{class} of value \\
 \midrule
 read\_tuv\_usrout() & TUV (S. Madronich) & version 5.0 & source\_spct \\
+read\_uvspec\_disort() & libRadtran & irradiance & source\_spct \\
+read\_uvspec\_vesa() & (T. \& V. Kotilainen) & irradiance & source\_spct \\
 read\_fmi\_cum() & (A. Lindfors) & daily cumulated  & source\_spct \\
 read\_m\_fmi\_cum() & (A. Lindfors) & daily cumulated & source\_mspct \\
-read\_libradtran\_vesa() & (T. \& V. Kotilainen) & irradiance & source\_spct \\
 \midrule
 R function & R package & Function & \texttt{class} of value \\
 \midrule
@@ -406,7 +407,7 @@ The functions in the package have been tested with a very recent datalogger
 model, the CR6, and using current versions of programs PC400 and PC200W to
 download the data. The currently used format of .DAT files is easy to decode
 and one function can automatically detect the number and type of columns and
-the number of rows. All information is preserved in the returned 
+the number of rows. All information is preserved in the returned
 \texttt{tibble::tibble} object, which is derived from \texttt{data.frame}.
 
 <<>>=
@@ -465,9 +466,12 @@ tuv_nd.spct
 
 \subsection{libRadtran}
 
-By default 'libRadtran' writes only spectral irradiances to a text file as output. This is different from 'TUV' which by default includes an extensive header with the parameter settings used for the simulation.
+By default libRadtran's uvspec writes only spectral irradiances to a text file as output. This is different from 'TUV' which by default includes an extensive header with the parameter settings used for the simulation. It is easy to read this simple output file with R's
+functions. However, we provide functions, that simplify reading of the files. The
+output from uvspec varies depending on its input. The main source of differences
+is the solver routine used. We will provide a separate function for each solver.
 
-For reading this simple output, no special function is needed. We can use either \texttt{read.table} from base R. Here we read a file with two columns with wavelengths and global spectral energy irradiance (named "eglo" in libRadtran) in \mwattnm. The file was created with one of the 'uvspec' examples included with libRadtran, but reducing the output to two columns.
+For reading this simple output, no special function is needed. We can use \texttt{read.table} from base R. Here we read a file with two columns with wavelengths and global spectral energy irradiance (named "eglo" in libRadtran) in \mwattnm. The file was created with one of the 'uvspec' examples included with libRadtran, but reducing the output to two columns.
 
 The first few lines of the file look like this:
 \begin{footnotesize}
@@ -480,14 +484,73 @@ The first few lines of the file look like this:
 \end{verbatim}
 \end{footnotesize}
 
+<<>>=
+lrt.df <- read.table(file = "data-vignettes/uvspec-plain-2col.dat",
+                     col.names = c("w.length", "s.e.irrad"))
+uvspec.01.spct <- source_spct(w.length = lrt.df$w.length,
+                               s.e.irrad = lrt.df$s.e.irrad * 1e-3)
+summary(uvspec.01.spct)
+cat(comment(uvspec.01.spct))
+plot(uvspec.01.spct, range = c(250, 2500), unit.out = "photon")
+@
+
+An example using solver \texttt{disort} and our function read\_uvspec\_disort() follows.
+
+The first few lines of the file look like this:
+\begin{footnotesize}
+\begin{verbatim}
+  290.000  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+  291.000  1.046525e-11  4.800521e-06  1.674293e-07  2.374267e-12  5.342789e-07  2.664720e-08
+  292.000  5.888299e-10  2.813865e-05  9.814190e-07  1.335888e-10  3.162808e-06  1.561977e-07
+  293.000  4.383296e-09  5.764524e-05  2.010660e-06  9.944455e-10  6.522616e-06  3.200065e-07
+...
+\end{verbatim}
+\end{footnotesize}
 
 <<>>=
-lrt.df <- read.table(file = "data-vignettes/libradtran-plain-2col.dat",
-                     col.names = c("w.length", "s.e.irrad"))
-summary(lrt.df)
-libradtran.spct <- source_spct(w.length = lrt.df$w.length,
-                               s.e.irrad = lrt.df$s.e.irrad * 1e-3)
-plot(libradtran.spct, range = c(250, 2500), unit.out = "photon")
+uvspec.02.spct <- read_uvspec_disort("data-vignettes/uvspec-disort.dat")
+summary(uvspec.02.spct)
+cat(comment(uvspec.02.spct))
+plot(uvspec.02.spct, unit.out = "photon")
+@
+
+The data contains also estimates of diffuse and direct spectral irradiance. Here we plot the total energy irradiance with a solid line and the diffuse component with a dashed line.
+
+<<>>=
+ggplot(uvspec.02.spct) +
+  geom_line() +
+  geom_line(aes(y = s.e.irrad.diff), linetype = "dashed")
+@
+
+The uvspec file used to generate the spectrum read above is:
+\begin{footnotesize}
+\begin{verbatim}
+data_files_path uvspec_home/data/
+atmosphere_file uvspec_home/data/atmmod/afglms.dat
+source solar uvspec_home/data/solar_flux/kurudz_1.0nm.dat
+rte_solver disort
+mol_abs_param lowtran
+deltam on
+number_of_streams 6
+wavelength 290 900
+day_of_year 287
+altitude 0.012
+albedo_library IGBP
+brdf_rpv_type 5
+mol_modify O3 288 DU
+mol_modify H2O 10 MM
+sza 69.4662
+sur_temperature 273
+\end{verbatim}
+\end{footnotesize}
+
+If we plan to save and reuse the spectral object, it is recommended to append the input file to the comment.
+
+<<>>=
+comment(uvspec.02.spct) <- paste(comment(uvspec.02.spct),
+                                 read_file("data-vignettes/uvspec-disort.inp"),
+                                 sep = "\n\n")
+cat(comment(uvspec.02.spct))
 @
 
 We give two additional examples, which will most likely need some adjustment by users, as these are for output from libRadtran post-processed to add additional information. These are included in the package because myself and collaborators use these formats heavily. In fact users could develop shell scripts or Perl scripts using the same output format.
@@ -512,7 +575,7 @@ The first few lines of the file look like this:
 A function is included for reading data saved in a text file in this format. It also automatically converts \mwattnm into \wattnm.
 
 <<>>=
-lbr.multi.spct <- read_libradtran_vesa("data-vignettes/libradtran-multi.dat")
+lbr.multi.spct <- read_uvspec_disort_vesa("data-vignettes/uvspec-multi.dat")
 print(lbr.multi.spct, n = 5)
 @
 
@@ -550,7 +613,7 @@ getWhenMeasured(z.spct)
 z.spct
 @
 
-With function \texttt{read\_m\_fmi\_cum} with an "m" in the name we can read several files each containing a single spectrum. The returned object is a collection of source spectra.
+With function \texttt{read\_m\_fmi\_cum} with an ``m'' in the name we can read several files each containing a single spectrum. The returned object is a collection of source spectra.
 
 <<>>=
 z.mspct <- read_m_fmi_cum(c("data-vignettes/2014-08-21_cum.hel",
@@ -647,7 +710,7 @@ These functions are not fully automatic, the user needs to provide the name of t
 
 \subsection{To `hyperSpec'}
 
-Can export to "hyperSpec" objects only collections of spectra where all members have identical \texttt{w.length} vectors, as objects of class \texttt{hyperSpec} store a single vector of wavelengths for the whole collection of spectra.
+Can export to \texttt{``hyperSpec''} objects only collections of spectra where all members have identical \texttt{w.length} vectors, as objects of class \texttt{hyperSpec} store a single vector of wavelengths for the whole collection of spectra.
 
 <<>>=
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")
@@ -783,8 +846,12 @@ Most functions in this package have a parameter \texttt{locale}, that accepts \t
 
 <<>>=
 my.locale <- locale(decimal_mark = ",", tz = "EET")
-read_oo_jazirrad(file = "data-vignettes/spectrum-comma.JazIrrad",
-                 locale = my.locale)
+jaz00.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum-comma.JazIrrad",
+                               locale = my.locale)
+@
+
+<<>>=
+jaz00.spct
 @
 
 \subsection{Overriding default metadata}

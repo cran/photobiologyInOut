@@ -7,6 +7,13 @@ Add alternative reader of TUV output files into a collection of spectra.
 Add test cases for new functions for exchange of foreign data (currently
 tested through examples in vignette).
 
+photobiologyInOut 0.4.12
+========================
+
+Fix CITATION file.
+Add function read_uvspec_disort(), rename read_libradtran_vesa() to
+read_uvspec_disort_vesa().
+
 photobiologyInOut 0.4.11
 ========================
 

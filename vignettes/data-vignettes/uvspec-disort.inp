@@ -1,0 +1,16 @@
+data_files_path uvspec_home/data/
+atmosphere_file uvspec_home/data/atmmod/afglms.dat
+source solar uvspec_home/data/solar_flux/kurudz_1.0nm.dat
+rte_solver disort
+mol_abs_param lowtran
+deltam on
+number_of_streams 6
+wavelength 290 900
+day_of_year 287
+altitude 0.012
+albedo_library IGBP
+brdf_rpv_type 5
+mol_modify O3 288 DU
+mol_modify H2O 10 MM
+sza 69.4662
+sur_temperature 273

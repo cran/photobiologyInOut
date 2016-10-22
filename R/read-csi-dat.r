@@ -21,9 +21,9 @@
 #' @export
 #' @references \url{http://www.r4photobiology.info} \url{http://www.campbellsci.eu/}
 #' 
-#' @note This function is not useful for .DAT and .PRN from old CSI loggers
-#'   and software. Those were simple files, lacking metadata, which was stored
-#'   in separate .FLD files.
+#' @note This function is not useful for .DAT and .PRN files from old CSI
+#'   loggers and software. Those were simple files, lacking metadata, which was
+#'   stored in separate .FLD files.
 #'   
 read_csi_dat <- function(file, geocode = NULL, label = NULL,
                          data_skip = 0, n_max = Inf, 
