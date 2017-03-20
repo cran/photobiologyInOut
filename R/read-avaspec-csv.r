@@ -32,9 +32,9 @@ read_avaspec_csv <- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(label)) {
-    label <- paste("File:", file)
-  }
+  
+  label <- paste("File:", basename(file), label)
+  
   file_header <- scan(file = file, nlines = 6, skip = 0, what = "character")
   # watt / cm ?
   if (length(grep("Watt/cm", file_header[2], fixed = TRUE))) {
@@ -55,7 +55,7 @@ read_avaspec_csv <- function(file,
   options(old.opts)
   
   comment(z) <-
-    paste(paste("Avantes AvaSpec irradiance file '", file, "' imported on ", 
+    paste(paste("Avantes AvaSpec irradiance file '", basename(file), "' imported on ", 
                 lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
@@ -116,7 +116,7 @@ read_avaspec_xls <- function(path,
   options(old.opts)
   
   comment(z) <-
-    paste(paste("Avantes AvaSpec irradiance file (Excel)'", path, "' imported on ", 
+    paste(paste("Avantes AvaSpec irradiance file (Excel)'", basename(path), "' imported on ", 
                 lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")

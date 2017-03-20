@@ -46,9 +46,9 @@ read_fmi_cum <- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(label)) {
-    label <- paste("File:", file)
-  }
+  
+  label <- paste("File:", basename(file), label)
+
   z <- readr::read_table(
     file = file,
     col_names = c("w.length", "s.e.irrad"),
@@ -64,7 +64,7 @@ read_fmi_cum <- function(file,
   }
   z <- photobiology::as.source_spct(z, time.unit = "day")
   if (is.null(date)) {
-    date <- .date.f(file, tz = tz)
+    date <- file.mtime(file, tz = tz)[1]
   }
     photobiology::setWhenMeasured(z, date)
     photobiology::setWhereMeasured(z, geocode)

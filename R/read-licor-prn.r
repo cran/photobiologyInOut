@@ -18,6 +18,8 @@
 #'   \code{\link[readr]{locale}} to create your own locale that controls things
 #'   like the default time zone, encoding, decimal mark, big mark, and day/month
 #'   names.
+#' @param s.qty character The name of the spectral quantity to be read. One of
+#'   "s.irrad", "Tfr", or "Rfr".
 #'   
 #' @return \code{read_licor_prn()} returns a \code{source_spct} object with
 #'   \code{time.unit} attribute set to \code{"second"} and \code{when.measured}
@@ -36,13 +38,14 @@ read_licor_prn <- function(file,
                            geocode = NULL,
                            label = NULL,
                            tz = NULL,
-                           locale = readr::default_locale()) {
+                           locale = readr::default_locale(),
+                           s.qty = NULL) {
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(label)) {
-    label <- paste("File:", file)
-  }
+  
+  label <- paste("File:", basename(file), label)
+  
   file_header <- scan(
     file = file,
     nlines = 7,
@@ -56,20 +59,27 @@ read_licor_prn <- function(file,
     date <- lubridate::parse_date_time(line05, "mdHM", tz = tz)
   }
   
-  if (!is.na(match("(QNTM)", file_header[2], nomatch = FALSE))) {
-    unit.in <- "photon"
-  } else {
-    unit.in <- "energy"
-  }
-  
-  if (unit.in == "photon") {
-    col_names <- c("w.length", "s.q.irrad")
-    mult <- 1e-6 # umol -> mol
-  } else if (unit.in == "energy") {
-    col_names <- c("w.length", "s.e.irrad")
+  if (is.null(s.qty) || s.qty %in% c("s.irrad", "s.e.irrad", "s.q.irrad")) {
+    constructor <- photobiology::as.source_spct
+    if (!is.na(match("(QNTM)", file_header[2], nomatch = FALSE))) {
+      unit.in <- "photon"
+      s.qty <- "s.q.irrad"
+      mult <- 1e-6 # umol -> mol
+    } else {
+      unit.in <- "energy"
+      s.qty <- "s.e.irrad"
+      mult <- 1.0 # joule -> joule
+    }
+  } else if (s.qty == "Tfr") {
+    constructor <- photobiology::as.filter_spct
+    mult <- 1.0 # joule -> joule
+  } else if (s.qty == "Rfr") {
+    constructor <- photobiology::as.reflector_spct
     mult <- 1.0 # joule -> joule
   }
   
+  col_names <- c("w.length", s.qty)
+ 
   # does not decode first column correctly if it includes values >= 1000
   # z <-
   #   readr::read_table(file,
@@ -89,14 +99,14 @@ read_licor_prn <- function(file,
                       )
   if (mult != 1) {
     dots <- list(~s.q.irrad * mult)
-    z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.q.irrad"))
+    z <- dplyr::mutate_(z, .dots = stats::setNames(dots, s.qty))
   }
   
   old.opts <- options("photobiology.strict.range" = NA_integer_)
-  z <- photobiology::as.source_spct(z, time.unit = "second")
+  z <- constructor(z)
   options(old.opts)
   comment(z) <-
-    paste(paste("LICOR LI-1800 file '", file, "' imported on ", 
+    paste(paste("LICOR LI-1800 file '", basename(file), "' imported on ", 
                 lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
@@ -122,7 +132,8 @@ read_m_licor_prn <- function(files,
                              geocode = NULL,
                              label = NULL,
                              tz = Sys.timezone(location = FALSE),
-                             locale = readr::default_locale()) {
+                             locale = readr::default_locale(),
+                             s.qty = NULL) {
   list.of.spectra <- list()
   for (f in files) {
     spct.name <- tolower(sub(".PRN", "", f))
@@ -134,9 +145,11 @@ read_m_licor_prn <- function(files,
         geocode = geocode,
         label = label,
         tz = tz,
-        locale = locale
+        locale = locale,
+        s.qty
       )
   }
-  photobiology::source_mspct(list.of.spectra)
+  photobiology::generic_mspct(list.of.spectra, 
+                              class = class(list.of.spectra[[1]]))
 }
 

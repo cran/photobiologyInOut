@@ -6,7 +6,10 @@ context("read LI-1800 PRN file)")
 
 test_that("single spectrum (quantum)", {
 
-  avaspec.spct <- read_avaspec_csv(file = "data-test/spectrum-avaspec.csv")
+  file.name <- 
+    system.file("extdata", "spectrum-avaspec.csv", 
+                package = "photobiologyInOut", mustWork = TRUE)
+  avaspec.spct <- read_avaspec_csv(file = file.name)
   
   expect_equal(nrow(avaspec.spct), 1604)
   expect_equal(ncol(avaspec.spct), 2)

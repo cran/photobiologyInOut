@@ -52,4 +52,3 @@ Tested only with libRadtran version 2.0
 \references{
 \url{http://www.r4photobiology.info} \url{http://www.libradtran.org}
 }
-

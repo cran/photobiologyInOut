@@ -42,4 +42,3 @@ Tested only with TUV versison 5.0.
 \url{http://www.r4photobiology.info} \url{https://www2.acom.ucar.edu/modeling/tuv-download}
 }
 \keyword{misc}
-

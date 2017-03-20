@@ -6,7 +6,10 @@ context("read Macam DTA file)")
 
 test_that("single spectrum (quantum)", {
 
-  macam.spct <- read_macam_dta(file = "data-test/spectrum.DTA",
+  file.name <- 
+    system.file("extdata", "spectrum.DTA", 
+                package = "photobiologyInOut", mustWork = TRUE)
+  macam.spct <- read_macam_dta(file = file.name,
                                tz = "EET")
   
   expect_equal(nrow(macam.spct), 151)

@@ -36,9 +36,9 @@ read_oo_jazirrad <- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(label)) {
-    label <- paste("File:", file)
-  }
+  
+  label <- paste("File:", basename(file), label)
+  
   line01 <-
     scan(
       file = file,
@@ -91,7 +91,7 @@ read_oo_jazirrad <- function(file,
   options(old.opts)
 
   comment(z) <-
-    paste(paste("Ocean Optics Jaz irradiance file '", file, "' imported on ", 
+    paste(paste("Ocean Optics Jaz irradiance file '", basename(file), "' imported on ", 
                 lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")
@@ -114,9 +114,9 @@ read_oo_jazdata <- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(label)) {
-    label <- paste("File:", file)
-  }
+  
+  label <- paste("File:", basename(file), label)
+  
   line01 <-
     scan(
       file = file,
@@ -215,7 +215,7 @@ read_oo_jazdata <- function(file,
   options(old.opts)
   
   comment(z) <-
-    paste(paste("Ocean Optics Jaz raw counts file '", file, "' imported on ", 
+    paste(paste("Ocean Optics Jaz raw counts file '", basename(file), "' imported on ", 
                 lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")

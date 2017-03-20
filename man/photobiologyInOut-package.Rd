@@ -4,12 +4,13 @@
 \name{photobiologyInOut-package}
 \alias{photobiologyInOut}
 \alias{photobiologyInOut-package}
-\title{Read Spectral and Logged Data from Foreign Files}
+\title{photobiologyInOut: Read Spectral and Logged Data from Foreign Files}
 \description{
-Functions for reading and writing foreign files containing
-spectral data from spectrometers and their associated software, and output
-from simulation models in common use. As well as functions for exchange
-of spectral data with other R packages.
+Functions for reading, and in some cases writing, foreign files
+containing spectral data from spectrometers and their associated software,
+output from daylight simulation models in common use, and some spectral
+data repositories. As well as functions for exchange of spectral data with
+other R packages.
 }
 \note{
 From version 0.4.4 the time zone (tz) used for decoding dates
@@ -25,7 +26,21 @@ From version 0.4.4 the time zone (tz) used for decoding dates
   working as expected, and if not, please please raise a bug or support
   ticket and upload one example of an incorrectly decoded file.
 }
-\references{
-\url{http://www.r4photobiology.info/}
+
+\seealso{
+Useful links:
+\itemize{
+  \item \url{http://www.r4photobiology.info/}
+  \item Report bugs at \url{https://bitbucket.org/aphalo/photobiologyinout/issues/}
 }
 
+}
+\author{
+\strong{Maintainer}: Pedro J. Aphalo \email{pedro.aphalo@helsinki.fi}
+
+Other contributors:
+\itemize{
+  \item Titta K. Kotilainen \email{titta.kotilainen@helsinki.fi} [contributor]
+}
+
+}

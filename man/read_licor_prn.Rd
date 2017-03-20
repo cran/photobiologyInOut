@@ -6,10 +6,11 @@
 \title{Read '.PRN' File(s) Saved by LI-COR's PC1800 Program.}
 \usage{
 read_licor_prn(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale())
+  tz = NULL, locale = readr::default_locale(), s.qty = NULL)
 
 read_m_licor_prn(files, date = NULL, geocode = NULL, label = NULL,
-  tz = Sys.timezone(location = FALSE), locale = readr::default_locale())
+  tz = Sys.timezone(location = FALSE), locale = readr::default_locale(),
+  s.qty = NULL)
 }
 \arguments{
 \item{file}{Path to file as a character string.}
@@ -30,6 +31,9 @@ default locale is US-centric (like R), but you can use
 \code{\link[readr]{locale}} to create your own locale that controls things
 like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
+
+\item{s.qty}{character The name of the spectral quantity to be read. One of
+"s.irrad", "Tfr", or "Rfr".}
 
 \item{files}{A list or vector of character strings.}
 }
@@ -61,4 +65,3 @@ version, if \code{NULL} is the argument to date, year is set to 0000.
 \url{http://www.r4photobiology.info} \url{http://www.licor.com}
 }
 \keyword{misc}
-

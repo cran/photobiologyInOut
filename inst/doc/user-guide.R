@@ -48,7 +48,10 @@ options(tibble.print_max = 5,
         photobiology.strict.range = NA_integer_)
 
 ## ----------------------------------------------------
-jazraw.spct <- read_oo_jazdata(file = "data-vignettes/spectrum.jaz")
+jaz.raw.file <- 
+  system.file("extdata", "spectrum.jaz", 
+              package = "photobiologyInOut", mustWork = TRUE)
+jazraw.spct <- read_oo_jazdata(file = jaz.raw.file)
 jazraw.spct <- trim_wl(jazraw.spct, range = c(250, 900))
 
 ## ----------------------------------------------------
@@ -64,7 +67,10 @@ getInstrDesc(jazraw.spct)
 getInstrSettings(jazraw.spct)
 
 ## ----------------------------------------------------
-jaz.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad")
+jaz.s.irrad.file <- 
+  system.file("extdata", "spectrum.JazIrrad", 
+              package = "photobiologyInOut", mustWork = TRUE)
+jaz.spct <- read_oo_jazirrad(file = jaz.s.irrad.file)
 jaz0.spct <- jaz.spct
 jaz.spct <- trim_wl(jaz.spct, range = c(290, 800))
 
@@ -84,28 +90,40 @@ plot(jaz.spct)
 e_irrad(jaz.spct, PAR())       # W m-2
 
 ## ----------------------------------------------------
-plot(read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad"))
+plot(read_oo_jazirrad(file = jaz.s.irrad.file))
 
 ## ----------------------------------------------------
-plot(read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad"),
+plot(read_oo_jazirrad(file = jaz.s.irrad.file),
      range = c(250,850))
 
 ## ----------------------------------------------------
-plot(smooth_spct(read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad")),
+plot(smooth_spct(read_oo_jazirrad(file = jaz.s.irrad.file)),
      range = c(250,850))
 
 ## ----------------------------------------------------
-plot(read_oo_ssirrad(file = "data-vignettes/spectrum.SSIrrad"))
+q.raw.file <- 
+  system.file("extdata", "spectrum.SSIrrad", 
+              package = "photobiologyInOut", mustWork = TRUE)
+plot(read_oo_ssirrad(file = q.raw.file))
 
 ## ----------------------------------------------------
-plot(read_avaspec_csv(file = "data-vignettes/spectrum-avaspec.csv"),
+ava.raw.file <- 
+  system.file("extdata", "spectrum-avaspec.csv", 
+              package = "photobiologyInOut", mustWork = TRUE)
+plot(read_avaspec_csv(file = ava.raw.file),
      range = c(280, 900), unit.out = "photon")
 
 ## ----------------------------------------------------
-plot(read_macam_dta(file = "data-vignettes/spectrum.DTA"))
+macam.raw.file <- 
+  system.file("extdata", "spectrum.DTA", 
+              package = "photobiologyInOut", mustWork = TRUE)
+plot(read_macam_dta(file = macam.raw.file))
 
 ## ----------------------------------------------------
-licor.spct <- read_licor_prn(file = "data-vignettes/spectrum.PRN")
+licor.file <- 
+  system.file("extdata", "spectrum.PRN", 
+              package = "photobiologyInOut", mustWork = TRUE)
+licor.spct <- read_licor_prn(file = licor.file)
 
 ## ----------------------------------------------------
 licor.spct
@@ -113,15 +131,35 @@ cat(comment(licor.spct))
 plot(licor.spct, unit.out = "photon")
 
 ## ----------------------------------------------------
-day.dat <- read_csi_dat(file = "data-vignettes/cr6-day.dat")
+licor.file <- 
+  system.file("extdata", "reflectance.PRN", 
+              package = "photobiologyInOut", mustWork = TRUE)
+licor.spct <- read_licor_prn(file = licor.file, s.qty = "Rfr")
+
+## ----------------------------------------------------
+licor.spct
+cat(comment(licor.spct))
+plot(licor.spct)
+
+## ----------------------------------------------------
+cs.day.file <- 
+  system.file("extdata", "cr6-day.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+day.dat <- read_csi_dat(file = cs.day.file)
 day.dat
 
 ## ----------------------------------------------------
-hour.dat <- read_csi_dat(file = "data-vignettes/cr6-hour.dat")
+cs.hour.file <- 
+  system.file("extdata", "cr6-hour.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+hour.dat <- read_csi_dat(file = cs.hour.file)
 ggplot(hour.dat, aes(TIMESTAMP, PAR_Den_Avg)) + geom_line()
 
 ## ----------------------------------------------------
-tuv.spct <- read_tuv_usrout(file = "data-vignettes/usrout.txt",
+tuv.file <- 
+  system.file("extdata", "usrout.txt", 
+              package = "photobiologyInOut", mustWork = TRUE)
+tuv.spct <- read_tuv_usrout(file = tuv.file,
                             date = ymd("2014-03-21"))
 summary(subset(tuv.spct, spct.idx == "A"))
 tuv.spct
@@ -135,11 +173,14 @@ tuv.mspct <- subset2mspct(tuv.spct)
 tuv.mspct
 
 ## ----------------------------------------------------
-tuv_nd.spct <- read_tuv_usrout(file = "data-vignettes/usrout.txt")
+tuv_nd.spct <- read_tuv_usrout(file = tuv.file)
 tuv_nd.spct
 
 ## ----------------------------------------------------
-lrt.df <- read.table(file = "data-vignettes/uvspec-plain-2col.dat",
+uvspec.2col.file <- 
+  system.file("extdata", "uvspec-plain-2col.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+lrt.df <- read.table(file = uvspec.2col.file,
                      col.names = c("w.length", "s.e.irrad"))
 uvspec.01.spct <- source_spct(w.length = lrt.df$w.length,
                                s.e.irrad = lrt.df$s.e.irrad * 1e-3)
@@ -148,7 +189,10 @@ cat(comment(uvspec.01.spct))
 plot(uvspec.01.spct, range = c(250, 2500), unit.out = "photon")
 
 ## ----------------------------------------------------
-uvspec.02.spct <- read_uvspec_disort("data-vignettes/uvspec-disort.dat")
+uvspec.disort.file <- 
+  system.file("extdata", "uvspec-disort.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+uvspec.02.spct <- read_uvspec_disort(uvspec.disort.file)
 summary(uvspec.02.spct)
 cat(comment(uvspec.02.spct))
 plot(uvspec.02.spct, unit.out = "photon")
@@ -159,45 +203,80 @@ ggplot(uvspec.02.spct) +
   geom_line(aes(y = s.e.irrad.diff), linetype = "dashed")
 
 ## ----------------------------------------------------
+uvspec.disort.inp.file <- 
+  system.file("extdata", "uvspec-disort.inp", 
+              package = "photobiologyInOut", mustWork = TRUE)
 comment(uvspec.02.spct) <- paste(comment(uvspec.02.spct),
-                                 read_file("data-vignettes/uvspec-disort.inp"),
+                                 read_file(uvspec.disort.inp.file),
                                  sep = "\n\n")
 cat(comment(uvspec.02.spct))
 
 ## ----------------------------------------------------
-lbr.multi.spct <- read_uvspec_disort_vesa("data-vignettes/uvspec-multi.dat")
+uvspec.multi.file <- 
+  system.file("extdata", "uvspec-multi.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+lbr.multi.spct <- read_uvspec_disort_vesa(uvspec.multi.file)
 print(lbr.multi.spct, n = 5)
 
 ## ----------------------------------------------------
-z.spct <- read_fmi_cum("data-vignettes/2014-08-21_cum.hel")
+fmi.file <- 
+  system.file("extdata", "2014-08-21_cum.hel", 
+              package = "photobiologyInOut", mustWork = TRUE)
+z.spct <- read_fmi_cum(fmi.file)
 class_spct(z.spct)
 getWhenMeasured(z.spct)
 z.spct
 
 ## ----------------------------------------------------
-z.mspct <- read_m_fmi_cum(c("data-vignettes/2014-08-21_cum.hel",
-                            "data-vignettes/2014-08-22_cum.hel"))
+fmi.files <- 
+  system.file("extdata", c("2014-08-21_cum.hel", "2014-08-21_cum.hel"),
+              package = "photobiologyInOut", mustWork = TRUE)
+z.mspct <- read_m_fmi_cum(fmi.files)
 class(z.mspct)
 getWhenMeasured(z.mspct)
 z.mspct
 
-## ----------------------------------------------------
-files <- list.files("./data-vignettes/", "*cum.hel")
-files <- paste("./data-vignettes/", files, sep = "")
-z1.mspct <- read_m_fmi_cum(files)
-class(z1.mspct)
-getWhenMeasured(z1.mspct)
-z1.mspct
+## ----eval=FALSE--------------------------------------
+#  fmi.files <- list.files(".", "*cum.hel")
+#  fmi.files <- paste(".", fmi.files, sep = "")
+#  z1.mspct <- read_m_fmi_cum(fmi.files)
+#  class(z1.mspct)
+#  getWhenMeasured(z1.mspct)
+#  z1.mspct
 
 ## ----message=FALSE-----------------------------------
 z2.mspct <-
-  read_m_fmi_cum(files,
+  read_m_fmi_cum(fmi.files,
                  geocode = geocode("Kumpula, Helsinki, Finland",
                                    source = "google"))
 class(z2.mspct)
 getWhenMeasured(z2.mspct)
 getWhereMeasured(z2.mspct)
 z2.mspct
+
+## ----------------------------------------------------
+fred.file <- 
+  system.file("extdata", "FReDflowerID_157.csv", 
+              package = "photobiologyInOut", mustWork = TRUE)
+fred.spct <- read_FReD_csv(file = fred.file, 
+                           label = "Gazania heterochaeta",
+                           geocode = data.frame(lat = -28.8751, lon = 17.2293))
+
+## ----------------------------------------------------
+fred.spct
+cat(comment(fred.spct))
+plot(fred.spct)
+
+## ----------------------------------------------------
+aster.file <- 
+  system.file("extdata", "drygrass-spectrum.txt", 
+              package = "photobiologyInOut", mustWork = TRUE)
+aster.spct <- read_ASTER_txt(file = aster.file)
+
+## ----------------------------------------------------
+aster.spct
+cat(comment(aster.spct))
+plot(aster.spct)
 
 ## ----------------------------------------------------
 x <- matrix(1:100, ncol = 2)
@@ -315,30 +394,38 @@ ggplot(refl.red, aes(x = body.part, y = red.reflectance)) +
   geom_point(alpha = 0.5)
 
 ## ----------------------------------------------------
+jaz.irrad.comma.file <- 
+  system.file("extdata", "spectrum-comma.JazIrrad", 
+              package = "photobiologyInOut", mustWork = TRUE)
 my.locale <- locale(decimal_mark = ",", tz = "EET")
-jaz00.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum-comma.JazIrrad",
+jaz00.spct <- read_oo_jazirrad(file = jaz.irrad.comma.file,
                                locale = my.locale)
 
 ## ----------------------------------------------------
 jaz00.spct
 
+## ----------------------------------------------------
+jaz.s.irrad.file <- 
+  system.file("extdata", "spectrum.JazIrrad", 
+              package = "photobiologyInOut", mustWork = TRUE)
+
 ## ----warning=FALSE-----------------------------------
-jaz01.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad",
+jaz01.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = NULL)
 getWhenMeasured(jaz01.spct)
 
 ## ----warning=FALSE-----------------------------------
-jaz02.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad",
+jaz02.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = ymd_hms("2015-11-15 12:00:00"))
 getWhenMeasured(jaz02.spct)
 
 ## ----warning=FALSE-----------------------------------
-jaz03.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad",
+jaz03.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = now())
 getWhenMeasured(jaz03.spct)
 
 ## ----message=FALSE,warning=FALSE---------------------
-jaz04.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad",
+jaz04.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                geocode = geocode("Vikki, 00790 Helsinki, Finland",
                                                  source = "google"))
 jaz04.spct

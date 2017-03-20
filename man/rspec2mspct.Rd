@@ -53,6 +53,7 @@ Objects of class \code{pavo::rspec} do not contain metadata or class
   functions defined here are NOT guaranteed to return valid data wihtout help
   from the user through optional function arguments.
 }
+
 \examples{
 
 library(pavo)
@@ -69,4 +70,3 @@ teal.spct[["angle"]] <- angles[as.numeric(teal.spct[["spct.idx"]])]
 teal.spct
 
 }
-

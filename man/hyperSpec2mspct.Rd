@@ -64,6 +64,7 @@ Objects of class \code{hyperSpec::hyperSpec} contain metadata or class
   functions defined here are NOT guaranteed to return valid data wihtout help
   from the user through optional function arguments.
 }
+
 \examples{
 
 library(hyperSpec)
@@ -75,4 +76,3 @@ laser.mspct <- hyperSpec2mspct(laser, "source_spct", "s.e.irrad")
 class(laser.mspct)
 
 }
-

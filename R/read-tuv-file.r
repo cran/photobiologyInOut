@@ -36,9 +36,9 @@ read_tuv_usrout <- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(label)) {
-    label <- paste("File:", file)
-  }
+  
+  label <- paste("File:", basename(file), label)
+  
   file_header <- scan(file = file, nlines = 5, what = "character", sep = "\n" )
   hours <- scan(text = sub(pattern = "wc, nm", replacement = "",
                            x = file_header[4], fixed = TRUE))
@@ -68,7 +68,7 @@ read_tuv_usrout <- function(file,
   
   photobiology::setSourceSpct(z, time.unit = "second", multiple.wl = num.spectra)
 
-  comment(z) <- paste(paste("TUV file '", file, "' imported on ", 
+  comment(z) <- paste(paste("TUV file '", basename(file), "' imported on ", 
                             lubridate::now(tzone = "UTC"), " UTC", sep = ""), 
                       paste(file_header, collapse = "\n"), sep = "\n")
   photobiology::setWhatMeasured(z, paste("TUV spectral simulation", label))

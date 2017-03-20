@@ -42,4 +42,3 @@ This function is not useful for .DAT and .PRN files from old CSI
 \references{
 \url{http://www.r4photobiology.info} \url{http://www.campbellsci.eu/}
 }
-

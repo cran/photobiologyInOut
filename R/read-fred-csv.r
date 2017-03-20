@@ -1,8 +1,7 @@
-#' Read '.DTA' File Saved by Macam's Software.
+#' Read '.CSV' FReD database.
 #'
-#' Reads and parses the header of a processed data file as output by the PC
-#' program to extract the time and date fields and a user label if present,
-#' and then imports wavelengths and spectral energy irradiance values. 
+#' Reads a CSV data file downloaded from the FReD (Floral Reflectance Database)
+#' and then imports wavelengths and spectral reflectance values and flower ID.
 #'
 #' @param file character string
 #' @param date a \code{POSIXct} object, but if \code{NULL} the date stored in
@@ -18,13 +17,17 @@
 #'   like the default time zone, encoding, decimal mark, big mark, and day/month
 #'   names.
 #'
-#' @return A source_spct object.
+#' @return A reflectance_spct object.
 #' @export
-#' @references \url{http://www.r4photobiology.info} \url{http://www.irradian.co.uk/}
+#' @references \url{http://www.reflectance.co.uk}
+#' Arnold SEJ, Faruq S, Savolainen V, McOwan PW, Chittka L, 2010 FReD: The 
+#' Floral Reflectance Database — A Web Portal for Analyses of Flower Colour. 
+#' PLoS ONE 5(12): e14287. doi:10.1371/journal.pone.0014287
+#' 
 #' @keywords misc
 #'
-read_macam_dta <- function(file,
-                           date = NULL,
+read_FReD_csv <- function(file,
+                           date = NA,
                            geocode = NULL,
                            label = NULL,
                            tz = NULL,
@@ -35,27 +38,20 @@ read_macam_dta <- function(file,
   
   label <- paste("File:", basename(file), label)
   
-  file_header <- scan(file = file, nlines = 3, skip = 0, what = "character")
-  if (is.null(date)) {
-    date <- lubridate::dmy(sub(pattern = "@", replacement = "",
-                               x = file_header[1], fixed = TRUE),
-                           tz = tz)
-    time <- lubridate::hms(sub(pattern = '@', replacement = "",
-                               x = file_header[2], fixed = TRUE))
-    date <- date + time
+  z <- readr::read_csv(file = file, 
+                      col_names = c("flower.id", "w.length", "Rfr"),
+                      locale = locale,
+                      skip = 0)
+
+  z <- photobiology::as.reflector_spct(z, Rfr.type = "total")
+
+  if (length(unique(z[["flower.id"]])) > 1) {
+    warning("Spectrum contains data for multiple flower IDs")
   }
-  z <- scan(file = file,
-                   what = list(w.length = double(), s.e.irrad = double()),
-                   skip = 3)
-
-  old.opts <- options("photobiology.strict.range" = NA_integer_)
-  z <- photobiology::as.source_spct(z, time.unit = "second")
-  options(old.opts)
-
+  
   comment(z) <-
-    paste(paste("MACAM file '", basename(file), "' imported on ", 
+    paste(paste("FReD file '", basename(file), "' imported on ", 
                 lubridate::now(tzone = "UTC"), " UTC", sep = ""),
-          paste(file_header, collapse = "\n"), 
           sep = "\n")
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)

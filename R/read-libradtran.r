@@ -40,9 +40,9 @@ read_uvspec_disort_vesa <- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(label)) {
-    label <- paste("File:", file)
-  }
+  
+  label <- paste("File:", basename(file), label)
+  
   z <- readr::read_table(file = file,
                          col_names = c("w.length", "day", "time", 
                                        "s.e.irrad.dir", "s.e.irrad.diff"),
@@ -65,7 +65,7 @@ read_uvspec_disort_vesa <- function(file,
                         lazyeval::interp(~starts_with(x), x = "s.e.irrad"))
   }
   photobiology::setSourceSpct(z, time.unit = "second", multiple.wl = num.spectra)
-  comment(z) <- paste("libRadtran file '", file,
+  comment(z) <- paste("libRadtran file '", basename(file),
                       "' imported on ", lubridate::now(tzone = "UTC"), " UTC",
                       sep = "")
   photobiology::setWhenMeasured(z, datetimes)
@@ -125,9 +125,9 @@ read_uvspec_disort <- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(label)) {
-    label <- paste("File:", file)
-  }
+  
+  label <- paste("File:", basename(file), label)
+  
   z <- readr::read_table(file = file,
                          col_names = c("lambda", 
                                        "edir", "edn", "eup", 
@@ -142,7 +142,7 @@ read_uvspec_disort <- function(file,
   z <- dplyr::transmute_(z, .dots = stats::setNames(dots, dots.names))
   
   photobiology::setSourceSpct(z, time.unit = "second", multiple.wl = 1)
-  comment(z) <- paste("libRadtran file '", file,
+  comment(z) <- paste("libRadtran file '", basename(file),
                       "' imported on ", lubridate::now(tzone = "UTC"), " UTC",
                       sep = "")
   photobiology::setWhenMeasured(z, date)

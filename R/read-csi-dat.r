@@ -28,7 +28,7 @@
 read_csi_dat <- function(file, geocode = NULL, label = NULL,
                          data_skip = 0, n_max = Inf, 
                          locale = readr::default_locale()) {
-  label <- paste("File:", file, label)
+  label <- paste("File:", basename(file), label)
 
   head_line <-  scan(file, 
                      what = character(), nlines = 1, skip = 0,

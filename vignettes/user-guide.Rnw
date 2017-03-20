@@ -90,8 +90,8 @@ different instruments, simulation
 models, and for data exchange with R packages
 'hyperSpec' and 'pavo' (Table \ref{tab:funs}).
 
-\begin{table}[h]
-\caption{Functions for importing measured and simulated spectral emission data.}\label{tab:funs}
+\begin{table}[ht]
+\caption{Functions for importing measured and simulated spectral data.}\label{tab:funs}
 \vspace{1ex}
 \centering
 \begin{footnotesize}
@@ -107,7 +107,11 @@ read\_oo\_pidata() & Ocean Optics spectrom. & STS DK (Raspbian) & raw\_spct  \\
 read\_avaspec\_csv() & Avantes spectrom.  & \emph{instrument}  & source\_spct \\
 read\_macam\_file() & Macam                     & \emph{instrument}  & source\_spct \\
 read\_licor\_file() & LI-COR LI-1800            & PC1800 (MS-DOS)  & source\_spct \\
+read\_licor\_file() & LI-COR LI-1800            & PC1800 (MS-DOS)  & filter\_spct \\
+read\_licor\_file() & LI-COR LI-1800            & PC1800 (MS-DOS)  & reflector\_spct \\
 read\_m\_licor\_file() & LI-COR LI-1800            & PC1800 (MS-DOS)  & source\_mspct \\
+read\_m\_licor\_file() & LI-COR LI-1800            & PC1800 (MS-DOS)  & filter\_mspct \\
+read\_m\_licor\_file() & LI-COR LI-1800            & PC1800 (MS-DOS)  & reflector\_mspct \\
 \midrule
 R function & Simulation model & Version & \texttt{class} of value \\
 \midrule
@@ -116,6 +120,11 @@ read\_uvspec\_disort() & libRadtran & irradiance & source\_spct \\
 read\_uvspec\_vesa() & (T. \& V. Kotilainen) & irradiance & source\_spct \\
 read\_fmi\_cum() & (A. Lindfors) & daily cumulated  & source\_spct \\
 read\_m\_fmi\_cum() & (A. Lindfors) & daily cumulated & source\_mspct \\
+\midrule
+R function & Data repository & Version & \texttt{class} of value \\
+\midrule
+read\_FReD\_csv() & Floral Reflectance db. & 2017-03-19 & reflector\_spct  \\
+read\_ASTER\_txt() & ASTER spectral lib. & version 2.0 ASCII & reflector\_spct  \\
 \midrule
 R function & R package & Function & \texttt{class} of value \\
 \midrule
@@ -132,6 +141,8 @@ All functions attempt to decode and store as metadata as much of the information
 It should be remembered, though, that this package has been developed based on the example files I had access to. Files from the same instruments with different hardware configurations, different firmware versions, or even settings may differ substantially. In many cases the output is produced by software in a host computer rather by the instrument itself, adding further uncertainties and possible differences due to for example the operating system of the host computer. A further complication is that in some cases the format of dates, times and numbers depends on the locale settings in use at the time of data acquisition, or analysis. For all those reasons, do expect to have to do some debugging, and most importantly always validate the imported data against the original file (remembering to run a new validation each time there is a software or firmware update) or update of this package as I test each version before release only with the example files I have available, which are not many.
 
 \section{Examples}
+
+In the examples we use function \texttt{system-file} to reliably locate the example files included in the package. For reproducing the examples with these files, this call is needed. When using user's files only the path as a character string needs to be passed as argument.
 
 \subsection{Ocean Optics Jaz}
 
@@ -170,7 +181,10 @@ W	D	R	S	P
 \end{footnotesize}
 
 <<>>=
-jazraw.spct <- read_oo_jazdata(file = "data-vignettes/spectrum.jaz")
+jaz.raw.file <- 
+  system.file("extdata", "spectrum.jaz", 
+              package = "photobiologyInOut", mustWork = TRUE)
+jazraw.spct <- read_oo_jazdata(file = jaz.raw.file)
 jazraw.spct <- trim_wl(jazraw.spct, range = c(250, 900))
 @
 
@@ -230,7 +244,10 @@ W	D	S	P
 \end{footnotesize}
 
 <<>>=
-jaz.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad")
+jaz.s.irrad.file <- 
+  system.file("extdata", "spectrum.JazIrrad", 
+              package = "photobiologyInOut", mustWork = TRUE)
+jaz.spct <- read_oo_jazirrad(file = jaz.s.irrad.file)
 jaz0.spct <- jaz.spct
 jaz.spct <- trim_wl(jaz.spct, range = c(290, 800))
 @
@@ -276,20 +293,20 @@ e_irrad(jaz.spct, PAR())       # W m-2
 All in one statement.
 
 <<>>=
-plot(read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad"))
+plot(read_oo_jazirrad(file = jaz.s.irrad.file))
 @
 
 As above but limiting the wavelength range plotted.
 
 <<>>=
-plot(read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad"),
+plot(read_oo_jazirrad(file = jaz.s.irrad.file),
      range = c(250,850))
 @
 
 Adding our custom ``adaptive'' smoothing.
 
 <<>>=
-plot(smooth_spct(read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad")),
+plot(smooth_spct(read_oo_jazirrad(file = jaz.s.irrad.file)),
      range = c(250,850))
 @
 
@@ -325,7 +342,10 @@ Number of Pixels in Processed Spectrum: 1044
 \end{footnotesize}
 
 <<>>=
-plot(read_oo_ssirrad(file = "data-vignettes/spectrum.SSIrrad"))
+q.raw.file <- 
+  system.file("extdata", "spectrum.SSIrrad", 
+              package = "photobiologyInOut", mustWork = TRUE)
+plot(read_oo_ssirrad(file = q.raw.file))
 @
 
 \subsection{Modular spectrometers from Avantes}
@@ -333,7 +353,10 @@ plot(read_oo_ssirrad(file = "data-vignettes/spectrum.SSIrrad"))
 Avantes' two column .csv files can also be imported.
 
 <<>>=
-plot(read_avaspec_csv(file = "data-vignettes/spectrum-avaspec.csv"),
+ava.raw.file <- 
+  system.file("extdata", "spectrum-avaspec.csv", 
+              package = "photobiologyInOut", mustWork = TRUE)
+plot(read_avaspec_csv(file = ava.raw.file),
      range = c(280, 900), unit.out = "photon")
 @
 
@@ -359,12 +382,15 @@ The first few lines of the file look like this with all data in a single column 
 
 
 <<>>=
-plot(read_macam_dta(file = "data-vignettes/spectrum.DTA"))
+macam.raw.file <- 
+  system.file("extdata", "spectrum.DTA", 
+              package = "photobiologyInOut", mustWork = TRUE)
+plot(read_macam_dta(file = macam.raw.file))
 @
 
 \subsection{LI-1800 scanning spectrometer from LI-COR}
 
-And a file generated by LI-COR's PC1800 program for the LI-1800 spectroradiometer.
+And a spectral photon irradiance output file generated by LI-COR's PC1800 program for the LI-1800 spectroradiometer.
 
 The output has a relatively detailed header, but it lacks year information. Files can contain either energy or photon based spectral irradiances, and this is signalled in the header. In this example photon (= quantum) spectral irradiance is returned. The first few lines of the file look like this:
 \begin{footnotesize}
@@ -387,7 +413,10 @@ The output has a relatively detailed header, but it lacks year information. File
 Function \texttt{read\_licor\_prn} will automatically detect whether the data is energy or photon based.
 
 <<>>=
-licor.spct <- read_licor_prn(file = "data-vignettes/spectrum.PRN")
+licor.file <- 
+  system.file("extdata", "spectrum.PRN", 
+              package = "photobiologyInOut", mustWork = TRUE)
+licor.spct <- read_licor_prn(file = licor.file)
 @
 
 In all cases as much information as possible is decoded, and the data file headers
@@ -397,6 +426,48 @@ are preserved as comments in the source.spct objects.
 licor.spct
 cat(comment(licor.spct))
 plot(licor.spct, unit.out = "photon")
+@
+
+It is also possible to use the same function to import reflectance, and 
+transmittance spectra aquired by the LI-1800.
+
+And a spectral reflectance output file generated by LI-COR's PC1800 program for the LI-1800 spectroradiometer is used next.
+
+The first few lines of the file look like this:
+\begin{footnotesize}
+\begin{verbatim}
+"FILE:RGD1"
+"REM: REFL GREEN AD 1 "
+"LIMS: 350- 800NM"
+"INT:  2NM"
+"DATE:05/30 13:50"
+"MIN:  358NM  4.628E-02"
+"MAX:  776NM  4.693E-01"
+ 350  5.135E-02
+ 352  4.713E-02
+ 354  5.324E-02
+ 356  4.740E-02
+...
+\end{verbatim}
+\end{footnotesize}
+
+Function \texttt{read\_licor\_prn} cannot automatically detect the spectral quantity in the file, and when the irradiance default is not correct, users
+need to override it with an explicit argument for parameter \texttt{s.qty}.
+
+<<>>=
+licor.file <- 
+  system.file("extdata", "reflectance.PRN", 
+              package = "photobiologyInOut", mustWork = TRUE)
+licor.spct <- read_licor_prn(file = licor.file, s.qty = "Rfr")
+@
+
+In all cases as much information as possible is decoded, and the data file headers
+are preserved as comments in the source.spct objects.
+
+<<>>=
+licor.spct
+cat(comment(licor.spct))
+plot(licor.spct)
 @
 
 \section{Data from loggers}
@@ -411,12 +482,18 @@ the number of rows. All information is preserved in the returned
 \texttt{tibble::tibble} object, which is derived from \texttt{data.frame}.
 
 <<>>=
-day.dat <- read_csi_dat(file = "data-vignettes/cr6-day.dat")
+cs.day.file <- 
+  system.file("extdata", "cr6-day.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+day.dat <- read_csi_dat(file = cs.day.file)
 day.dat
 @
 
 <<>>=
-hour.dat <- read_csi_dat(file = "data-vignettes/cr6-hour.dat")
+cs.hour.file <- 
+  system.file("extdata", "cr6-hour.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+hour.dat <- read_csi_dat(file = cs.hour.file)
 ggplot(hour.dat, aes(TIMESTAMP, PAR_Den_Avg)) + geom_line()
 @
 
@@ -433,7 +510,10 @@ with the zenith angle and a POSIXct column with times. A date needs to be
 always supplied as the output file from TUV has only time of day information.
 
 <<>>=
-tuv.spct <- read_tuv_usrout(file = "data-vignettes/usrout.txt",
+tuv.file <- 
+  system.file("extdata", "usrout.txt", 
+              package = "photobiologyInOut", mustWork = TRUE)
+tuv.spct <- read_tuv_usrout(file = tuv.file,
                             date = ymd("2014-03-21"))
 summary(subset(tuv.spct, spct.idx == "A"))
 tuv.spct
@@ -460,7 +540,7 @@ With the default of \texttt{lubridate::today()} for date times are `mapped' to
 the current local date using the time zone of the computer as visible to R.
 
 <<>>=
-tuv_nd.spct <- read_tuv_usrout(file = "data-vignettes/usrout.txt")
+tuv_nd.spct <- read_tuv_usrout(file = tuv.file)
 tuv_nd.spct
 @
 
@@ -485,7 +565,10 @@ The first few lines of the file look like this:
 \end{footnotesize}
 
 <<>>=
-lrt.df <- read.table(file = "data-vignettes/uvspec-plain-2col.dat",
+uvspec.2col.file <- 
+  system.file("extdata", "uvspec-plain-2col.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+lrt.df <- read.table(file = uvspec.2col.file,
                      col.names = c("w.length", "s.e.irrad"))
 uvspec.01.spct <- source_spct(w.length = lrt.df$w.length,
                                s.e.irrad = lrt.df$s.e.irrad * 1e-3)
@@ -508,7 +591,10 @@ The first few lines of the file look like this:
 \end{footnotesize}
 
 <<>>=
-uvspec.02.spct <- read_uvspec_disort("data-vignettes/uvspec-disort.dat")
+uvspec.disort.file <- 
+  system.file("extdata", "uvspec-disort.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+uvspec.02.spct <- read_uvspec_disort(uvspec.disort.file)
 summary(uvspec.02.spct)
 cat(comment(uvspec.02.spct))
 plot(uvspec.02.spct, unit.out = "photon")
@@ -547,8 +633,11 @@ sur_temperature 273
 If we plan to save and reuse the spectral object, it is recommended to append the input file to the comment.
 
 <<>>=
+uvspec.disort.inp.file <- 
+  system.file("extdata", "uvspec-disort.inp", 
+              package = "photobiologyInOut", mustWork = TRUE)
 comment(uvspec.02.spct) <- paste(comment(uvspec.02.spct),
-                                 read_file("data-vignettes/uvspec-disort.inp"),
+                                 read_file(uvspec.disort.inp.file),
                                  sep = "\n\n")
 cat(comment(uvspec.02.spct))
 @
@@ -575,7 +664,10 @@ The first few lines of the file look like this:
 A function is included for reading data saved in a text file in this format. It also automatically converts \mwattnm into \wattnm.
 
 <<>>=
-lbr.multi.spct <- read_uvspec_disort_vesa("data-vignettes/uvspec-multi.dat")
+uvspec.multi.file <- 
+  system.file("extdata", "uvspec-multi.dat", 
+              package = "photobiologyInOut", mustWork = TRUE)
+lbr.multi.spct <- read_uvspec_disort_vesa(uvspec.multi.file)
 print(lbr.multi.spct, n = 5)
 @
 
@@ -607,7 +699,10 @@ In this case values are for daily global spectral energy exposures rather
 than irradiances. Wavelengths are expressed in Angstroms instead of nanometres.
 
 <<>>=
-z.spct <- read_fmi_cum("data-vignettes/2014-08-21_cum.hel")
+fmi.file <- 
+  system.file("extdata", "2014-08-21_cum.hel", 
+              package = "photobiologyInOut", mustWork = TRUE)
+z.spct <- read_fmi_cum(fmi.file)
 class_spct(z.spct)
 getWhenMeasured(z.spct)
 z.spct
@@ -616,19 +711,21 @@ z.spct
 With function \texttt{read\_m\_fmi\_cum} with an ``m'' in the name we can read several files each containing a single spectrum. The returned object is a collection of source spectra.
 
 <<>>=
-z.mspct <- read_m_fmi_cum(c("data-vignettes/2014-08-21_cum.hel",
-                            "data-vignettes/2014-08-22_cum.hel"))
+fmi.files <- 
+  system.file("extdata", c("2014-08-21_cum.hel", "2014-08-21_cum.hel"),
+              package = "photobiologyInOut", mustWork = TRUE)
+z.mspct <- read_m_fmi_cum(fmi.files)
 class(z.mspct)
 getWhenMeasured(z.mspct)
 z.mspct
 @
 
-Above we gave the names of the files explicitly, but as we show here, one can build on-the-fly a list of file names matching some pattern.
+Above we gave the names of the files explicitly, but as we show here, one can build on-the-fly a list of file names matching some pattern. The example below is not run, as the location of example files may vary. The string \texttt{"."} should be replaced with the path to the folder where the files to be read are located.
 
-<<>>=
-files <- list.files("./data-vignettes/", "*cum.hel")
-files <- paste("./data-vignettes/", files, sep = "")
-z1.mspct <- read_m_fmi_cum(files)
+<<eval=FALSE>>=
+fmi.files <- list.files(".", "*cum.hel")
+fmi.files <- paste(".", fmi.files, sep = "")
+z1.mspct <- read_m_fmi_cum(fmi.files)
 class(z1.mspct)
 getWhenMeasured(z1.mspct)
 z1.mspct
@@ -638,13 +735,105 @@ One also add a geocode at the time of import (or later).
 
 <<message=FALSE>>=
 z2.mspct <-
-  read_m_fmi_cum(files,
+  read_m_fmi_cum(fmi.files,
                  geocode = geocode("Kumpula, Helsinki, Finland",
                                    source = "google"))
 class(z2.mspct)
 getWhenMeasured(z2.mspct)
 getWhereMeasured(z2.mspct)
 z2.mspct
+@
+
+\section{Online public repositories of spectral data}
+
+\subsection{FReD Floral Reflectance Database}
+
+The files downloaded from FReD do not contain a header, but the first column
+indicates the flower ID.
+
+\begin{footnotesize}
+\begin{verbatim}
+157, 300, 0.0627119 
+157, 301, 0.0654036 
+157, 302, 0.0677941 
+157, 303, 0.0670396 
+...
+\end{verbatim}
+\end{footnotesize}
+
+<<>>=
+fred.file <- 
+  system.file("extdata", "FReDflowerID_157.csv", 
+              package = "photobiologyInOut", mustWork = TRUE)
+fred.spct <- read_FReD_csv(file = fred.file, 
+                           label = "Gazania heterochaeta",
+                           geocode = data.frame(lat = -28.8751, lon = 17.2293))
+@
+
+In this case as there is no metada present in the file, it needs to be supplied 
+by the user.
+
+<<>>=
+fred.spct
+cat(comment(fred.spct))
+plot(fred.spct)
+@
+
+\subsection{ASTER spectral database}
+
+The files downloaded from ASTER contain a 25-lines-long header, but at the 
+moment only the first field is decoded, as the whole header copied as a 
+comment.
+
+\begin{footnotesize}
+\begin{verbatim}
+Name: Dry grass
+Type:  Vegetation
+Class:  Grasses
+Subclass:  Dry grass
+Particle Size:  Solid
+Sample No.:  drygrass.doc
+Owner:  JHU
+Wavelength Range:  All
+Origin:  The entire spectral range was measured at Johns Hopkins University.
+
+Description:  Dry grass.  Spectra were assembled from two segments; the 
+bidirectional VNIR and SWIR comprising segment one, and the hemispherical 
+MWIR and TIR comprising segment two. The VNIR/SWIR spectrum was 
+measured in the laboratory at JHU with a GER IRIS Mark IV, using a large piece 
+of sod.  The grass was illuminated from directly above and measured at a 
+reflectance angle of 60 degrees to avoid viewing the thatch. 
+Measurement:  Bidirectional and directional hemispherical reflectance. 
+First Column:  X
+Second Column:  Y  
+X Units:  Wavelength (micrometers)
+Y Units:  Reflectance (percent)
+First X Value: 0.38049
+Last X Value: 14.011 
+Number of X Values: 2559
+Additional Information:  None.
+ 
+0.38049	14.249	 
+0.38299	14.251		
+0.38544	14.546		
+0.38791	14.694		
+...
+\end{verbatim}
+\end{footnotesize}
+
+<<>>=
+aster.file <- 
+  system.file("extdata", "drygrass-spectrum.txt", 
+              package = "photobiologyInOut", mustWork = TRUE)
+aster.spct <- read_ASTER_txt(file = aster.file)
+@
+
+The label and comment are set from the file header.
+
+<<>>=
+aster.spct
+cat(comment(aster.spct))
+plot(aster.spct)
 @
 
 \section{Other R packages}
@@ -845,8 +1034,11 @@ ggplot(refl.red, aes(x = body.part, y = red.reflectance)) +
 Most functions in this package have a parameter \texttt{locale}, that accepts \texttt{readr::locale} objects as arguments. At the moment only the time zone and decimal mark are respected. This allows files using comma for decimal marker be easily imported, or the dates and times \textbf{in the input file} be interpreted in a given time zone. Setting the correct time zone is very important to avoid errors. Time coordinates are always stored in the created objects using universal time coordinates ("UTC").
 
 <<>>=
+jaz.irrad.comma.file <- 
+  system.file("extdata", "spectrum-comma.JazIrrad", 
+              package = "photobiologyInOut", mustWork = TRUE)
 my.locale <- locale(decimal_mark = ",", tz = "EET")
-jaz00.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum-comma.JazIrrad",
+jaz00.spct <- read_oo_jazirrad(file = jaz.irrad.comma.file,
                                locale = my.locale)
 @
 
@@ -862,20 +1054,26 @@ A variable with the user supplied date and time data, or the date read from
 the header (the text itself) not the file date as the file date may not reflect
 the creation date and time.
 
+<<>>=
+jaz.s.irrad.file <- 
+  system.file("extdata", "spectrum.JazIrrad", 
+              package = "photobiologyInOut", mustWork = TRUE)
+@
+
 <<warning=FALSE>>=
-jaz01.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad",
+jaz01.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = NULL)
 getWhenMeasured(jaz01.spct)
 @
 
 <<warning=FALSE>>=
-jaz02.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad",
+jaz02.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = ymd_hms("2015-11-15 12:00:00"))
 getWhenMeasured(jaz02.spct)
 @
 
 <<warning=FALSE>>=
-jaz03.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad",
+jaz03.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = now())
 getWhenMeasured(jaz03.spct)
 @
@@ -885,7 +1083,7 @@ getWhenMeasured(jaz03.spct)
 When can add a geocode, either directly by giving latitude and longitude coordinates or by generating it from a Google maps search using function \texttt{ggmap::geocode()} as shown here.
 
 <<message=FALSE,warning=FALSE>>=
-jaz04.spct <- read_oo_jazirrad(file = "data-vignettes/spectrum.JazIrrad",
+jaz04.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                geocode = geocode("Vikki, 00790 Helsinki, Finland",
                                                  source = "google"))
 jaz04.spct

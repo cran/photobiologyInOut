@@ -61,4 +61,3 @@ suitable for decoding by the function suplied as \code{date.f}.
 See \code{\link[readr]{read_table}} for details of acceptable values
  for \code{file}.
 }
-

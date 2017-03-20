@@ -10,9 +10,6 @@
 #'   to pass the tz (or the locale) where the file was created as an argument to
 #'   the functions!
 #' 
-#' @references
-#' \url{http://www.r4photobiology.info/}
-#' 
 #' @import photobiology
 #' 
 "_PACKAGE"

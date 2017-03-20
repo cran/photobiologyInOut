@@ -7,6 +7,17 @@ Add alternative reader of TUV output files into a collection of spectra.
 Add test cases for new functions for exchange of foreign data (currently
 tested through examples in vignette).
 
+photobiologyInOut 0.4.13
+========================
+
+Add function read_FReD_csv() (read files flower reflectance database).
+Add function read_ASTER_txt() (read files ASTER materials reflectance database).
+Revise function read_licor_prn() to accept transmittance and reflectance spectra
+in addition to energy and photon irradiance spectra.
+Improve handling of 'label' by using only the base name of files and appending
+user supplied label text.
+Change location of external data used in vignettes.
+
 photobiologyInOut 0.4.12
 ========================
 

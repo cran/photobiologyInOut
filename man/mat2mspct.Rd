@@ -58,4 +58,3 @@ wl <- (301:350)
 z <- mat2mspct(x, wl, "filter_spct", "Tpc", byrow = TRUE, spct.name = c("A", "B"))
 
 }
-

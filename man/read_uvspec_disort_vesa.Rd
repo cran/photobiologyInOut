@@ -46,4 +46,3 @@ datetime object.
 \references{
 \url{http://www.r4photobiology.info} \url{http://www.libradtran.org}
 }
-

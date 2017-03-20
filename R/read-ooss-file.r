@@ -31,6 +31,9 @@ read_oo_ssirrad <- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
+  
+  label <- paste("File:", basename(file), label)
+  
   line01 <- scan(file = file, nlines =  1, skip = 0, what="character")
   if (line01[1] != "SpectraSuite") {
     warning("Input file was not created by SpectrSuite as expected: skipping")
@@ -50,7 +53,7 @@ read_oo_ssirrad <- function(file,
         tz <- sub("S", "", tz)
       }
     }
-    date <- lubridate::parse_date_time(line03, "mdHMSy", tz = tz)
+    date <- lubridate::parse_date_time(line03, "mdHMSy", tz = tz, locale = "C")
   }
   
   z <- readr::read_tsv(
@@ -93,9 +96,9 @@ read_oo_ssdata<- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(label)) {
-    label <- paste("File:", file)
-  }
+  
+  label <- paste("File:", basename(file), label)
+  
   line01 <- scan(file = file, nlines =  1, skip = 0, what="character")
   if (line01[1] != "SpectraSuite") {
     warning("Input file was not created by SpectrSuite as expected: skipping")
@@ -126,15 +129,12 @@ read_oo_ssdata<- function(file,
     locale = locale
   )
   
-  comment(z) <-
-    paste("Ocean Optics:", paste(file_header, collapse = "\n"), sep = "\n")
-  
   old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.raw_spct(z)
   options(old.opts)
 
   comment(z) <-
-    paste(paste("Ocean Optics Spectra Suite raw counts file '", file, "' imported on ", 
+    paste(paste("Ocean Optics Spectra Suite raw counts file '", basename(file), "' imported on ", 
                 lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")

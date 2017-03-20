@@ -39,4 +39,3 @@ and then imports wavelengths and spectral energy irradiance values.
 \url{http://www.r4photobiology.info} \url{http://www.irradian.co.uk/}
 }
 \keyword{misc}
-
