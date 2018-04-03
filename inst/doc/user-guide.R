@@ -1,4 +1,4 @@
-## ----setup, include=FALSE, cache=FALSE---------------
+## ---- setup, include=FALSE, cache=FALSE--------------
 library(knitr)
 opts_chunk$set(fig.path='figure/pos-', fig.align='center', fig.show='hold',
                fig.width=7, fig.height=6, size="footnotesize")
@@ -7,35 +7,33 @@ options(replace.assign = TRUE, width = 55,
         warnPartialMatchDollar = FALSE,
         warnPartialMatchArgs = FALSE)
 
-## ----example-0-hiden, eval=TRUE, include=FALSE-------
-# this may be needed in some geographic locations as some Windows TZ strings are
-# not recognized by all versions of R
+## ---- example-0-hiden, eval=TRUE, include=FALSE------
+# setting TZ may be needed in some geographic locations as some Windows TZ 
+# strings are not recognized by all versions of R
 Sys.setenv(TZ = 'UTC')
 library(photobiology)
 library(photobiologyWavebands)
 library(photobiologyInOut)
 library(lubridate)
 library(ggplot2)
-library(ggmap)
 library(ggspectra)
 library(hyperSpec)
 library(colorSpec)
 library(pavo)
 library(readr)
 
-## ----own-set-up, echo=FALSE, include=FALSE-----------
+## ---- own-set-up, echo=FALSE, include=FALSE----------
 my_version <- packageVersion("photobiologyInOut")
 
-## ----example-0-hiden, eval=FALSE, include=TRUE-------
-#  # this may be needed in some geographic locations as some Windows TZ strings are
-#  # not recognized by all versions of R
+## ---- example-0-hiden, eval=FALSE, include=TRUE------
+#  # setting TZ may be needed in some geographic locations as some Windows TZ
+#  # strings are not recognized by all versions of R
 #  Sys.setenv(TZ = 'UTC')
 #  library(photobiology)
 #  library(photobiologyWavebands)
 #  library(photobiologyInOut)
 #  library(lubridate)
 #  library(ggplot2)
-#  library(ggmap)
 #  library(ggspectra)
 #  library(hyperSpec)
 #  library(colorSpec)
@@ -164,7 +162,7 @@ tuv.spct <- read_tuv_usrout(file = tuv.file,
 summary(subset(tuv.spct, spct.idx == "A"))
 tuv.spct
 
-## ----fig.height=10-----------------------------------
+## ---- fig.height=10----------------------------------
 plot(tuv.spct, annotations = c("colour.guide")) +
   facet_wrap(~date, ncol = 2)
 
@@ -236,7 +234,7 @@ class(z.mspct)
 getWhenMeasured(z.mspct)
 z.mspct
 
-## ----eval=FALSE--------------------------------------
+## ---- eval=FALSE-------------------------------------
 #  fmi.files <- list.files(".", "*cum.hel")
 #  fmi.files <- paste(".", fmi.files, sep = "")
 #  z1.mspct <- read_m_fmi_cum(fmi.files)
@@ -244,11 +242,13 @@ z.mspct
 #  getWhenMeasured(z1.mspct)
 #  z1.mspct
 
-## ----message=FALSE-----------------------------------
+## ---- message=FALSE----------------------------------
+# because of Google's query limits call will frequently fail without a key
+# my.geocode <- ggmap::geocode("Kumpula, Helsinki, Finland", source = "google")
+my.geocode <- data.frame(lon = 24.96474, lat = 60.20911)
 z2.mspct <-
   read_m_fmi_cum(fmi.files,
-                 geocode = geocode("Kumpula, Helsinki, Finland",
-                                   source = "google"))
+                 geocode = my.geocode)
 class(z2.mspct)
 getWhenMeasured(z2.mspct)
 getWhereMeasured(z2.mspct)
@@ -277,37 +277,6 @@ aster.spct <- read_ASTER_txt(file = aster.file)
 aster.spct
 cat(comment(aster.spct))
 plot(aster.spct)
-
-## ----------------------------------------------------
-x <- matrix(1:100, ncol = 2)
-wl <- 501:550 # in nanometres
-z <- mat2mspct(x, wl, "filter_spct", "Tpc")
-z
-
-## ----------------------------------------------------
-z <- mat2mspct(x, wl, "filter_spct", "Tpc", spct.names = c("A", "B"))
-z
-
-## ----------------------------------------------------
-xrow <- matrix(1:100, nrow = 2, byrow = TRUE)
-z1 <- mat2mspct(xrow, wl, "filter_spct", "Tpc")
-z1
-
-## ----------------------------------------------------
-z2c.mat <- mspct2mat(z2.mspct, "s.e.irrad")
-class(z2c.mat)
-dim(z2c.mat)
-head(dimnames(z2c.mat)$spct)
-head(dimnames(z2c.mat)$w.length)
-head(attr(z2c.mat, "w.length"))
-
-## ----------------------------------------------------
-z2r.mat <- mspct2mat(z2.mspct, "s.e.irrad", byrow = TRUE)
-class(z2r.mat)
-dim(z2r.mat)
-head(dimnames(z2r.mat)$spct)
-head(dimnames(z2r.mat)$w.length)
-head(attr(z2r.mat, "w.length"))
 
 ## ----------------------------------------------------
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")
@@ -409,25 +378,27 @@ jaz.s.irrad.file <-
   system.file("extdata", "spectrum.JazIrrad", 
               package = "photobiologyInOut", mustWork = TRUE)
 
-## ----warning=FALSE-----------------------------------
+## ---- warning=FALSE----------------------------------
 jaz01.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = NULL)
 getWhenMeasured(jaz01.spct)
 
-## ----warning=FALSE-----------------------------------
+## ---- warning=FALSE----------------------------------
 jaz02.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = ymd_hms("2015-11-15 12:00:00"))
 getWhenMeasured(jaz02.spct)
 
-## ----warning=FALSE-----------------------------------
+## ---- warning=FALSE----------------------------------
 jaz03.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = now())
 getWhenMeasured(jaz03.spct)
 
-## ----message=FALSE,warning=FALSE---------------------
+## ---- message=FALSE,warning=FALSE--------------------
+# because of Google's query restrictions call may occasionally fail
+# my.geocode <- ggmap::geocode("Vikki, 00790 Helsinki, Finland", source = "google")
+my.geocode <- data.frame(lon = 25.02006, lat = 60.22525)
 jaz04.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
-                               geocode = geocode("Vikki, 00790 Helsinki, Finland",
-                                                 source = "google"))
+                               geocode = my.geocode)
 jaz04.spct
 getWhereMeasured(jaz04.spct)
 

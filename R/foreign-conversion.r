@@ -1,173 +1,16 @@
-# The "export" functions are not defined as S3 methods named as.hyperSpec and
-# as.colorSpec as would have been natural, because these generics are not
-# defined in the respective packages. Defining them as S3 generics in this
-# independently developed package would be looking for future trouble. The
-# "import" functions could have been defined as "as...." S3 methods, but
-# naming symmetry between import and export functions seemed more natural.
-# Another reason is that a single class "colorSpec" corresponds to several
-# different classes from package "photobiology" and consequently the class
-# the object is to be converted to depends on the information stored as
-# attributes in a "colorSpec" object rather than on the class it belongs to. 
+# Some "export" functions are not defined as S3 methods for 'hyperSpec'. For
+# 'colorSpec' as.colorSpec methods are now defined as the maintainer has updated
+# colorSpec after reading this note (thanks Glenn!). Defining these methods as
+# S3 generics in this independently developed package would be looking for
+# future trouble. The "import" methods are now defined also as "as...." S3
+# methods. As a single class "colorSpec" corresponds to several different
+# classes from package "photobiology", a function is defined which automatically
+# detects the suitable output class. In contrast the S3 methods trigger an error
+# if there is a mismatch.
+# 
 
 # R matrix ----------------------------------------------------------------
-
-#' Convert a collection of spectra into a matrix
-#' 
-#' Convert an object of class \code{generic_mspct} or a derived class into an R
-#' matrix with wavelengths saved as an attribute and spectral data in rows
-#' or columns.
-#' 
-#' @note Only collections of spectra containing spectra with exactly the same
-#' \code{w.length} values can by converted. If needed, the spectra can be
-#' re-expressed before attempting the conversion to a matrix.
-#' 
-#' @param x generic_mspct object.
-#' @param spct.data.var character The name of the variable containing the spectral data.
-#' @param byrow logical. If FALSE (the default) the matrix is filled with the
-#'   spectra stored by columns, otherwise the matrix is filled by rows.
-#' @param ... currently ignored.
-#' 
-#' @section Warning!: This conversion preserves the spectral data but discards
-#'   almost all the metadata contained in the spectral objects. In other words a
-#'   matrix created with this function cannot be used to recreate the original
-#'   object unless the same metadata is explicitly supplied when converting the
-#'   matrix into new collection of spectra.
-#' 
-#' @export
-#' 
-mspct2mat <- function(x, 
-                      spct.data.var,
-                      byrow = attr(x, "mspct.byrow"),
-                      ...) {
-  stopifnot(is.any_mspct(x))
-  if (length(x) == 0L) {
-    return(matrix(numeric()))
-  }
-  spct.names <- names(x)
-  spct.selector <- rep(TRUE, length(x))
-  mat <- numeric()
-  for (i in seq_along(x)) {
-    temp <- x[[i]]
-    s.column <- temp[[spct.data.var]]
-    wl.current <- temp[["w.length"]]
-    if (i == 1L) {
-      wl.prev <- wl.current
-    } 
-    if (!all(wl.current == wl.prev) || length(s.column) == 0L) {
-      spct.selector[i] <- FALSE
-      next()
-    }
-    mat <- c(mat, s.column) # one long numeric vector
-  }
-  if (any(!spct.selector)) {
-    warning("Spectra dropped: ", sum(!spct.selector), " out of ", length(spct.selector), ".")
-  }
-  if (byrow) {
-    z <- matrix(mat, nrow = sum(spct.selector), byrow = byrow,
-                dimnames = list(spct = c(spct.names[spct.selector]), 
-                                w.length = wl.prev))
-  } else {
-    z <- matrix(mat, ncol = sum(spct.selector), byrow = byrow,
-                dimnames = list(w.length = wl.prev,
-                                spct = c(spct.names[spct.selector])))
-  }
-  attr(z, "w.length") <- wl.prev
-  comment(z) <- comment(x)
-  z
-}
-
-#' Convert a matrix into a collection of spectra
-#' 
-#' Convert an R object of class matrix into a \code{generic_mspct} or a derived 
-#' class.
-#' 
-#' @note Only \code{matrix} objects that have rows or columns of the same length
-#'   as the numeric vector of walengths supplied can be converted. The resulting
-#'   spectra will be built using the constructors and subjected to the same
-#'   checks as if built individually. Only collections with all members of the
-#'   same class can be built with this function. Additional named arguments can
-#'   be supplied to set the same metadata attributes to all the member spectra.
-#'   In the case of square matrices, an explicit argument is needed for
-#'   \code{byrow} making it good practice for scripts and package code to not
-#'   rely on the automatic default.
-#'   
-#' @param x matrix object.
-#' @param w.length numeric A vector of walength values sorted in strictly ascending
-#'   order (nm).
-#' @param spct.data.var character The name of the variable that will contain the 
-#'   spectral data. This indicates what physical quantity is stored in the matrix 
-#'   and the units of expression used.
-#' @param member.class character The name of the class of the individual spectra
-#'   to be constructed.
-#' @param multiplier numeric A multiplier to be applied to the values in \code{x} to do
-#'   unit or scale conversion.
-#' @param byrow logical Flag indicating whether each spectrum is stored in a row or
-#'   a column of the matrix. By default this value is set based on the length of
-#'   \code{w.length} and the dimensions of \code{x}.
-#' @param spct.names character Vector of names to be assigned to collection members,
-#'   either of length 1, or with length equal to the number of spectra.
-#' @param ... other arguments passed to the constructor of collection members.
-#' 
-#' @export
-#' 
-#' @examples 
-#' 
-#' x <- matrix(1:100, ncol = 2)
-#' wl <- (301:350)
-#' z <- mat2mspct(x, wl, "filter_spct", "Tpc")
-#' 
-#' x <- matrix(1:100, nrow = 2, byrow = TRUE)
-#' wl <- (301:350)
-#' z <- mat2mspct(x, wl, "filter_spct", "Tpc", byrow = TRUE, spct.name = c("A", "B"))
-#' 
-mat2mspct <- function(x,
-                      w.length,
-                      member.class,
-                      spct.data.var,
-                      multiplier = 1,
-                      byrow = NULL,
-                      spct.names = "spct_",
-                      ...) {
-  stopifnot(is.matrix(x))
-  if (length(spct.names) == 0) {
-    spct.names = "spct"
-  }
-  if (is.null(byrow)) {
-    if (nrow(x) == ncol(x)) {
-      stop("For square matrices an argument for 'byrow' is mandatory")
-    } else if (nrow(x) == length(w.length)) {
-      byrow <- FALSE
-    } else if (ncol(x) == length(w.length)) {
-      byrow <- TRUE
-    } else {
-      stop("Length of 'w.length' vector is different to that of spectral data.")
-    }
-  }
-  # spc data (spectra) can be stored as rows or as colums in a matrix, 
-  # consequently if stored by rows we transpose the matrix.
-  if (byrow) {
-    x <- t(x)
-  }
-  ncol <- ncol(x)
-  stopifnot(nrow(x) == length(w.length))
-  y <- cbind(w.length, x * multiplier)
-  y <- tibble::as_data_frame(y)
-  if (length(spct.names) == ncol) {
-    colnames(y) <- c("w.length", spct.names)
-  } else {
-    colnames(y) <- c("w.length", paste(spct.names[1], 1:ncol, sep = ""))
-  }
-  z <- split2mspct(x = y, 
-                   member.class = member.class, 
-                   spct.data.var = spct.data.var,
-                   ncol = ncol,
-                   ...)
-  comment(z) <- paste('Converted from an R "matrix" object\n',
-                      'with ', length(z), ' spectra stored ',
-                      ifelse(byrow, "in rows.", "in columns."),
-                      sep = "")
-  z
-}
+#  Moved to 'photobiology' and expanded adding coercion methods.
 
 # hyperSpec ---------------------------------------------------------------
 
@@ -292,12 +135,12 @@ mspct2hyperSpec <- function(x,
     }
   }
   methods::new("hyperSpec", 
-      spc = mat, 
-      wavelength = wl.prev, 
-      data = data.frame(spct_name = factor(spct.names[spct.selector])), 
-      labels = list(spct = expression("spct_name"), 
-                    spc = expression("I / a.u."),
-                    .wavelength = expression("lambda/nm")))
+               spc = mat, 
+               wavelength = wl.prev, 
+               data = data.frame(spct_name = factor(spct.names[spct.selector])), 
+               labels = list(spct = expression("spct_name"), 
+                             spc = expression("I / a.u."),
+                             .wavelength = expression("lambda/nm")))
 }
 
 #' @rdname hyperSpec2mspct
@@ -408,7 +251,7 @@ rspec2spct <- function(x, multiplier = 1, ...) {
 #' Convert 'colorSpec::colorSpec' objects
 #' 
 #' Convert 'colorSpec::colorSpec' objects into spectral objects (xxxx_spct,
-#' xxxx_mspct) as defined in package 'photobiology' and vice veersa preserving
+#' xxxx_mspct) as defined in package 'photobiology' and vice versa preserving
 #' as much information as possible.
 #' 
 #' @note Objects of class \code{colorSpec::colorSpec} do not contain metadata or
@@ -463,20 +306,20 @@ colorSpec2mspct <- function(x, multiplier = 1, ...) {
   y <- as.data.frame(as.matrix(x) * multiplier)
   y[["w.length"]] <- colorSpec::wavelength(x)
   if (spct.type == "light") {
-    if (spct.quantity == 'power') {
+    if (colorSpec::is.radiometric(x)) {
       z <- photobiology::split2source_mspct(y, 
                                             spct.data.var = "s.e.irrad")
-    } else if (spct.quantity == 'photons/sec') {
+    } else if (colorSpec::is.actinometric(x)) {
       z <- photobiology::split2source_mspct(y, 
                                             spct.data.var = "s.q.irrad")
     } else {
       stop("unkown 'quantity': ", spct.quantity)
     }
   } else if (spct.type == 'responsivity.light') {
-    if (spct.quantity %in% c('power->electrical', 'power->neural', 'power->action')) {
+    if ( colorSpec::is.radiometric(x)) {
       z <- photobiology::split2response_mspct(y, 
                                               spct.data.var = "s.e.response")
-    } else if (spct.quantity %in% c('photons->electrical', 'photons->neural', 'photons->action')) {
+    } else if (colorSpec::is.actinometric(x)) {
       z <- photobiology::split2response_mspct(y, 
                                               spct.data.var = "s.q.response")
     } else {
@@ -510,9 +353,115 @@ colorSpec2mspct <- function(x, multiplier = 1, ...) {
 #'
 #' @export
 #'
+as.source_spct.colorSpec <- function(x, multiplier = 1, ...) {
+  stopifnot(colorSpec::type(x) == "light")
+  colorSpec2spct(x = x, 
+                 multiplier = multiplier, 
+                 ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.source_mspct.colorSpec <- function(x, multiplier = 1, ...) {
+  stopifnot(colorSpec::type(x) == "light")
+  colorSpec2spct(x = x, 
+                 multiplier = multiplier, 
+                 ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.response_spct.colorSpec <- function(x, multiplier = 1, ...) {
+  stopifnot(colorSpec::type(x) == "responsivity.light")
+  colorSpec2spct(x = x, 
+                 multiplier = multiplier, 
+                 ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.response_mspct.colorSpec <- function(x, multiplier = 1, ...) {
+  stopifnot(colorSpec::type(x) == "responsivity.light")
+  colorSpec2mspct(x = x, 
+                  multiplier = multiplier, 
+                  ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.filter_spct.colorSpec <- function(x, multiplier = 1, ...) {
+  stopifnot(colorSpec::type(x) == "material" &&
+              colorSpec::quantity(x) %in% c("absorbance", "transmittance"))
+  colorSpec2spct(x = x, 
+                 multiplier = multiplier, 
+                 ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.filter_mspct.colorSpec <- function(x, multiplier = 1, ...) {
+  stopifnot(colorSpec::type(x) == "material" &&
+              colorSpec::quantity(x) %in% c("absorbance", "transmittance"))
+  colorSpec2mspct(x = x, 
+                  multiplier = multiplier, 
+                  ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.reflector_spct.colorSpec <- function(x, multiplier = 1, ...) {
+  stopifnot(colorSpec::type(x) == "material" &&
+              colorSpec::quantity(x) == "reflectance")
+  colorSpec2spct(x = x, 
+                 multiplier = multiplier, 
+                 ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.reflector_mspct.colorSpec <- function(x, multiplier = 1, ...) {
+  stopifnot(colorSpec::type(x) == "material" &&
+              colorSpec::quantity(x) == "reflectance")
+  colorSpec2mspct(x = x, 
+                  multiplier = multiplier, 
+                  ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.chroma_mspct.colorSpec <- function(x, multiplier = 1, ...) {
+  colorSpec2mspct(x = x, 
+                  multiplier = multiplier, 
+                  ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
 colorSpec2spct <- function(x, multiplier = 1, ...) {
   y <- colorSpec2mspct(x, multiplier = multiplier, ...)
-  z <- rbindspct(y)
+  if (length(y) < 2) {
+    z <- y[[1]]
+  } else {
+    z <- rbindspct(y)
+  }
   comment(z) <- comment(x[[1]])
   z
 }
@@ -524,7 +473,7 @@ colorSpec2spct <- function(x, multiplier = 1, ...) {
 colorSpec2chroma_spct <- function(x, multiplier = 1, ...) {
   spct.type <- colorSpec::type(x)
   spct.quantity <- colorSpec::quantity(x)
-  stopifnot(spct.quantity == 'power->neural')
+  stopifnot(spct.quantity == 'energy->neural')
   stopifnot(colorSpec::numSpectra(x) == 3)
   stopifnot(sort(tolower(names(x))) == c("x", "y", "z"))
   stopifnot(multiplier > 0)
@@ -543,6 +492,26 @@ colorSpec2chroma_spct <- function(x, multiplier = 1, ...) {
 }
 
 #' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.chroma_spct.colorSpec <- function(x, multiplier = 1, ...) {
+  colorSpec2spct(x = x, 
+                 multiplier = multiplier, 
+                 ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.chroma_mspct.colorSpec <- function(x, multiplier = 1, ...) {
+  colorSpec2mspct(x = x, 
+                  multiplier = multiplier, 
+                  ...)
+}
+
+#' @rdname colorSpec2mspct
 #'   
 #' @param spct.data.var character The name of the variable to read spectral data
 #'   from.
@@ -554,6 +523,7 @@ mspct2colorSpec <- function(x,
                             multiplier = 1,
                             ...) {
   stopifnot(is.any_mspct(x))
+  #  warning("Deprecated: please use as.colorSpec() instead.")
   class.mspct <- class(x)[1]
   comment.mspct <- comment(x)
   comment.mspct <- 
@@ -564,13 +534,13 @@ mspct2colorSpec <- function(x,
       x <- q2e(x, action = "replace")
       spct.data.var <- "s.e.irrad"
     }
-    quantity <- 'power'
+    quantity <- 'energy'
   } else if (class.mspct == "response_mspct") {
     if (is.null(spct.data.var)) {
       x <- q2e(x, action = "replace")
       spct.data.var <- "s.e.response"
     }
-    quantity <- 'power->action'
+    quantity <- 'energy->neural'
   } else if (class.mspct == "filter_mspct") {
     if (is.null(spct.data.var)) {
       x <- A2T(x, action = "replace")
@@ -648,3 +618,129 @@ chroma_spct2colorSpec <- function(x,
                        wavelength = x[["w.length"]],
                        quantity = 'power->neural')
 }
+
+#' Convert into 'colorSpec::colorSpec' objects
+#' 
+#' Convert spectral objects (xxxx_spct, xxxx_mspct) as defined in package 
+#' 'photobiology' into colorSpec objects preserving as much information as
+#'  possible.
+#' 
+#' @note Objects of class \code{colorSpec::colorSpec} do not contain metadata or
+#'   class data from which the units of expression could be obtained. When using
+#'   this function the user needs to use parameter \code{multiplier} to convert 
+#'   the data to what is expected by the object constructors defined in package 
+#'   'photobiology' but should only rarely need to use parameter
+#'   \code{spct.data.var} to select the quantity.
+#'   
+#'   \code{colorSpec::colorSpec} objects may use memory more efficiently than
+#'   spectral objects of the classes for collections of spectra defined in
+#'   package 'photobiology' as wavelengths are assumed to be the same for all
+#'   member spectra, and stored only once while this assumption is not made for
+#'   collections of spectra, allowing different wavelengths and lengths for the
+#'   component spectra. Wavelengths are stored for each spectrum, but as
+#'   spectral classes are derived from 'tbl_df' in many cases no redundant
+#'   copies of wavelength data will be made in memory in spite of the more
+#'   flexible semantics of the objects.
+#' 
+#' @section Warning!: Always check the sanity of the returned data values, as
+#'   guessing is needed when matching the different classes, and the functions
+#'   defined here are NOT guaranteed to return valid data wihtout help from the
+#'   user through optional function arguments.
+#' 
+#' @param x R object
+#' @param spct.data.var character The name of the variable to read spectral data
+#'   from.
+#' @param multiplier numeric A multiplier to be applied to the 'spc' data to do
+#'   unit or scale conversion.
+#' @param ... currently ignored.
+#' 
+#' @name as.colorSpec
+#' 
+#' @importFrom colorSpec as.colorSpec
+#' 
+#' @export as.colorSpec
+#' 
+#' @examples 
+#' 
+#' library(colorSpec)
+#' 
+as.colorSpec.generic_mspct <- function(x, 
+                                       spct.data.var = NULL,
+                                       multiplier = 1,
+                                       ...) {
+  mspct2colorSpec(x = x,
+                  spct.data.var = spct.data.var,
+                  multiplier = multiplier,
+                  ...)
+}
+
+#' @describeIn as.colorSpec
+#' 
+#' @export
+#' 
+as.colorSpec.generic_spct <- function(x, 
+                                      spct.data.var = NULL,
+                                      multiplier = 1,
+                                      ...) {
+  spct2colorSpec(x = x,
+                 spct.data.var = spct.data.var,
+                 multiplier = multiplier,
+                 ...)
+}
+
+
+#' @describeIn as.colorSpec
+#' 
+#' @export
+#' 
+as.colorSpec.chroma_spct <- function(x, 
+                                     spct.data.var = NULL,
+                                     multiplier = 1,
+                                     ...) {
+  colorSpec::colorSpec(data = as.matrix(x[ , c("x", "y", "z")]) * multiplier,
+                       wavelength = x[["w.length"]],
+                       quantity = 'energy->neural')
+}
+
+#' Coerce into generic_spct
+#' 
+#' @param x R object
+#' @param multiplier numeric A multiplier to be applied to the spectral quantity
+#'  data to do unit or scale conversion.
+#' @param ... currently ignored.
+#' 
+#' @name as.generic_spct
+#'
+#' @importFrom photobiology as.generic_spct
+#' 
+#' @export
+#' 
+as.generic_spct.colorSpec <- function(x, 
+                                      multiplier = 1, 
+                                      ...) {
+  force(x)
+  colorSpec2spct(x = x,
+                 multiplier = multiplier,
+                 ...)
+}
+
+#' Convert into generic_mspct
+#' 
+#' @param x R object
+#' @param multiplier numeric A multiplier to be applied to the spectral quantity
+#'  data to do unit or scale conversion.
+#' @param ... currently ignored.
+#' 
+#' @name as.generic_mspct
+#'
+#' @importFrom photobiology as.generic_mspct
+#' 
+#' @export
+#'
+as.generic_mspct.colorSpec <- function(x, 
+                                       multiplier = 1, 
+                                       ...) {
+  force(x)
+  colorSpec2mspct(x = x, multiplier = multiplier, ...)
+}
+

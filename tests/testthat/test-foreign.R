@@ -5,6 +5,12 @@ library("colorSpec")
 context("objects from foreign packages")
 
 test_that("colorSpec", {
+  expect_is(spct2colorSpec(sun.spct), "colorSpec")
+  expect_is(as.colorSpec(sun.spct), "colorSpec")
+  expect_is(colorSpec2spct(Fs.5nm), "source_spct")
+  expect_is(as.generic_spct(Fs.5nm), "source_spct")
+  expect_equivalent(spct2colorSpec(sun.spct), as.colorSpec(sun.spct))
+  expect_equivalent(colorSpec2spct(Fs.5nm), as.generic_spct(Fs.5nm))
   expect_equivalent(irrad(sun.spct),
                     irrad(colorSpec2spct(spct2colorSpec(sun.spct))))
   expect_equivalent(transmittance(yellow_gel.spct),

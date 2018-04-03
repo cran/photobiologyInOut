@@ -10,7 +10,8 @@ Functions for reading, and in some cases writing, foreign files
 containing spectral data from spectrometers and their associated software,
 output from daylight simulation models in common use, and some spectral
 data repositories. As well as functions for exchange of spectral data with
-other R packages.
+other R packages. Part of the 'r4photobiology' suite,
+Aphalo P. J. (2015) <doi:10.19232/uv4pb.2015.1.14>.
 }
 \note{
 From version 0.4.4 the time zone (tz) used for decoding dates
@@ -27,6 +28,10 @@ From version 0.4.4 the time zone (tz) used for decoding dates
   ticket and upload one example of an incorrectly decoded file.
 }
 
+\references{
+Aphalo, Pedro J. (2015) The r4photobiology suite. UV4Plants Bulletin, 2015:1,
+21-29. \url{https://doi.org/10.19232/uv4pb.2015.1.14}.
+}
 \seealso{
 Useful links:
 \itemize{
@@ -36,11 +41,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Pedro J. Aphalo \email{pedro.aphalo@helsinki.fi}
+\strong{Maintainer}: Pedro J. Aphalo \email{pedro.aphalo@helsinki.fi} (0000-0003-3385-972X)
 
 Other contributors:
 \itemize{
-  \item Titta K. Kotilainen \email{titta.kotilainen@helsinki.fi} [contributor]
+  \item Titta K. Kotilainen (0000-0002-2822-9734) [contributor]
+  \item Glenn Davis \email{gdavis@gluonics.com} [contributor]
 }
 
 }

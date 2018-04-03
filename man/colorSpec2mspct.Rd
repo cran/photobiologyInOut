@@ -2,8 +2,19 @@
 % Please edit documentation in R/foreign-conversion.r
 \name{colorSpec2mspct}
 \alias{colorSpec2mspct}
+\alias{as.source_spct.colorSpec}
+\alias{as.source_mspct.colorSpec}
+\alias{as.response_spct.colorSpec}
+\alias{as.response_mspct.colorSpec}
+\alias{as.filter_spct.colorSpec}
+\alias{as.filter_mspct.colorSpec}
+\alias{as.reflector_spct.colorSpec}
+\alias{as.reflector_mspct.colorSpec}
+\alias{as.chroma_mspct.colorSpec}
 \alias{colorSpec2spct}
 \alias{colorSpec2chroma_spct}
+\alias{as.chroma_spct.colorSpec}
+\alias{as.chroma_mspct.colorSpec}
 \alias{mspct2colorSpec}
 \alias{spct2colorSpec}
 \alias{chroma_spct2colorSpec}
@@ -11,9 +22,31 @@
 \usage{
 colorSpec2mspct(x, multiplier = 1, ...)
 
+\method{as.source_spct}{colorSpec}(x, multiplier = 1, ...)
+
+\method{as.source_mspct}{colorSpec}(x, multiplier = 1, ...)
+
+\method{as.response_spct}{colorSpec}(x, multiplier = 1, ...)
+
+\method{as.response_mspct}{colorSpec}(x, multiplier = 1, ...)
+
+\method{as.filter_spct}{colorSpec}(x, multiplier = 1, ...)
+
+\method{as.filter_mspct}{colorSpec}(x, multiplier = 1, ...)
+
+\method{as.reflector_spct}{colorSpec}(x, multiplier = 1, ...)
+
+\method{as.reflector_mspct}{colorSpec}(x, multiplier = 1, ...)
+
+\method{as.chroma_mspct}{colorSpec}(x, multiplier = 1, ...)
+
 colorSpec2spct(x, multiplier = 1, ...)
 
 colorSpec2chroma_spct(x, multiplier = 1, ...)
+
+\method{as.chroma_spct}{colorSpec}(x, multiplier = 1, ...)
+
+\method{as.chroma_mspct}{colorSpec}(x, multiplier = 1, ...)
 
 mspct2colorSpec(x, spct.data.var = NULL, multiplier = 1, ...)
 
@@ -34,7 +67,7 @@ from.}
 }
 \description{
 Convert 'colorSpec::colorSpec' objects into spectral objects (xxxx_spct,
-xxxx_mspct) as defined in package 'photobiology' and vice veersa preserving
+xxxx_mspct) as defined in package 'photobiology' and vice versa preserving
 as much information as possible.
 }
 \note{

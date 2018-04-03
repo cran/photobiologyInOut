@@ -4,8 +4,17 @@ TODO
 Add support for StellarNet spectrometers and Bentham spectrometers.
 Add a generic reader of files into a collection of spectra.
 Add alternative reader of TUV output files into a collection of spectra.
-Add test cases for new functions for exchange of foreign data (currently
-tested through examples in vignette).
+Add test cases for new functions for exchange of foreign data (currently tested 
+through examples in vignette).
+
+photobiologyInOut 0.4.14
+========================
+
+Implement class coercion methods ("as." methods) to complement earlier functions,
+tracking 'photobiology' 0.9.20.
+Move coercion methods from and to matrix objects to 'photobiology' 0.9.20.
+Update to track API changes in 'colorSpec' 0.7-3.
+Translate vignette to Rmarkdown.
 
 photobiologyInOut 0.4.13
 ========================
