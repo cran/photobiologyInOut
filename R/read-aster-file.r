@@ -61,6 +61,7 @@ read_ASTER_txt <- function(file,
   photobiology::setWhereMeasured(z, geocode)
   label <- paste(sub("Name: ", "", file_header[[1]]), label, sep = "\n") 
   photobiology::setWhatMeasured(z, label)
+  attr(z, "file.header", file_header)
   z
 }
 

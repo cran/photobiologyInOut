@@ -40,6 +40,7 @@ read_FReD_csv <- function(file,
   
   z <- readr::read_csv(file = file, 
                       col_names = c("flower.id", "w.length", "Rfr"),
+                      col_types = readr::cols(),
                       locale = locale,
                       skip = 0)
 

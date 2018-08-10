@@ -14,7 +14,6 @@
 \alias{colorSpec2spct}
 \alias{colorSpec2chroma_spct}
 \alias{as.chroma_spct.colorSpec}
-\alias{as.chroma_mspct.colorSpec}
 \alias{mspct2colorSpec}
 \alias{spct2colorSpec}
 \alias{chroma_spct2colorSpec}

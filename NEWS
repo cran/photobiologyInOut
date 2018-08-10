@@ -3,9 +3,20 @@ TODO
 
 Add support for StellarNet spectrometers and Bentham spectrometers.
 Add a generic reader of files into a collection of spectra.
-Add alternative reader of TUV output files into a collection of spectra.
 Add test cases for new functions for exchange of foreign data (currently tested 
 through examples in vignette).
+
+photobiologyInOut 0.4.15
+========================
+
+Add read_yoctopuce_csv() to read CSV files from YoctoPuce modules.
+Add read_qtuv_txt() to read spectral data output files from the on-line
+Quick TUV calculator.
+Add read_tuv_usrout2mspct() wrapper of read_tuv_usrout() and subset2mspct().
+Revise read_tuv_usrout() with new formal parameter ozone.du and fix a bug in
+the setting of "where.measured" attribute.
+Revise all read functions so that they store the header of the imported file as
+a vector of character strings to attribute "file.header".
 
 photobiologyInOut 0.4.14
 ========================

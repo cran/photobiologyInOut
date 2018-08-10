@@ -2,13 +2,21 @@
 % Please edit documentation in R/read-tuv-file.r
 \name{read_tuv_usrout}
 \alias{read_tuv_usrout}
+\alias{read_tuv_usrout2mspct}
 \title{Read TUV output file.}
 \usage{
-read_tuv_usrout(file, date = lubridate::today(), geocode = NULL,
-  label = NULL, tz = NULL, locale = readr::default_locale())
+read_tuv_usrout(file, ozone.du = NULL, date = lubridate::today(),
+  geocode = NULL, label = NULL, tz = NULL,
+  locale = readr::default_locale())
+
+read_tuv_usrout2mspct(file, ozone.du = NULL, date = lubridate::today(),
+  geocode = NULL, label = NULL, tz = NULL,
+  locale = readr::default_locale())
 }
 \arguments{
 \item{file}{character string}
+
+\item{ozone.du}{numeric Ozone column in Dobson units.}
 
 \item{date}{a \code{POSIXct} object, but if \code{NULL} the date stored in
 file is used, and if \code{NA} no date variable is added}
@@ -27,18 +35,19 @@ like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
 }
 \value{
-a source_spct object obtained by 'melting' the TUV file, and adding
-  a factor \code{spct.idx}, and variables \code{zenith.angle} and
-  \code{date}.
+a source_spct object obtained by 'melting' the TUV file, and adding a
+  factor \code{spct.idx}, and variables \code{zenith.angle} and \code{date}.
 }
 \description{
 Reads and parses the header of a text file output by the TUV program to
 extract the header and spectral data. The time field is converted to a date.
 }
 \note{
-Tested only with TUV versison 5.0.
+The ozone column value used in the simulation cannot be retrieved from
+the file. Tested only with TUV version 5.0.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{https://www2.acom.ucar.edu/modeling/tuv-download}
+\url{http://www.r4photobiology.info}
+  \url{https://www2.acom.ucar.edu/modeling/tuv-download}
 }
 \keyword{misc}

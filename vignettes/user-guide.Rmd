@@ -12,6 +12,19 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+## Introduction
+
+This package defines functions for importing spectral data from
+different instruments, simulation
+models, and for data exchange with R packages
+'hyperSpec' and 'pavo' (see Tables at the start of each section).
+
+All functions attempt to decode and store as metadata as much of the information present in file headers as possible. In most cases, the unchanged header of the file is stored as is as a comment in the constructed objects.
+
+It should be remembered, though, that this package has been developed based on the example files I had access to. Files from the same instruments with different hardware configurations, different firmware versions, or even settings may differ substantially. In many cases the output is produced by software in a host computer rather by the instrument itself, adding further uncertainties and possible differences due to for example the operating system of the host computer. A further complication is that in some cases the format of dates, times and numbers depends on the locale settings in use at the time of data acquisition, or analysis. For all those reasons, do expect to have to do some debugging, and most importantly always validate the imported data against the original file (remembering to run a new validation each time there is a software or firmware update) or update of this package as I test each version before release only with the example files I have available, which are not many.
+
+## Preliminaries
+
 ```{r, setup, include=FALSE, cache=FALSE}
 library(knitr)
 opts_chunk$set(fig.path='figure/pos-', fig.align='center', fig.show='hold',
@@ -22,7 +35,7 @@ options(replace.assign = TRUE, width = 55,
         warnPartialMatchArgs = FALSE)
 ```
 
-```{r, example-0-hiden, eval=TRUE, include=FALSE}
+```{r, example-0-hiden, eval=TRUE, message=FALSE}
 # setting TZ may be needed in some geographic locations as some Windows TZ 
 # strings are not recognized by all versions of R
 Sys.setenv(TZ = 'UTC')
@@ -38,29 +51,11 @@ library(pavo)
 library(readr)
 ```
 
-```{r, own-set-up, echo=FALSE, include=FALSE}
-my_version <- packageVersion("photobiologyInOut")
-```
-
-## Introduction
-
-```{r, example-0-hiden, eval=FALSE, include=TRUE}
-```
-
 ```{r}
 options(tibble.print_max = 5,
         tibble.print_min = 3,
         photobiology.strict.range = NA_integer_)
 ```
-
-This package defines functions for importing spectral data from
-different instruments, simulation
-models, and for data exchange with R packages
-'hyperSpec' and 'pavo' (see Tables at the start of each section).
-
-All functions attempt to decode and store as metadata as much of the information present in file headers as possible. In most cases, the unchanged header of the file is stored as is as a comment in the constructed objects.
-
-It should be remembered, though, that this package has been developed based on the example files I had access to. Files from the same instruments with different hardware configurations, different firmware versions, or even settings may differ substantially. In many cases the output is produced by software in a host computer rather by the instrument itself, adding further uncertainties and possible differences due to for example the operating system of the host computer. A further complication is that in some cases the format of dates, times and numbers depends on the locale settings in use at the time of data acquisition, or analysis. For all those reasons, do expect to have to do some debugging, and most importantly always validate the imported data against the original file (remembering to run a new validation each time there is a software or firmware update) or update of this package as I test each version before release only with the example files I have available, which are not many.
 
 ## Spectrometer output files
 
@@ -406,27 +401,67 @@ plot(licor.spct)
 
 ### Campbell Scientific
 
-Function `read_csi_dat()` defined in this package has been tested with a very recent datalogger
-model, the CR6, and using current versions of programs PC400 and PC200W to
+[Campbell Scientific](https://www.campbellsci.eu/) is a well know supplier of data loggers for commercial and
+research applications.
+Function `read_csi_dat()` defined in this package has been tested with a recent datalogger
+model, the CR6, and using recent versions of programs PC400 and PC200W to
 download the data. The currently used format of .DAT files is easy to decode
 and our function can automatically detect the number and type of columns and
-the number of rows. All information is preserved in the returned
-`tibble::tibble` object, which is derived from `data.frame`.
+the number of rows.
 
 ```{r}
 cs.day.file <- 
   system.file("extdata", "cr6-day.dat", 
               package = "photobiologyInOut", mustWork = TRUE)
+```
+
+Executing the statement below displays the 10 top lines of the DAT file as is, one character string per line.
+
+```{r, eval=FALSE}
+# not run
+read_lines(yoctopuce_hour.file, n_max = 10)
+```
+
+```{r}
 day.dat <- read_csi_dat(file = cs.day.file)
 day.dat
 ```
 
+All information is preserved in the returned
+`tibble::tibble` object, which is derived from `data.frame`.
+
 ```{r}
-cs.hour.file <- 
+cs_hour.file <- 
   system.file("extdata", "cr6-hour.dat", 
               package = "photobiologyInOut", mustWork = TRUE)
-hour.dat <- read_csi_dat(file = cs.hour.file)
+hour.dat <- read_csi_dat(file = cs_hour.file)
 ggplot(hour.dat, aes(TIMESTAMP, PAR_Den_Avg)) + geom_line()
+```
+
+### YoctoPuce
+
+[Yocto Puce Sarl](http://www.yoctopuce.com/) sells numerous different USB modules. Those capable of data
+input can log the data to memory and these data can be downloaded as a CSV
+file. These files can be easily read into R but function `read_yoctopuce_csv()` makes this even simpler.
+
+```{r}
+yoctopuce_hour.file <- 
+  system.file("extdata", "yoctopuce-data.csv", 
+              package = "photobiologyInOut", mustWork = TRUE)
+```
+
+Executing the statement below displays the 10 top lines of the CSV file as is, one character string per line.
+
+```{r, eval=FALSE}
+# not run
+read_lines(yoctopuce_hour.file, n_max = 10)
+```
+
+Here we import and plot the data.
+
+```{r}
+hour.dat <- read_yoctopuce_csv(file = yoctopuce_hour.file)
+ggplot(hour.dat, aes(ISO.time, temperature.avg)) + geom_line()
 ```
 
 ## Output from simulation models
@@ -436,6 +471,8 @@ Functions for importing simulated spectral data.
 | R function             | Simulation model       | Version           | `class` of value |
 |:-----------------------|:-----------------------|:------------------|:-----------------|
 | read_tuv_usrout()    | TUV (S. Madronich)     | version 5.0       | source_spct     |
+| read_tuv_usrout2mspct()    | TUV (S. Madronich)     | version 5.0       | source_mspct     |
+| read_qtuv_txt()    | TUV (S. Madronich)     | version 5.2       | source_spct     |
 | read_uvspec_disort() | libRadtran             | irradiance        | source_spct     |
 | read_uvspec_vesa()   | (T. & V. Kotilainen)   | irradiance        | source_spct     |
 | read_fmi_cum()       | (A. Lindfors)          | daily cumulated   | source_spct     |
@@ -447,7 +484,7 @@ The output from the TUV model can be imported either by editing it before
 import, or by making a simple edit to the output routine of TUV. This function
 is known to work with TUV version 5.0 output. The output from TUV can contain
 a variable number of spectra in ''parallel'' columns, which are _melted_
-into a single column, with a factor with letter as levels, a numeric variable
+into a single column, with a factor with letters as levels, a numeric variable
 with the zenith angle and a POSIXct column with times. A date needs to be
 always supplied as the output file from TUV has only time of day information.
 
@@ -478,12 +515,35 @@ tuv.mspct <- subset2mspct(tuv.spct)
 tuv.mspct
 ```
 
-With the default of `lubridate::today()` for date times are 'mapped' to
+A file can be directly read into a collection using `read_tuv_usrout2mspct()`
+which is a simple wrapper.
+
+With the default of `lubridate::today()` date times are 'mapped' to
 the current local date using the time zone of the computer as visible to R.
 
 ```{r}
 tuv_nd.spct <- read_tuv_usrout(file = tuv.file)
 tuv_nd.spct
+```
+
+### Quick TUV calculator
+
+The files output by the online calculator based on the TUV model, contain at
+most one spectrum, and arguments to only some parameters can be set by users.
+However, it is convenient to use when we only need a few simple simulations.
+
+Function `read_qtuv_txt()` can extract spectra and the corresponding metadata
+from these files. These files do contain date time information and geolocation
+data when they are supplied as arguments to the calculator interface, otherwise
+only zenith angle is available.
+
+```{r}
+qtuv.file <- 
+  system.file("extdata", "qtuv.txt", 
+              package = "photobiologyInOut", mustWork = TRUE)
+qtuv.spct <- read_qtuv_txt(file = qtuv.file)
+summary(qtuv.spct)
+qtuv.spct
 ```
 
 ### libRadtran

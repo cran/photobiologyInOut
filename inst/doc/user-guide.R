@@ -7,7 +7,7 @@ options(replace.assign = TRUE, width = 55,
         warnPartialMatchDollar = FALSE,
         warnPartialMatchArgs = FALSE)
 
-## ---- example-0-hiden, eval=TRUE, include=FALSE------
+## ---- example-0-hiden, eval=TRUE, message=FALSE------
 # setting TZ may be needed in some geographic locations as some Windows TZ 
 # strings are not recognized by all versions of R
 Sys.setenv(TZ = 'UTC')
@@ -21,24 +21,6 @@ library(hyperSpec)
 library(colorSpec)
 library(pavo)
 library(readr)
-
-## ---- own-set-up, echo=FALSE, include=FALSE----------
-my_version <- packageVersion("photobiologyInOut")
-
-## ---- example-0-hiden, eval=FALSE, include=TRUE------
-#  # setting TZ may be needed in some geographic locations as some Windows TZ
-#  # strings are not recognized by all versions of R
-#  Sys.setenv(TZ = 'UTC')
-#  library(photobiology)
-#  library(photobiologyWavebands)
-#  library(photobiologyInOut)
-#  library(lubridate)
-#  library(ggplot2)
-#  library(ggspectra)
-#  library(hyperSpec)
-#  library(colorSpec)
-#  library(pavo)
-#  library(readr)
 
 ## ----------------------------------------------------
 options(tibble.print_max = 5,
@@ -143,15 +125,34 @@ plot(licor.spct)
 cs.day.file <- 
   system.file("extdata", "cr6-day.dat", 
               package = "photobiologyInOut", mustWork = TRUE)
+
+## ---- eval=FALSE-------------------------------------
+#  # not run
+#  read_lines(yoctopuce_hour.file, n_max = 10)
+
+## ----------------------------------------------------
 day.dat <- read_csi_dat(file = cs.day.file)
 day.dat
 
 ## ----------------------------------------------------
-cs.hour.file <- 
+cs_hour.file <- 
   system.file("extdata", "cr6-hour.dat", 
               package = "photobiologyInOut", mustWork = TRUE)
-hour.dat <- read_csi_dat(file = cs.hour.file)
+hour.dat <- read_csi_dat(file = cs_hour.file)
 ggplot(hour.dat, aes(TIMESTAMP, PAR_Den_Avg)) + geom_line()
+
+## ----------------------------------------------------
+yoctopuce_hour.file <- 
+  system.file("extdata", "yoctopuce-data.csv", 
+              package = "photobiologyInOut", mustWork = TRUE)
+
+## ---- eval=FALSE-------------------------------------
+#  # not run
+#  read_lines(yoctopuce_hour.file, n_max = 10)
+
+## ----------------------------------------------------
+hour.dat <- read_yoctopuce_csv(file = yoctopuce_hour.file)
+ggplot(hour.dat, aes(ISO.time, temperature.avg)) + geom_line()
 
 ## ----------------------------------------------------
 tuv.file <- 
@@ -173,6 +174,14 @@ tuv.mspct
 ## ----------------------------------------------------
 tuv_nd.spct <- read_tuv_usrout(file = tuv.file)
 tuv_nd.spct
+
+## ----------------------------------------------------
+qtuv.file <- 
+  system.file("extdata", "qtuv.txt", 
+              package = "photobiologyInOut", mustWork = TRUE)
+qtuv.spct <- read_qtuv_txt(file = qtuv.file)
+summary(qtuv.spct)
+qtuv.spct
 
 ## ----------------------------------------------------
 uvspec.2col.file <- 

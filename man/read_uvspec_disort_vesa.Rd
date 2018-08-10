@@ -4,9 +4,9 @@
 \alias{read_uvspec_disort_vesa}
 \title{Read libRadtran's uvspec output file from batch job.}
 \usage{
-read_uvspec_disort_vesa(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale(), multiplier = 1e-06,
-  simplify = TRUE)
+read_uvspec_disort_vesa(file, date = NULL, geocode = NULL,
+  label = NULL, tz = NULL, locale = readr::default_locale(),
+  multiplier = 1e-06, simplify = TRUE)
 }
 \arguments{
 \item{file}{character string}

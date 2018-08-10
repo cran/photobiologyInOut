@@ -1,0 +1,52 @@
+ 
+ 
+ 
+ INPUT PARAMETERS:
+
+ RADIATION SCHEME:             2  streams
+
+ w-grid:          501    280.0000        780.0000    
+ z-grid:           82    3.000000        80.00000    
+  measurement point: index            4  altitude=    5.000000    
+ idate =      20180801  esfact(1) =    0.9707147    
+ air temperature: USSA, 1976
+ air concentrations: USSA, 1976
+ ozone profile: USSA, 1976
+ DATAE1/SUN/susim_hi.flx
+ DATAE1/SUN/atlas3_1994_317_a.dat        
+ DATAE1/SUN/neckel.flx                   
+ DATAE1/SUN/sao2010.solref.converted     
+ aerosols:  Elterman (1968) continental profile
+ lat=    60.00000      long=   -15.00000      ut=    12.00000    
+ solar zenith angle =     43.71512    
+ 
+WEIGHTED IRRADIANCES (W m-2)
+ (with normalized action spectra)
+
+   1 UV-B, 280-315 nm                          2.296E+00
+   2 UV-B*, 280-320 nm                         3.774E+00
+   3 UV-A, 315-400 nm                          4.778E+01
+   4 vis+, > 400 nm                            4.135E+02
+   5 Gaussian, 305 nm, 10 nm FWHM              1.082E-01
+   6 Gaussian, 320 nm, 10 nm FWHM              3.408E-01
+   7 Gaussian, 340 nm, 10 nm FWHM              5.180E-01
+   8 Gaussian, 380 nm, 10 nm FWHM              6.408E-01
+   9 RB Meter, model 501                       7.483E-01
+  10 Eppley UV Photometer                      4.306E+01
+  11 PAR, 400-700 nm, umol m-2 s-1             1.565E+03
+  12 Exponential decay, 14 nm/10               8.650E-01
+  13 DNA damage, in vitro (Setlow, 1974)       4.077E-01
+  14 SCUP-mice (de Gruijl et al., 1993)        5.768E-01
+  15 SCUP-human (de Gruijl and van der Leun,   8.335E-01
+  16 CIE human erythema (McKinlay and Diffey,  3.864E-01
+  17 UV index (WMO, 1994)                      1.546E+01
+  18 Erythema, humans (Anders et al., 1995)    1.876E-03
+  19 Occupational TLV (ACGIH, 1992)            1.205E-01
+  20 Phytoplankton (Boucher et al., 1994)      5.852E-03
+  21 Phytoplankton, phaeo (Cullen et al., 199  1.613E-03
+  22 Phytoplankton, proro (Cullen et al., 199  1.647E-03
+  23 Cataract, pig (Oriowo et al., 2001)       1.111E+00
+  24 Plant damage (Caldwell, 1971)             5.607E-01
+  25 Plant damage (Flint & Caldwell, 2003)     1.161E+00
+  26 Previtamin-D3 (CIE 2006)                  7.723E-01
+  27 NMSC (CIE 2006)                           8.114E-01

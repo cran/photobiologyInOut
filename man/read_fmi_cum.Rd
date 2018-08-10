@@ -5,9 +5,9 @@
 \alias{read_m_fmi_cum}
 \title{Read daily cummulated solar spectrum data file(s).}
 \usage{
-read_fmi_cum(file, date = NULL, geocode = NULL, label = NULL, tz = NULL,
-  locale = readr::default_locale(), .skip = 3, .n_max = -1,
-  .date.f = lubridate::ymd)
+read_fmi_cum(file, date = NULL, geocode = NULL, label = NULL,
+  tz = NULL, locale = readr::default_locale(), .skip = 3,
+  .n_max = -1, .date.f = lubridate::ymd)
 
 read_m_fmi_cum(files, date = NULL, geocode = NULL, label = NULL,
   tz = NULL, .skip = 3, .n_max = -1, .date.f = lubridate::ymd)

@@ -9,8 +9,8 @@ read_licor_prn(file, date = NULL, geocode = NULL, label = NULL,
   tz = NULL, locale = readr::default_locale(), s.qty = NULL)
 
 read_m_licor_prn(files, date = NULL, geocode = NULL, label = NULL,
-  tz = Sys.timezone(location = FALSE), locale = readr::default_locale(),
-  s.qty = NULL)
+  tz = Sys.timezone(location = FALSE),
+  locale = readr::default_locale(), s.qty = NULL)
 }
 \arguments{
 \item{file}{Path to file as a character string.}

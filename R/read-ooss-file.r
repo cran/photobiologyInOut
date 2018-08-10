@@ -61,6 +61,7 @@ read_oo_ssirrad <- function(file,
     col_names = c("w.length", "s.e.irrad"),
     skip = 17,
     n_max = npixels,
+    col_types = readr::cols(),
     locale = locale
   )
   
@@ -80,6 +81,7 @@ read_oo_ssirrad <- function(file,
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhatMeasured(z, label)
+  attr(z, "file.header", file_header)
   z
 }
 
@@ -126,6 +128,7 @@ read_oo_ssdata<- function(file,
     col_names = c("w.length", "counts"),
     skip = 17,
     n_max = npixels,
+    col_types = readr::cols(),
     locale = locale
   )
   
@@ -142,6 +145,7 @@ read_oo_ssdata<- function(file,
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhatMeasured(z, label)
+  attr(z, "file.header", file_header)
   z
 }
 
