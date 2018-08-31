@@ -6,8 +6,17 @@ Add a generic reader of files into a collection of spectra.
 Add test cases for new functions for exchange of foreign data (currently tested 
 through examples in vignette).
 
-photobiologyInOut 0.4.15
-========================
+photobiologyInOut 0.4.16 (2018-08-30)
+=====================================
+
+Revise read_fmi_dat() to extract date from file header and save the file header
+to the spectral object as a comment.
+Add read_fmi2mspct() for reading spectral irradiance.
+Bug fix: decoding of dates in fmi import functions for daily data not always 
+returned POSIXct objects triggering errors in downstream code.
+
+photobiologyInOut 0.4.15 (2018-08-10)
+=====================================
 
 Add read_yoctopuce_csv() to read CSV files from YoctoPuce modules.
 Add read_qtuv_txt() to read spectral data output files from the on-line
@@ -18,8 +27,8 @@ the setting of "where.measured" attribute.
 Revise all read functions so that they store the header of the imported file as
 a vector of character strings to attribute "file.header".
 
-photobiologyInOut 0.4.14
-========================
+photobiologyInOut 0.4.14 (2018-04-03)
+=====================================
 
 Implement class coercion methods ("as." methods) to complement earlier functions,
 tracking 'photobiology' 0.9.20.

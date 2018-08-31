@@ -10,7 +10,8 @@ read_csi_dat(file, geocode = NULL, label = NULL, data_skip = 0,
 \arguments{
 \item{file}{Path to file as a character string.}
 
-\item{geocode}{A data frame with columns \code{lon} and \code{lat}.}
+\item{geocode}{A data frame with columns \code{lon} and \code{lat} used to
+set attribute \code{"where.measured"}.}
 
 \item{label}{character string, but if \code{NULL} the value of \code{file} is
 used, and if \code{NA} the "what.measured" attribute is not set.}

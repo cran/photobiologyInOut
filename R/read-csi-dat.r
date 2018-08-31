@@ -5,7 +5,8 @@
 #' header. Uses the comment attribute to store the metadata.
 #' 
 #' @param file Path to file as a character string.
-#' @param geocode A data frame with columns \code{lon} and \code{lat}.
+#' @param geocode A data frame with columns \code{lon} and \code{lat} used to
+#'   set attribute \code{"where.measured"}.
 #' @param label character string, but if \code{NULL} the value of \code{file} is
 #'   used, and if \code{NA} the "what.measured" attribute is not set.
 #' @param data_skip integer Number of records (rows) to skip from the actual
@@ -31,8 +32,14 @@ read_csi_dat <- function(file,
                          data_skip = 0, 
                          n_max = Inf, 
                          locale = readr::default_locale()) {
-  label <- paste("File:", basename(file), label)
 
+  label.file <- paste("File: ", basename(file), sep = "")
+  if (is.null(label)) {
+    label <- label.file
+  } else if (!is.na(label)) {
+    label <- paste(label.file, label, sep = "\n")
+  }
+  
   file_header <- readr::read_lines(file, n_max = 4, skip = 0)
   head_line <-  scan(text = file_header[1L], what = character(), sep = ",")
   head_line = paste(head_line, collapse = "\t")
@@ -53,7 +60,7 @@ read_csi_dat <- function(file,
                     col_names = col_names,
                     col_types = readr::cols())
 
-  attr(z, "file.header", file_header)
+  attr(z, "file.header") <- file_header
   comment(z) <- comment.txt
   z
 }

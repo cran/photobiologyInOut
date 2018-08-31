@@ -1,6 +1,6 @@
 ## ---- setup, include=FALSE, cache=FALSE--------------
 library(knitr)
-opts_chunk$set(fig.path='figure/pos-', fig.align='center', fig.show='hold',
+opts_chunk$set(fig.align='center', fig.show='hold',
                fig.width=7, fig.height=6, size="footnotesize")
 options(replace.assign = TRUE, width = 55,
         warnPartialMatchAttr = FALSE,
@@ -262,6 +262,18 @@ class(z2.mspct)
 getWhenMeasured(z2.mspct)
 getWhereMeasured(z2.mspct)
 z2.mspct
+
+## ----------------------------------------------------
+fmi.file <- 
+  system.file("extdata", "2013-05-01.hel", 
+              package = "photobiologyInOut", mustWork = TRUE)
+z3.mspct <- read_fmi2mspct(fmi.file)
+class(z3.mspct)[1:2]
+getWhenMeasured(z3.mspct[[1]])
+length(z3.mspct)
+names(z3.mspct)
+getWhenMeasured(z3.mspct[[1]])
+getWhatMeasured(z3.mspct[[1]])
 
 ## ----------------------------------------------------
 fred.file <- 

@@ -1,0 +1,7 @@
+# this file is for use in tests
+# of functions that expect something different
+# but should not crash
+2
+1 2
+1 2 456
+abc

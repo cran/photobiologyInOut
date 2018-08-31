@@ -18,10 +18,12 @@ read_tuv_usrout2mspct(file, ozone.du = NULL, date = lubridate::today(),
 
 \item{ozone.du}{numeric Ozone column in Dobson units.}
 
-\item{date}{a \code{POSIXct} object, but if \code{NULL} the date stored in
-file is used, and if \code{NA} no date variable is added}
+\item{date}{a \code{POSIXct} object to use to set the \code{"when.measured"}
+attribute. If \code{NULL}, the default, the date is extracted from the
+file header.}
 
-\item{geocode}{A data frame with columns \code{lon} and \code{lat}.}
+\item{geocode}{A data frame with columns \code{lon} and \code{lat} used to
+set attribute \code{"where.measured"}.}
 
 \item{label}{character string, but if \code{NULL} the value of \code{file} is
 used, and if \code{NA} the "what.measured" attribute is not set.}

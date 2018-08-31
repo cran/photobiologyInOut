@@ -27,7 +27,7 @@ It should be remembered, though, that this package has been developed based on t
 
 ```{r, setup, include=FALSE, cache=FALSE}
 library(knitr)
-opts_chunk$set(fig.path='figure/pos-', fig.align='center', fig.show='hold',
+opts_chunk$set(fig.align='center', fig.show='hold',
                fig.width=7, fig.height=6, size="footnotesize")
 options(replace.assign = TRUE, width = 55,
         warnPartialMatchAttr = FALSE,
@@ -667,14 +667,18 @@ print(lbr.multi.spct, n = 5)
 
 ### Scripts developed by Anders Lindfors
 
-Functions `read_fmi_cum` and `read_m_fmi_cum` can be used to read text files
-output by a simulation model
-of solar spectral irradiance. The model was developed at the Finnish
-Meteorological Institute (FMI) by Dr.\ Anders Lindfors and collaborators and uses
-functions from 'libRadtran' as its engine, but saves some additional metadata to the
-output file.
+A model for the simulation of the solar spectrum was developed at the Finnish
+Meteorological Institute (FMI) by Dr.\ Anders Lindfors and collaborators and
+uses functions from 'libRadtran' as its engine, but saves some additional
+metadata to the output file. The main addition is related to the estimation
+of the effect of clouds.
 
-The first few lines of the file look like this:
+Functions `read_fmi_cum()` and `read_m_fmi_cum()` can be used to read text files
+output as daily integrated spectral irradiance. In other words cummulated
+daily data. Function `read_fmi2mspct()` reads spectral irradiance, extracting
+multiple sequential spectra from a single file.
+
+The first few lines of the files with cummulated data look like this:
 ```
 # date number_of_scans start_scan stop_scan max_time_gap max_sza_gap warnings
 # 20140821 15 3:30:00 17:30:00 60 7.4
@@ -736,6 +740,40 @@ class(z2.mspct)
 getWhenMeasured(z2.mspct)
 getWhereMeasured(z2.mspct)
 z2.mspct
+```
+
+Files with spectral irradiance contain data for multiple spectra stored as
+text. Each spectrum is delimited at the top by a header line with
+metadata and at the end by `"end"` in a line by itself.
+
+The first few and last lines for each spectrum look like this:
+```
+# 20130501 3:30:00 3:30:00 82.656
+210.00 2900 0
+210.00 2910 0
+210.00 2920 0
+...
+210.00 8480 103.73018
+210.00 8490 104.63495
+210.00 8500 90.18384
+end
+...
+```
+The number of spectra, range of wavelengths and the length of each spectrum
+can vary. Function `read_fmi2mspct()` uses matching to the delimiters to read
+all the data in all cases.
+
+```{r}
+fmi.file <- 
+  system.file("extdata", "2013-05-01.hel", 
+              package = "photobiologyInOut", mustWork = TRUE)
+z3.mspct <- read_fmi2mspct(fmi.file)
+class(z3.mspct)[1:2]
+getWhenMeasured(z3.mspct[[1]])
+length(z3.mspct)
+names(z3.mspct)
+getWhenMeasured(z3.mspct[[1]])
+getWhatMeasured(z3.mspct[[1]])
 ```
 
 ## Online public repositories of spectral data

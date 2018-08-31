@@ -42,7 +42,7 @@ test_that("read Quick TUV", {
   expect_true(all(is.na(getWhereMeasured(qtuv.spct))))
   expect_named(getWhereMeasured(qtuv.spct), c("lon", "lat"))
   expect_equal(getWhatMeasured(qtuv.spct), 
-               "Quick TUV spectral simulation File: qtuv.txt ")
+               "Quick TUV spectral simulation File: qtuv.txt")
   expect_equal(getTimeUnit(qtuv.spct), "second")
   expect_equal(length(comment(qtuv.spct)), 1L)
 
@@ -82,7 +82,7 @@ test_that("read Quick TUV", {
   expect_equal(getWhereMeasured(qtuv_long.spct), 
                data.frame(lon = -15, lat = 60))
   expect_equal(getWhatMeasured(qtuv_long.spct), 
-               "Quick TUV spectral simulation File: qtuv-long.txt ")
+               "Quick TUV spectral simulation File: qtuv-long.txt")
   expect_equal(getTimeUnit(qtuv_long.spct), "second")
   expect_equal(length(comment(qtuv_long.spct)), 1)
   
@@ -142,7 +142,7 @@ test_that("read Quick TUV", {
   expect_true(all(getWhereMeasured(qtuv_spct_summ.spct) == 0))
   expect_named(getWhereMeasured(qtuv_spct_summ.spct), c("lon", "lat"))
   expect_equal(getWhatMeasured(qtuv_spct_summ.spct), 
-               "Quick TUV spectral simulation File: qtuv-spct-and-summaries.txt ")
+               "Quick TUV spectral simulation File: qtuv-spct-and-summaries.txt")
   expect_equal(getTimeUnit(qtuv_spct_summ.spct), "second")
   expect_equal(length(comment(qtuv_spct_summ.spct)), 1L)
   
@@ -176,7 +176,7 @@ test_that("read Quick TUV", {
                format(ymd("2015-06-30")))
   expect_true(all(is.na(getWhereMeasured(qtuv_html.spct))))
   expect_equal(getWhatMeasured(qtuv_html.spct), 
-               "Quick TUV spectral simulation File: tuv-azimuth-00-O3-300.html ")
+               "Quick TUV spectral simulation File: tuv-azimuth-00-O3-300.html")
   expect_equal(getTimeUnit(qtuv_html.spct), "second")
   expect_equal(length(comment(qtuv_html.spct)), 1L)
   
@@ -210,7 +210,7 @@ test_that("read TUV", {
   expect_equal(length(getWhenMeasured(usrout.spct)), 8L)
   expect_equal(getWhereMeasured(usrout.spct), 
                data.frame(lon = -15, lat = 60))
-  expect_equal(getWhatMeasured(usrout.spct), "TUV spectral simulation File: usrout.txt ")
+  expect_equal(getWhatMeasured(usrout.spct), "TUV spectral simulation File: usrout.txt")
   expect_equal(length(comment(usrout.spct)), 1L)
   
   
@@ -246,7 +246,7 @@ test_that("read TUV", {
   expect_equal(length(getWhenMeasured(usrout2.spct)), 13L)
   expect_equal(getWhereMeasured(usrout2.spct), 
                data.frame(lon = -15, lat = 60))
-  expect_equal(getWhatMeasured(usrout2.spct), "TUV spectral simulation File: usrout2.txt ")
+  expect_equal(getWhatMeasured(usrout2.spct), "TUV spectral simulation File: usrout2.txt")
   expect_equal(length(comment(usrout.spct)), 1L)
 })
 
@@ -280,7 +280,7 @@ test_that("read TUV to mspct", {
   # expect_equal(length(getWhenMeasured(usrout.mspct[[1]])), 1L)
   expect_equal(getWhereMeasured(usrout.mspct[[1]]), 
                data.frame(lon = -15, lat = 60))
-  expect_equal(getWhatMeasured(usrout.mspct[[1]]), "TUV spectral simulation File: usrout.txt ")
+  expect_equal(getWhatMeasured(usrout.mspct[[1]]), "TUV spectral simulation File: usrout.txt")
   expect_equal(length(comment(usrout.mspct[[1]])), 1L)
   expect_equal(length(comment(usrout.mspct)), 0L)
   
@@ -321,6 +321,6 @@ test_that("read TUV to mspct", {
   expect_equal(getWhereMeasured(usrout2.mspct[[1]]), 
                data.frame(lon = -15, lat = 60))
   expect_equal(getWhatMeasured(usrout2.mspct[[1]]),
-               "TUV spectral simulation File: usrout2.txt ")
+               "TUV spectral simulation File: usrout2.txt")
   expect_equal(length(comment(usrout2.mspct[[1]])), 1L)
 })

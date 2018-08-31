@@ -5,9 +5,11 @@
 #' attribute "what.measured". The header of the file is preserved as a comment.
 #' 
 #' @param file character string
-#' @param date a \code{POSIXct} object, but if \code{NULL} the date stored in
-#'   file is used, and if \code{NA} no date variable is added
-#' @param geocode A data frame with columns \code{lon} and \code{lat}.
+#' @param date a \code{POSIXct} object to use to set the \code{"when.measured"}
+#'   attribute. If \code{NULL}, the default, the date is extracted from the
+#'   file header.
+#' @param geocode A data frame with columns \code{lon} and \code{lat} used to
+#'   set attribute \code{"where.measured"}.
 #' @param label character string, but if \code{NULL} the value of \code{file} is
 #'   used, and if \code{NA} the "what.measured" attribute is not set.
 #' @param tz character Ignored.
@@ -41,6 +43,14 @@ read_ASTER_txt <- function(file,
   file_header <- scan(file = file, nlines = 26, 
                       skip = 0, what = "character", sep = "\n")
   
+  label.file <- paste("File: ", basename(file), sep = "")
+  label.file <- paste(file_header[[1]], label.file, sep = "\n") 
+  if (is.null(label)) {
+    label <- label.file
+  } else if (!is.na(label)) {
+    label <- paste(label.file, label, sep = "\n")
+  }
+ 
   z <- utils::read.table(
     file = file,
     col.names = c("w.length", "Rpc"),
@@ -59,9 +69,8 @@ read_ASTER_txt <- function(file,
 
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
-  label <- paste(sub("Name: ", "", file_header[[1]]), label, sep = "\n") 
   photobiology::setWhatMeasured(z, label)
-  attr(z, "file.header", file_header)
+  attr(z, "file.header") <- file_header
   z
 }
 

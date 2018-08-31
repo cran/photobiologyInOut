@@ -6,26 +6,28 @@
 \title{Read daily cummulated solar spectrum data file(s).}
 \usage{
 read_fmi_cum(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale(), .skip = 3,
+  tz = "UTC", locale = readr::default_locale(), .skip = 3,
   .n_max = -1, .date.f = lubridate::ymd)
 
 read_m_fmi_cum(files, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, .skip = 3, .n_max = -1, .date.f = lubridate::ymd)
+  tz = "UTC", .skip = 3, .n_max = -1, .date.f = lubridate::ymd)
 }
 \arguments{
 \item{file}{Either a path to a file, a connection, or literal data (either a
 single string or a raw vector).}
 
-\item{date}{a \code{POSIXct} object, but if \code{NULL} the date stored in
-file is used, and if \code{NA} no date variable is added}
+\item{date}{a \code{POSIXct} object to use to set the \code{"when.measured"}
+attribute. If \code{NULL}, the default, the date is extracted from the
+file header.}
 
-\item{geocode}{A data frame with columns \code{lon} and \code{lat}.}
+\item{geocode}{A data frame with columns \code{lon} and \code{lat} used to
+set attribute \code{"where.measured"}.}
 
 \item{label}{character string, but if \code{NULL} the value of \code{file} is
 used, and if \code{NA} the "what.measured" attribute is not set.}
 
-\item{tz}{character Time zone used for interpreting times saved in the
-file header.}
+\item{tz}{character Time zone used for interpreting times saved in the file
+header.}
 
 \item{locale}{The locale controls defaults that vary from place to place. The
 default locale is US-centric (like R), but you can use
@@ -33,11 +35,12 @@ default locale is US-centric (like R), but you can use
 like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
 
-\item{.skip}{Number of lines to skip before reading data.}
+\item{.skip}{Number of lines to skip before reading data---i.e. the number of
+rows in the header.}
 
 \item{.n_max}{Maximum number of records to read.}
 
-\item{.date.f}{A function for extracting a date-time from the file name
+\item{.date.f}{A function for extracting a date-time from the file header
 passed as charecter sring to its first argument and which returns a
 \code{POSIXct} object.}
 
@@ -47,17 +50,25 @@ described for argument \code{file}.}
 \value{
 \code{read_fmi_cum()} returns a \code{source_spct} object with
   \code{time.unit} attribute set to \code{"day"} and \code{when.measured}
-  attribute set to the date-time extracted from the file name.
+  attribute set to the date-time extracted from the header at the top of
+  the read file.
 
-\code{read_m_fmi_cum} returns a collection of \code{source_mspct}.
+\code{read_m_fmi_cum} returns a \code{source_mspct} containing one
+\code{source_spct} object for each one of the multiple files read.
 }
 \description{
 Read one or more cumulated daily spectral irradiance file as output by Anders
-Lindors' model based on libRadTrans. The file naming conventions needed
-are fairly strict, and file name should contain the date in a format
-suitable for decoding by the function suplied as \code{date.f}.
+Lindors' model based on libRadTrans. Dates are read from the file header and
+parsed with the function suplied as \code{date.f}.
 }
 \note{
 See \code{\link[readr]{read_table}} for details of acceptable values
- for \code{file}.
+  for \code{file}.
+}
+\examples{
+
+file.name <- system.file("extdata", "2014-08-21_cum.hel", 
+                         package = "photobiologyInOut", mustWork = TRUE)
+fmi.spct <- read_fmi_cum(file = file.name)
+  
 }

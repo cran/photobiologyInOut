@@ -5,9 +5,11 @@
 #' and then imports wavelengths and spectral energy irradiance values. 
 #'
 #' @param file character string
-#' @param date a \code{POSIXct} object, but if \code{NULL} the date stored in
-#'   file is used, and if \code{NA} no date variable is added
-#' @param geocode A data frame with columns \code{lon} and \code{lat}.
+#' @param date a \code{POSIXct} object to use to set the \code{"when.measured"}
+#'   attribute. If \code{NULL}, the default, the date is extracted from the
+#'   file header.
+#' @param geocode A data frame with columns \code{lon} and \code{lat} used to
+#'   set attribute \code{"where.measured"}.
 #' @param label character string, but if \code{NULL} the value of \code{file} is
 #'   used, and if \code{NA} the "what.measured" attribute is not set.
 #' @param tz character Time zone used for interpreting times saved in the
@@ -33,7 +35,12 @@ read_macam_dta <- function(file,
     tz <- locale$tz
   }
   
-  label <- paste("File:", basename(file), label)
+  label.file <- paste("File: ", basename(file), sep = "")
+  if (is.null(label)) {
+    label <- label.file
+  } else if (!is.na(label)) {
+    label <- paste(label.file, label, sep = "\n")
+  }
   
   file_header <- scan(file = file, nlines = 3, skip = 0, what = "character")
   if (is.null(date)) {
@@ -60,6 +67,6 @@ read_macam_dta <- function(file,
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhatMeasured(z, label)
-  attr(z, "file.header", file_header)
+  attr(z, "file.header") <- file_header
   z
 }
