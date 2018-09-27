@@ -2,11 +2,16 @@
 % Please edit documentation in R/read-oojaz-file.r
 \name{read_oo_jazirrad}
 \alias{read_oo_jazirrad}
+\alias{read_oo_jazpc}
 \alias{read_oo_jazdata}
-\title{Read Absolute Irradiance File Saved by Ocean Optics' Jaz spectrometer.}
+\title{Read Files Saved by Ocean Optics' Jaz spectrometer.}
 \usage{
 read_oo_jazirrad(file, date = NULL, geocode = NULL, label = NULL,
   tz = NULL, locale = readr::default_locale())
+
+read_oo_jazpc(file, qty.in = "Tpc", Tfr.type = c("total", "internal"),
+  Rfr.type = c("total", "specular"), date = NULL, geocode = NULL,
+  label = NULL, tz = NULL, locale = readr::default_locale())
 
 read_oo_jazdata(file, date = NULL, geocode = NULL, label = NULL,
   tz = NULL, locale = readr::default_locale())
@@ -32,22 +37,35 @@ default locale is US-centric (like R), but you can use
 \code{\link[readr]{locale}} to create your own locale that controls things
 like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
+
+\item{qty.in}{character string, one of "Tpc" (spectral transmittance, \%), "A"
+(spectral absorbance), or "Rpc" (spectral reflectance, \%).}
+
+\item{Tfr.type}{character string, either "total" or "internal".}
+
+\item{Rfr.type}{character string, either "total" or "specular".}
 }
 \value{
-A source_spct object.
-
-A raw_spct object.
+A source_spct object, a filter_spct object, a reflector_spct object
+  or a raw_spct object.
 }
 \description{
-Reads and parses the header of a processed data file as output by
-Jaz instruments to extract the whole header remark field The time field is
-retrieved.
+Reads and parses the header of processed data text files output by
+Jaz instruments extracting the spectral data from the body of the file 
+and the metadata, including time and date of measurement from the header.
+Jaz modular spectrometers are manufactured by Ocean Optics, Dunedin, Florida,
+USA.
+}
+\details{
+Function \code{read_oo_jazirrad} can read processed irradiance
+output files. Function \code{read_oo_jazpc} can read processed transmittance
+and reflectance output files (expressed as \%s). Function 
+\code{read_oo_jazdata} can read raw-counts data.
 }
 \note{
 Although the parameter is called \code{date} a date time is accepted 
   and expected. Time resolution is 1 s.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{http://oceanoptics.com/}
+\url{https://www.r4photobiology.info} \url{https://oceanoptics.com/}
 }
-\keyword{misc}

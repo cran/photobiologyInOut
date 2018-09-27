@@ -31,7 +31,7 @@ formats vary.**
 
 **PLEASE, BE VERY CAREFUL WHEN USING THIS PACKAGE. DO CHECK THAT UNITS
 USED IN THE IMPORTED FILE ARE THOSE EXPECTED BY THESE FUNCTIONS AND THAT
-THE VALUES ARE AS EXPECTED\!**
+THE VALUES IN THE RETRIEVED DATA ARE THOSE EXPECTED\!**
 
 *If they do not work with your files, they hopefully will be useful as
 examples for developing your own functions. If you develop new functions

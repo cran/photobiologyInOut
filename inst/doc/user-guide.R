@@ -302,7 +302,7 @@ plot(aster.spct)
 ## ----------------------------------------------------
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")
 class(z2.hspct)
-plot(z2.hspct)
+# plot(z2.hspct)
 
 ## ----------------------------------------------------
 class(laser)
@@ -323,6 +323,7 @@ ggplot(laser.mspct[[1]]) +
   stat_peaks(geom = "text", vjust = -1, label.fmt = "%.6g nm", color = "red")
 
 ## ----------------------------------------------------
+# bug that needs to be fixed
 fluorescent.mspct <- colorSpec2mspct(Fs.5nm)
 print(fluorescent.mspct, n = 3, n.members = 3)
 

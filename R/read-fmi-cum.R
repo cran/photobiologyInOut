@@ -189,6 +189,7 @@ read_fmi2mspct <- function(file,
     when.measured <- 
       lubridate::ymd(stringr::word(header, start = 2L, end = 2L), tz = tz) +
       lubridate::hms(stringr::word(header, start = 3L, end = 3L))
+    when.measured <- as.POSIXct(when.measured)
     zenith.angle <- as.numeric(stringr::word(header, start = 5L, end = 5L))
     
     z <-

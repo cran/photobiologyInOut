@@ -22,7 +22,7 @@
 #'   
 #' @return A source_spct object.
 #' @export
-#' @references \url{http://www.r4photobiology.info} \url{http://www.avantes.com/}
+#' @references \url{https://www.r4photobiology.info} \url{https://www.avantes.com/}
 #' @keywords misc
 #' 
 read_avaspec_csv <- function(file,

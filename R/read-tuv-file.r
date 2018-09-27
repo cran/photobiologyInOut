@@ -22,7 +22,7 @@
 #' @return a source_spct object obtained by 'melting' the TUV file, and adding a
 #'   factor \code{spct.idx}, and variables \code{zenith.angle} and \code{date}.
 #'
-#' @references \url{http://www.r4photobiology.info}
+#' @references \url{https://www.r4photobiology.info}
 #'   \url{https://www2.acom.ucar.edu/modeling/tuv-download}
 #' @keywords misc
 #'
@@ -63,6 +63,7 @@ read_tuv_usrout <- function(file,
   lubridate::hour(date) <- trunc(hours) 
   lubridate::minute(date) <- trunc(minutes)
   lubridate::second(date) <- trunc(seconds)
+  date <- as.POSIXct(date)
   
   angles <- scan(text = sub(pattern = "sza = ", replacement = "", 
                             x = file_header[5], fixed = TRUE))
@@ -135,7 +136,7 @@ read_tuv_usrout2mspct <- function(file,
 #'   intervals in the Quick TUV output file, and adding variables \code{zenith.angle} and
 #'   \code{date}.
 #'   
-#' @references \url{http://www.r4photobiology.info} 
+#' @references \url{https://www.r4photobiology.info} 
 #' \url{http://cprm.acom.ucar.edu/Models/TUV/Interactive_TUV/}
 #' 
 #' @note The ozone column value used in the simulation cannot be retrieved from
@@ -206,7 +207,7 @@ read_qtuv_txt <- function(file,
   date.line <- grep("idate =", file_header)
   temp <- scan(text = file_header[date.line],
                     what = list(NULL, NULL, idate = "", NULL, NULL, esfact = 1))
-  date <- lubridate::ymd(temp[["idate"]])
+  date <- lubridate::ymd(temp[["idate"]], tz = tz)
 #  esfact <- temp[["esfact"]]
   
   # "solar zenith angle = " -> angle. Always present either user supplied or calculated
@@ -247,6 +248,7 @@ read_qtuv_txt <- function(file,
     lubridate::minute(date) <- trunc(minutes)
     lubridate::second(date) <- trunc(seconds)
   }
+  date <- as.POSIXct(date)
   
   # assemple comment
   comment.txt <- paste(gsub(":", "", data.header.line), "\n",

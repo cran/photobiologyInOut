@@ -43,6 +43,6 @@ SpectraSuite to extract the whole header remark field. The time field is
 retrieved and decoded.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{http://oceanoptics.com/}
+\url{https://www.r4photobiology.info} \url{https://oceanoptics.com/}
 }
 \keyword{misc}

@@ -49,7 +49,7 @@ Function \code{read_m_licor_prn()} returns a source_mspct object
 }
 \description{
 Reads and parses the header of a processed data file as output by the PC1800
-program to extract the whole header remark field and also check whether data
+program to extract the whole header remark field and also decode whether data
 is in photon or energy based units. The time field is ignored as it does not
 contain year information. This instrument is no longer being manufactured.
 }
@@ -64,6 +64,6 @@ data, only month, day, and time of day. Because of this, in the current
 version, if \code{NULL} is the argument to date, year is set to 0000.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{http://www.licor.com}
+\url{https://www.r4photobiology.info} \url{https://www.licor.com}
 }
 \keyword{misc}

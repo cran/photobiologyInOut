@@ -20,7 +20,7 @@
 #'   
 #' @return \code{read_csi_dat()} returns a \code{tibble::tibble} object.
 #' @export
-#' @references \url{http://www.r4photobiology.info} \url{http://www.campbellsci.eu/}
+#' @references \url{https://www.r4photobiology.info} \url{https://www.campbellsci.eu/}
 #' 
 #' @note This function is not useful for .DAT and .PRN files from old CSI
 #'   loggers and software. Those were simple files, lacking metadata, which was

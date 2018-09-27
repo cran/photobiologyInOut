@@ -38,6 +38,6 @@ program to extract the time and date fields and a user label if present,
 and then imports wavelengths and spectral energy irradiance values.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{http://www.irradian.co.uk/}
+\url{https://www.r4photobiology.info} \url{http://www.irradian.co.uk/}
 }
 \keyword{misc}

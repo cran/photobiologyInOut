@@ -46,7 +46,7 @@ contains no real-time clock, it seems to default to number of milliseconds
 since the Pi was switched on.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{https://speclib.jpl.nasa.gov/}
+\url{https://www.r4photobiology.info} \url{https://speclib.jpl.nasa.gov/}
 Baldridge, A.; Hook, S.; Grove, C. & Rivera, G. (2009) The ASTER spectral 
 library version 2.0. Remote Sensing of Environment. 113, 711-715
 }

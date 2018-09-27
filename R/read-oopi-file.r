@@ -22,7 +22,7 @@
 #'   
 #' @return A raw_spct object.
 #' @export
-#' @references \url{http://www.r4photobiology.info} \url{http://oceanoptics.com/} \url{https://www.raspberrypi.org/}
+#' @references \url{https://www.r4photobiology.info} \url{https://oceanoptics.com/} \url{https://www.raspberrypi.org/}
 #' 
 #' @note The header in these files has very little information, so the user
 #' needs to supply the number of pixels in the array as well as the date-time.

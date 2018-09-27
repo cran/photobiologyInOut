@@ -44,6 +44,6 @@ program Avaspec and then imports wavelength and spectral irradiance
 values. The file header has little useful metadata information.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{http://www.avantes.com/}
+\url{https://www.r4photobiology.info} \url{https://www.avantes.com/}
 }
 \keyword{misc}

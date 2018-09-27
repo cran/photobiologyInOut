@@ -46,5 +46,5 @@ contains no real-time clock, it seems to default to number of milliseconds
 since the Pi was switched on.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{http://oceanoptics.com/} \url{https://www.raspberrypi.org/}
+\url{https://www.r4photobiology.info} \url{https://oceanoptics.com/} \url{https://www.raspberrypi.org/}
 }

@@ -218,7 +218,7 @@ rspec2mspct <- function(x,
                         spct.data.var = "Rpc", 
                         multiplier = 1,
                         ...) {
-  stopifnot(pavo::is.rspec(x))
+  stopifnot(inherits(x, "rspec"))
   spct.names <- colnames(x)[-1]
   z <- split2mspct(x = x, 
                    member.class = member.class, 
@@ -243,7 +243,6 @@ rspec2spct <- function(x, multiplier = 1, ...) {
   comment(z) <- comment(x[[1]])
   z
 }
-
 
 
 # colorSpec ---------------------------------------------------------------

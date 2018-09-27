@@ -5,7 +5,7 @@ library("readr")
 
 context("read Ocean Optics")
 
-test_that("jazz", {
+test_that("jaz", {
 
   file.name <- 
     system.file("extdata", "spectrum.JazIrrad", 
@@ -61,7 +61,71 @@ test_that("jazz", {
 
 })
 
-test_that("jazz_raw", {
+test_that("jaz_Tpc", {
+  
+  file.name <- 
+    system.file("extdata", "reflectance.jaz", 
+                package = "photobiologyInOut", mustWork = TRUE)
+  # warnings triggered by negative irradiance values in file
+  suppressWarnings(jaz.spct <- 
+                     read_oo_jazpc(file = file.name,
+                                   qty.in = "Rpc",
+                                      tz = "EET"))
+  
+  expect_equal(nrow(jaz.spct), 2048)
+  expect_equal(ncol(jaz.spct), 2)
+  expect_equal(jaz.spct[1, 1], 190.3139, tolerance = 0.0001)
+  expect_equal(jaz.spct[2048, 1], 892.6115, tolerance = 0.0001)
+  expect_is(jaz.spct[[1]], "numeric")
+  expect_equal(sum(is.na(jaz.spct[[1]])), 0)
+  expect_true(all(sign(jaz.spct[[1]]) > 0))
+  expect_is(jaz.spct[[2]], "numeric")
+  expect_equal(sum(is.na(jaz.spct[[2]])), 0)
+  expect_is(jaz.spct, "reflector_spct")
+  expect_named(jaz.spct, c("w.length", "Rfr"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
+               as.numeric(ymd_hms("2018-09-17 14:58:29", tz = "EET"), tz = "EET"))
+  expect_equal(getWhereMeasured(jaz.spct), 
+               data.frame(lon = NA_real_, lat = NA_real_))
+  expect_equal(getWhatMeasured(jaz.spct), "File: reflectance.jaz")
+  expect_equal(getTimeUnit(jaz.spct), "unknown")
+  expect_gt(length(comment(jaz.spct)), 0)
+
+})
+
+test_that("jaz_Rpc", {
+  
+  file.name <- 
+    system.file("extdata", "reflectance.jaz", 
+                package = "photobiologyInOut", mustWork = TRUE)
+  # warnings triggered by negative irradiance values in file
+  suppressWarnings(jaz.spct <- 
+                     read_oo_jazpc(file = file.name,
+                                   tz = "EET"))
+  
+  expect_equal(nrow(jaz.spct), 2048)
+  expect_equal(ncol(jaz.spct), 2)
+  expect_equal(jaz.spct[1, 1], 190.3139, tolerance = 0.0001)
+  expect_equal(jaz.spct[2048, 1], 892.6115, tolerance = 0.0001)
+  expect_is(jaz.spct[[1]], "numeric")
+  expect_equal(sum(is.na(jaz.spct[[1]])), 0)
+  expect_true(all(sign(jaz.spct[[1]]) > 0))
+  expect_is(jaz.spct[[2]], "numeric")
+  expect_equal(sum(is.na(jaz.spct[[2]])), 0)
+  expect_is(jaz.spct, "filter_spct")
+  expect_named(jaz.spct, c("w.length", "Tfr"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
+               as.numeric(ymd_hms("2018-09-17 14:58:29", tz = "EET"), tz = "EET"))
+  expect_equal(getWhereMeasured(jaz.spct), 
+               data.frame(lon = NA_real_, lat = NA_real_))
+  expect_equal(getWhatMeasured(jaz.spct), "File: reflectance.jaz")
+  expect_equal(getTimeUnit(jaz.spct), "unknown")
+  expect_gt(length(comment(jaz.spct)), 0)
+  
+})
+
+
+test_that("jaz_raw", {
   
   file.name <- 
     system.file("extdata", "spectrum.jaz", 

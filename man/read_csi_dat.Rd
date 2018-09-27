@@ -41,5 +41,5 @@ This function is not useful for .DAT and .PRN files from old CSI
   stored in separate .FLD files.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{http://www.campbellsci.eu/}
+\url{https://www.r4photobiology.info} \url{https://www.campbellsci.eu/}
 }

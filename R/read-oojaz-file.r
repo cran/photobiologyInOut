@@ -1,8 +1,15 @@
-#' Read Absolute Irradiance File Saved by Ocean Optics' Jaz spectrometer.
+#' Read Files Saved by Ocean Optics' Jaz spectrometer.
 #' 
-#' Reads and parses the header of a processed data file as output by
-#' Jaz instruments to extract the whole header remark field The time field is
-#' retrieved.
+#' Reads and parses the header of processed data text files output by
+#' Jaz instruments extracting the spectral data from the body of the file 
+#' and the metadata, including time and date of measurement from the header.
+#' Jaz modular spectrometers are manufactured by Ocean Optics, Dunedin, Florida,
+#' USA.
+#' 
+#' @details Function \code{read_oo_jazirrad} can read processed irradiance
+#' output files. Function \code{read_oo_jazpc} can read processed transmittance
+#' and reflectance output files (expressed as \%s). Function 
+#' \code{read_oo_jazdata} can read raw-counts data.
 #' 
 #' @param file character string.
 #' @param date a \code{POSIXct} object to use to set the \code{"when.measured"}
@@ -14,7 +21,7 @@
 #'   used, and if \code{NA} the "what.measured" attribute is not set.
 #' @param tz character Time zone used for interpreting times saved in the file
 #'   header.
-#' @param locale	The locale controls defaults that vary from place to place. The
+#' @param locale The locale controls defaults that vary from place to place. The
 #'   default locale is US-centric (like R), but you can use
 #'   \code{\link[readr]{locale}} to create your own locale that controls things
 #'   like the default time zone, encoding, decimal mark, big mark, and day/month
@@ -23,10 +30,12 @@
 #' @note Although the parameter is called \code{date} a date time is accepted 
 #'   and expected. Time resolution is 1 s.
 #'   
-#' @return A source_spct object.
+#' @return A source_spct object, a filter_spct object, a reflector_spct object
+#'   or a raw_spct object.
+#' 
 #' @export
-#' @references \url{http://www.r4photobiology.info} \url{http://oceanoptics.com/}
-#' @keywords misc
+#' 
+#' @references \url{https://www.r4photobiology.info} \url{https://oceanoptics.com/}
 #' 
 read_oo_jazirrad <- function(file,
                              date = NULL,
@@ -110,7 +119,100 @@ read_oo_jazirrad <- function(file,
 }
 
 #' @rdname read_oo_jazirrad
-#' @return A raw_spct object.
+#'
+#' @param qty.in character string, one of "Tpc" (spectral transmittance, \%), "A"
+#'   (spectral absorbance), or "Rpc" (spectral reflectance, \%).
+#' @param Tfr.type character string, either "total" or "internal".
+#' @param Rfr.type character string, either "total" or "specular".
+#'
+#' @export
+#' 
+read_oo_jazpc <- function(file,
+                          qty.in = "Tpc",
+                          Tfr.type = c("total", "internal"),
+                          Rfr.type = c("total", "specular"),
+                          date = NULL,
+                          geocode = NULL,
+                          label = NULL,
+                          tz = NULL,
+                          locale = readr::default_locale()) {
+  stopifnot(qty.in %in% c("Tpc", "Rpc", "A"))
+  
+  if (is.null(tz)) {
+    tz <- locale$tz
+  }
+  
+  label.file <- paste("File: ", basename(file), sep = "")
+  if (is.null(label)) {
+    label <- label.file
+  } else if (!is.na(label)) {
+    label <- paste(label.file, label, sep = "\n")
+  }
+  
+  line01 <-
+    scan(
+      file = file,
+      nlines =  1,
+      skip = 0,
+      what = "character"
+    )
+  if (line01[1] != "Jaz") {
+    warning("Input file was not created by a Jaz spectrometer as expected: skipping")
+    return(source_spct())
+  }
+  file_header <-
+    scan(
+      file = file,
+      nlines = 16,
+      skip = 0,
+      what = "character",
+      sep = "\n"
+    )
+  
+  npixels <- as.integer(sub("Number of Pixels in Processed Spectrum: ", "", 
+                            file_header[16], fixed = TRUE))
+  
+  if (is.null(date)) {
+    line03 <- sub("Date: [[:alpha:]]{3} ", "", file_header[3])
+    date <-
+      lubridate::parse_date_time(line03, "mdHMSy", tz = tz)
+  }
+  
+  #  data_header <- scan(file = file, nlines = 1, skip = 20, what = "character")
+  
+  z <- readr::read_tsv(
+    file = file,
+    col_names = TRUE,
+    skip = 17,
+    n_max = npixels,
+    col_types = readr::cols(),
+    locale = locale
+  )
+  dots <- list(~W, ~P)
+  z <- dplyr::select_(z, .dots = stats::setNames(dots, c("w.length", qty.in)))
+  
+  old.opts <- options("photobiology.strict.range" = NA_integer_)
+  if (qty.in == "Rpc") {
+    z <- photobiology::as.reflector_spct(z, Rfr.type = Rfr.type)
+  } else {
+    z <- photobiology::as.filter_spct(z, Tfr.type = Tfr.type)
+  }
+  options(old.opts)
+  
+  comment(z) <-
+    paste(paste("Ocean Optics Jaz file '", basename(file), "' imported as ", qty.in, " on ", 
+                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
+          paste(file_header, collapse = "\n"), 
+          sep = "\n")
+  photobiology::setWhenMeasured(z, date)
+  photobiology::setWhereMeasured(z, geocode)
+  photobiology::setWhatMeasured(z, label)
+  attr(z, "file.header") <- file_header
+  z
+}
+
+#' @rdname read_oo_jazirrad
+#' 
 #' @export
 #' 
 read_oo_jazdata <- function(file,

@@ -21,7 +21,7 @@
 #'   
 #' @return A source_spct object.
 #' @export
-#' @references \url{http://www.r4photobiology.info} \url{http://oceanoptics.com/}
+#' @references \url{https://www.r4photobiology.info} \url{https://oceanoptics.com/}
 #' @keywords misc
 #' 
 read_oo_ssirrad <- function(file,

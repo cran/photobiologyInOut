@@ -68,6 +68,8 @@ Functions for importing measured spectral data.
 | read_oo_ssirrad()    | Ocean Optics spectrom. | SpectraSuite      | source_spct     |
 | read_oo_ssdata()     | Ocean Optics spectrom. | SpectraSuite      | raw_spct        |
 | read_oo_jazirrad()   | Ocean Optics Jaz       | *instrument*      | source_spct     |
+| read_oo_jazpc()      | Ocean Optics Jaz       | *instrument*      | filter_spct     |
+| read_oo_jazpc()      | Ocean Optics Jaz       | *instrument*      | reflector_spct     |
 | read_oo_jazdata()    | Ocean Optics Jaz       | *instrument*      | raw_spct        |
 | read_oo_pidata()     | Ocean Optics spectrom. | STS DK (Raspbian) | raw_spct        |
 | read_avaspec_csv()   | Avantes spectrom.      | *instrument*      | source_spct     |
@@ -440,7 +442,7 @@ ggplot(hour.dat, aes(TIMESTAMP, PAR_Den_Avg)) + geom_line()
 
 ### YoctoPuce
 
-[Yocto Puce Sarl](http://www.yoctopuce.com/) sells numerous different USB modules. Those capable of data
+[Yocto Puce Sarl](https://www.yoctopuce.com/) sells numerous different USB modules. Those capable of data
 input can log the data to memory and these data can be downloaded as a CSV
 file. These files can be easily read into R but function `read_yoctopuce_csv()` makes this even simpler.
 
@@ -898,7 +900,7 @@ Can export to `''hyperSpec''` objects only collections of spectra where all memb
 ```{r}
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")
 class(z2.hspct)
-plot(z2.hspct)
+# plot(z2.hspct)
 ```
 
 ### From 'hyperSpec'
@@ -934,6 +936,7 @@ ggplot(laser.mspct[[1]]) +
 ### From 'colorSpec'
 
 ```{r}
+# bug that needs to be fixed
 fluorescent.mspct <- colorSpec2mspct(Fs.5nm)
 print(fluorescent.mspct, n = 3, n.members = 3)
 ```

@@ -22,8 +22,8 @@ data block.}
 \item{n_max}{integer Maximum number of records to read.}
 
 \item{locale}{The locale controls defaults that vary from place to place. The
-default locale is US-centric (like R), but you can use 
-\code{\link[readr]{locale}} to create your own locale that controls things 
+default locale is US-centric (like R), but you can use
+\code{\link[readr]{locale}} to create your own locale that controls things
 like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
 }
@@ -31,14 +31,16 @@ names.}
 \code{read_yoctopuce_csv()} returns a \code{tibble::tibble} object.
 }
 \description{
-Reads and parses the header of a processed data file as output by the PC400
-or PC200W programmes extracting variable names, units and quantities from the
-header. Uses the comment attribute to store the metadata.
+Reads and parses the header of processed data CSV files as output by the
+virtual- or hardware-hubs and modules from Yoctupuce. Uses the comment
+attribute to store the metadata.
 }
 \note{
 This function should be able to read data log files from any YoctoPuce
-  USB interface module with data logging capabilities.
+  USB interface module with data logging capabilities as the format is
+  consistent among them.
 }
 \references{
-\url{http://www.r4photobiology.info} \url{http://www.yoctopuce.com/}
+\url{https://www.r4photobiology.info}
+  \url{https://www.yoctopuce.com/}
 }

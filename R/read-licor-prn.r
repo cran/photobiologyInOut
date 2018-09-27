@@ -1,7 +1,7 @@
 #' Read '.PRN' File(s) Saved by LI-COR's PC1800 Program.
 #' 
 #' Reads and parses the header of a processed data file as output by the PC1800
-#' program to extract the whole header remark field and also check whether data
+#' program to extract the whole header remark field and also decode whether data
 #' is in photon or energy based units. The time field is ignored as it does not
 #' contain year information. This instrument is no longer being manufactured.
 #' 
@@ -27,7 +27,7 @@
 #'   \code{time.unit} attribute set to \code{"second"} and \code{when.measured}
 #'   attribute set to the date-time extracted from the file name, or supplied.
 #' @export
-#' @references \url{http://www.r4photobiology.info} \url{http://www.licor.com}
+#' @references \url{https://www.r4photobiology.info} \url{https://www.licor.com}
 #' 
 #' @keywords misc
 #'   

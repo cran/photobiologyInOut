@@ -4,7 +4,17 @@ TODO
 Add support for StellarNet spectrometers and Bentham spectrometers.
 Add a generic reader of files into a collection of spectra.
 Add test cases for new functions for exchange of foreign data (currently tested 
-through examples in vignette).
+through examples in vignette) (URGENT otherwise bugs creep-in easily).
+
+photobiologyInOut 0.4.17 (2018-09-27)
+=====================================
+
+* Add new function to read transmittance and reflectance files from Ocean 
+Optics' Jaz modular spectrometer.
+* Fix bug in decoding of time and date in functions read_fmi2mspct(), 
+read_tuv_usrout() and read_qtuv_txt(). Decoding failed under R 3.4.4 (oldrel) 
+but worked under R 3.5.1 due to functions from 'lubridate' returning POSIXlt 
+values instead of POSIXct values. Now we force conversion to POSIXct.
 
 photobiologyInOut 0.4.16 (2018-08-30)
 =====================================

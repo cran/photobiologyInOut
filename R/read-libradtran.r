@@ -27,7 +27,7 @@
 #' @return a source_spct object, possibly containing several spectra in long
 #'  form and a datetime column.
 #'   
-#' @references \url{http://www.r4photobiology.info} \url{http://www.libradtran.org}
+#' @references \url{https://www.r4photobiology.info} \url{http://www.libradtran.org}
 #'
 #' @export
 #' 
@@ -115,7 +115,7 @@ read_uvspec_disort_vesa <- function(file,
 #'   
 #' @return A source_spct object.
 #'   
-#' @references \url{http://www.r4photobiology.info} \url{http://www.libradtran.org}
+#' @references \url{https://www.r4photobiology.info} \url{http://www.libradtran.org}
 #'
 #' @note Tested only with libRadtran version 2.0
 #' 
