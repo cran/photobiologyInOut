@@ -5,14 +5,15 @@
 \title{Read File Saved by Ocean Optics' Raspberry Pi software.}
 \usage{
 read_oo_pidata(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale(), npixels = 2048)
+  tz = NULL, locale = readr::default_locale(), npixels = 2048,
+  spectrometer.sn = "FLMS00673")
 }
 \arguments{
 \item{file}{character string}
 
 \item{date}{a \code{POSIXct} object to use to set the \code{"when.measured"}
-attribute. If \code{NULL}, the default, the date is extracted from the
-file header.}
+attribute. If \code{NULL}, the default, the date is set to the file
+modification date.}
 
 \item{geocode}{A data frame with columns \code{lon} and \code{lat} used to
 set attribute \code{"where.measured"}.}
@@ -29,6 +30,9 @@ like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
 
 \item{npixels}{integer Number of pixels in spectral data.}
+
+\item{spectrometer.sn}{character The serial number of the spectrometer needs
+to be supplied by the user as it is not included in the file header.}
 }
 \value{
 A raw_spct object.
@@ -41,9 +45,13 @@ time field is retrieved and decoded.
 \note{
 The header in these files has very little information, so the user
 needs to supply the number of pixels in the array as well as the date-time.
-The file contains a date in milliseconds but as the Raspberry Pi board
+The file contains a time in milliseconds but as the Raspberry Pi board
 contains no real-time clock, it seems to default to number of milliseconds
-since the Pi was switched on.
+since the Pi was switched on. If no argument is passed to date this
+attribute is set to the file modification date obtained with file.mtime().
+This date-time gives an upper limit to the real time of measurement as in
+some operating systems it is reset when the file is copied or even without
+any good apparent reason.
 }
 \references{
 \url{https://www.r4photobiology.info} \url{https://oceanoptics.com/} \url{https://www.raspberrypi.org/}

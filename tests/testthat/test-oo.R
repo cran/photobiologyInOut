@@ -323,11 +323,29 @@ test_that("pi_raw", {
   expect_equal(getWhatMeasured(pi.spct), "File: spectrum.pi")
   expect_gt(length(comment(pi.spct)), 0)
 
-  # pi2.spct <- read_oo_pidata(file = "data-test/vk-open-b00.txt", 
-  #                           date = my.date,
-  #                           npixels = 2048)
-  # 
-  # pi3.spct <- read_oo_pidata(file = "data-test/vk-open-b-dark.txt", 
-  #                           date = my.date,
-  #                           npixels = 2048)
+  file.name <- 
+    system.file("extdata", "spectrum-seq-dark.pi", 
+                package = "photobiologyInOut", mustWork = TRUE)
+  my.date <- now(tzone = "EET")
+  pi.spct <- read_oo_pidata(file = file.name, 
+                            date = my.date,
+                            npixels = 2048)
+  
+  expect_equal(nrow(pi.spct), 2048)
+  expect_equal(ncol(pi.spct), 2)
+  expect_equal(pi.spct[1, 1], 188.41408000, tolerance = 0.000001)
+  expect_equal(pi.spct[2048, 1], 1035.61297366, tolerance = 0.000001)
+  expect_is(pi.spct[[1]], "numeric")
+  expect_equal(sum(is.na(pi.spct[[1]])), 0)
+  expect_true(all(sign(pi.spct[[1]]) > 0))
+  expect_is(pi.spct[[2]], "numeric")
+  expect_equal(sum(is.na(pi.spct[[2]])), 0)
+  expect_is(pi.spct, "raw_spct")
+  expect_named(pi.spct, c("w.length", "counts"))
+  expect_equal(as.numeric(getWhenMeasured(pi.spct), tz = "EET"),
+               as.numeric(my.date, tz = "EET"))
+  expect_equal(getWhereMeasured(pi.spct), 
+               data.frame(lon = NA_real_, lat = NA_real_))
+  expect_equal(getWhatMeasured(pi.spct), "File: spectrum-seq-dark.pi")
+  expect_gt(length(comment(pi.spct)), 0)
 })

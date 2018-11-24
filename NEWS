@@ -6,6 +6,17 @@ Add a generic reader of files into a collection of spectra.
 Add test cases for new functions for exchange of foreign data (currently tested 
 through examples in vignette) (URGENT otherwise bugs creep-in easily).
 
+photobiologyInOut 0.4.18 (2018-11-22)
+=======================================
+
+* Track code breaking change in 'readr' (>= 1.2.0)
+* Fix bug in read_oo_pidata() that was preventing reading of Ocean Optics 
+"Raspberry Pi"  Flame files with a sequence header line at the top.
+* Add decoding of file header to extract integration time and number of scans 
+to read_oo_pidata().
+* Improve decoding of file header to extract instrument settings in 
+read_oo_jazdata().
+
 photobiologyInOut 0.4.17 (2018-09-27)
 =====================================
 

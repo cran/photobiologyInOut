@@ -266,7 +266,23 @@ read_oo_jazdata <- function(file,
   }
   
   spectrometer.sn <- sub("Spectrometers: ", "", file_header[8])
+  sn.tag <- paste(" \\(", spectrometer.sn, "\\)", sep = "")
+  yes.no <- c(Yes = 1L, No = 0L)
+
+  integ.time <- as.numeric(
+    sub(sn.tag, "", sub("Integration Time \\(usec\\): ", "", 
+                        file_header[9])))
   
+  num.scans <- as.integer(
+    sub(sn.tag, "", sub("Spectra Averaged: ", "", 
+                        file_header[10])))
+  num.scans <- ifelse(num.scans < 1L, 1L, num.scans)
+  
+  boxcar.width <- as.integer( 
+    sub(sn.tag, "", sub("Boxcar Smoothing: ", "", 
+                        file_header[11])))
+  boxcar.width <- ifelse(boxcar.width < 1L, 1L, boxcar.width)
+
   inst.descriptor <-
     list(
       time = date,
@@ -286,8 +302,6 @@ read_oo_jazdata <- function(file,
       inst.calib = list()
     )
   
-  yes.no <- c(Yes = 1L, No = 0L)
-  sn.tag <- paste(" \\(", spectrometer.sn, "\\)", sep = "")
   inst.settings <- 
     list(
       time = date,
@@ -302,15 +316,10 @@ read_oo_jazdata <- function(file,
       correct.stray.light = yes.no[
         sub(sn.tag, "", sub("Correct for Stray Light: ", "", 
             file_header[15]))],
-      boxcar.width = 
-        sub(sn.tag, "", sub("Boxcar Smoothing: ", "", 
-            file_header[11])),
-      integ.time = 
-        sub(sn.tag, "", sub("Integration Time \\(usec\\): ", "", 
-            file_header[9])),
-      num.scans = 
-        sub(sn.tag, "", sub("Spectra Averaged: ", "", 
-            file_header[10]))
+      boxcar.width = boxcar.width,
+      integ.time = integ.time,
+      num.scans = num.scans,
+      tot.time = integ.time * num.scans
     )
   
   #  data_header <- scan(file = file, nlines = 1, skip = 20, what = "character")
