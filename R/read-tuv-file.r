@@ -182,8 +182,7 @@ read_qtuv_txt <- function(file,
   } else {
     data.header.line <- file_header[header.end.idx]
   }
-  empty.header.line.count <- sum(grepl("^$", file_header[1:header.end.idx]))
-  spct.header.idx <- header.end.idx + 2 - empty.header.line.count - 1
+  spct.header.idx <- header.end.idx + 2L
 
   # trim garbage above and below header
   file_header <- file_header[header.start.idx:header.end.idx]
