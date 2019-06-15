@@ -89,10 +89,9 @@ read_fmi_cum <- function(file,
     locale = locale,
     progress = FALSE
   )
-  # convert wavelength in Ångstrom to nm
   if (min(z$w.length) > 1000) {
-    dots <- list(~w.length / 10)
-    z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "w.length"))
+    # convert wavelength in Ångstrom to nm
+    z[ , "w.length"] <- z[ , "w.length"] / 10
   }
   z <- photobiology::as.source_spct(z, time.unit = "day")
   photobiology::setWhenMeasured(z, date.time)
@@ -204,17 +203,20 @@ read_fmi2mspct <- function(file,
         locale = locale,
         progress = FALSE
       )[ , -1]
-    # convert wavelength in Ångstrom to nm
-    # convert irradiance to W m-2 nm-1
+    
     if (min(z$w.length) > 1000) {
-      dots <- list(~w.length / 10, ~s.e.irrad / 1000)
-      z <- dplyr::mutate_(z, .dots = stats::setNames(dots, c("w.length", "s.e.irrad")))
+      # convert wavelength in Ångstrom to nm
+      z[ , "w.length"] <- z[ , "w.length"] / 10
+      # convert irradiance to W m-2 nm-1
+      z[ , "s.e.irrad"] <- z[ , "s.e.irrad"] / 1000
     }
     
     z <- photobiology::as.source_spct(z, time.unit = "second")
     photobiology::setWhenMeasured(z, when.measured)
     photobiology::setWhereMeasured(z, geocode)
     photobiology::setWhatMeasured(z, label)
+    how <- "Computer simulation."
+    photobiology::setHowMeasured(z, how)
     attr(z, "file.header") <- header
     z<- list(z)
     names(z) <- date.char

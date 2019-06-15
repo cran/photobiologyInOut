@@ -39,7 +39,7 @@ and then imports wavelengths and spectral reflectance values and flower ID.
 \references{
 \url{http://www.reflectance.co.uk}
 Arnold SEJ, Faruq S, Savolainen V, McOwan PW, Chittka L, 2010 FReD: The 
-Floral Reflectance Database — A Web Portal for Analyses of Flower Colour. 
+Floral Reflectance Database - A Web Portal for Analyses of Flower Colour. 
 PLoS ONE 5(12): e14287. doi:10.1371/journal.pone.0014287
 }
 \keyword{misc}

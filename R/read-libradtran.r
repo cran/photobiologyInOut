@@ -164,6 +164,8 @@ read_uvspec_disort <- function(file,
   if (!is.na(label)) {
     photobiology::setWhatMeasured(z, paste("libRadtran spectral simulation", label))
   }
+  how <- "Computer simulation."
+  photobiology::setHowMeasured(z, how)
   z
 }
 

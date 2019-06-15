@@ -61,6 +61,14 @@ read_licor_prn <- function(file,
     sep = "\n"
   )
   
+  NonASCII <- tools::showNonASCII(file_header)
+  if (length(NonASCII) > 0L) {
+    warning("Found non-ASCII characters in file header: ", 
+            NonASCII,
+            "replacing with ' '.")
+    file_header <- iconv(file_header, to = "ASCII", sub = " ")
+  }
+  
   if (is.null(date)) {
     line05 <- sub("Date:", "", file_header[5])
     date <- lubridate::parse_date_time(line05, "mdHM", tz = tz)
@@ -105,13 +113,13 @@ read_licor_prn <- function(file,
                       skip = 7
                       )
   if (mult != 1) {
-    dots <- list(~s.q.irrad * mult)
-    z <- dplyr::mutate_(z, .dots = stats::setNames(dots, s.qty))
+    z[ , s.qty] <- z[ , s.qty] * mult
   }
   
   old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- constructor(z)
   options(old.opts)
+  
   comment(z) <-
     paste(paste("LICOR LI-1800 file '", basename(file), "' imported on ", 
                 lubridate::now(tzone = "UTC"), " UTC", sep = ""),
@@ -121,6 +129,8 @@ read_licor_prn <- function(file,
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhatMeasured(z, label)
+  how <- "Measured with a single monochromator scanning spectroradiometer."
+  photobiology::setHowMeasured(z, how)
   attr(z, "file.header") <- file_header
   z
 }
@@ -139,7 +149,7 @@ read_m_licor_prn <- function(files,
                              date = NULL,
                              geocode = NULL,
                              label = NULL,
-                             tz = Sys.timezone(location = FALSE),
+                             tz = Sys.timezone(),
                              locale = readr::default_locale(),
                              s.qty = NULL) {
   list.of.spectra <- list()

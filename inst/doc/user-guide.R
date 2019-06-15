@@ -15,7 +15,6 @@ library(photobiology)
 library(photobiologyWavebands)
 library(photobiologyInOut)
 library(lubridate)
-library(ggplot2)
 library(ggspectra)
 library(hyperSpec)
 library(colorSpec)
@@ -23,6 +22,7 @@ library(pavo)
 library(readr)
 
 ## ----------------------------------------------------
+theme_set(theme_bw()) # ggplot2
 options(tibble.print_max = 5,
         tibble.print_min = 3,
         photobiology.strict.range = NA_integer_)

@@ -55,9 +55,8 @@ read_avaspec_csv <- function(file,
                        skip = 6,
                        col_types = readr::cols(),
                        locale = locale)
-  dots <- list(~s.e.irrad * mult)
-  z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
-  
+  z[ , "s.e.irrad"] <- z[ , "s.e.irrad"] * mult
+
   old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.source_spct(z, time.unit = "second")
   options(old.opts)
@@ -70,6 +69,8 @@ read_avaspec_csv <- function(file,
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhatMeasured(z, label)
+  how <- "Measured with an array spectrometer."
+  photobiology::setHowMeasured(z, how)
   attr(z, "file.header") <- file_header
   z
 }
@@ -136,6 +137,8 @@ read_avaspec_xls <- function(path,
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhatMeasured(z, label)
+  how <- "Measured with an array spectrometer."
+  photobiology::setHowMeasured(z, how)
   attr(z, "file.header") <- file_header
   z
 }

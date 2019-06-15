@@ -1,9 +1,10 @@
 
 # photobiologyInOut
 
-[![](http://www.r-pkg.org/badges/version-last-release/photobiologyInOut)](https://cran.r-project.org/package=photobiologyInOut)
-[![](http://cranlogs.r-pkg.org/badges/photobiologyInOut)](https://cran.r-project.org/package=photobiologyInOut)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/photobiologyInOut)](https://cran.r-project.org/package=photobiologyInOut)
+[![CRAN
+version](https://www.r-pkg.org/badges/version-last-release/photobiologyInOut)](https://cran.r-project.org/package=photobiologyInOut)
+[![cran
+checks](https://cranchecks.info/badges/worst/photobiologyInOut)](https://cran.r-project.org/web/checks/check_results_photobiologyInOut.html)
 
 Package ‘**photobiologyInOut**’ provides functions for importing
 spectral data from diverse sources including instrument-specific files,
@@ -13,15 +14,31 @@ packages. Package ‘**photobiologyInOut**’ complements other packages in
 the ‘**r4photobiology suite**’ by allowing reading and writing “foreign”
 spectral data as well as reading data saved from data loggers.
 
+Data files from **spectrometers** from the following suppliers are
+currently supported: Avantes, LI-COR, Macam Photonics, and Ocean Optics.
+
+Data files from **data loggers** from the following suppliers are
+currently supported: Campbell Scientific and YoctoPuce.
+
+Data files from output by **radiation transfer models**: libRadtran and
+TUV.
+
+Data objects of classes defined in **R packages**: hyperSpec, colorSpec
+and pavo.
+
+Data files downloaded from **repositories of spectral data**: ASTER
+(NASA’s ECOSTRESS Spectral Library) and FReD (Floral Reflectance
+Database).
+
 Developing a package like this is a never-ending task as I have only a
 limited sample of output files for testing and formats are quite
 variable. The functions may not work with different software or firmware
 versions used for acquiring spectral data from instruments. Even the
 format of files can depend on the current locale and operating system.
 
-This package is the core of a suite of R packages for photobiological
+This package is part of a suite of R packages for photobiological
 calculations described at the
-[r4photobiology](http://www.r4photobiology.info) web site.
+[r4photobiology](https://www.r4photobiology.info) web site.
 
 ## Warning
 
@@ -33,10 +50,10 @@ formats vary.**
 USED IN THE IMPORTED FILE ARE THOSE EXPECTED BY THESE FUNCTIONS AND THAT
 THE VALUES IN THE RETRIEVED DATA ARE THOSE EXPECTED\!**
 
-*If they do not work with your files, they hopefully will be useful as
-examples for developing your own functions. If you develop new functions
-or improve the existing ones, please, do contribute them back to this
-project.*
+*If the functions in this package do not work with your files, they
+hopefully will be useful as examples for developing your own functions.
+If you develop new functions or improve the existing ones, please, do
+contribute them back to this project.*
 
 ## Installation
 
@@ -56,11 +73,11 @@ devtools::install_bitbucket("aphalo/photobiologyInOut")
 ## Documentation
 
 HTML documentation is available at
-(<http://docs.r4photobiology.info/photobiologyInOut/>), including a
+(<https://docs.r4photobiology.info/photobiologyInOut/>), including a
 *User Guide*.
 
 News on updates to the different packages of the ‘r4photobiology’ suite
-are regularly posted at (<http://www.r4photobiology.info/>).
+are regularly posted at (<https://www.r4photobiology.info/>).
 
 Two articles introduce the basic ideas behind the design of the suite
 and its use: Aphalo P. J. (2015)
@@ -83,7 +100,9 @@ Division of Plant Biology. ISBN 978-952-10-8363-1 (PDF),
 ## Contributing
 
 Pull requests, bug reports, and feature requests are welcome at
-(<http://bitbucket.org/aphalo/photobiologyInOut>).
+(<https://bitbucket.org/aphalo/photobiologyInOut>). Contribution of
+example data files that could be supported in future versions will be
+very much appreciated.
 
 ## Citation
 
@@ -114,6 +133,6 @@ citation("photobiologyInOut")
 
 ## License
 
-© 2015-2018 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
+© 2015-2019 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
 the GPL, version 2 or greater. This software carries no warranty of any
 kind.

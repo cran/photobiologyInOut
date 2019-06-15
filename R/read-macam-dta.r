@@ -67,6 +67,8 @@ read_macam_dta <- function(file,
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhatMeasured(z, label)
+  how <- "Measured with a double monochromator scanning spectroradiometer."
+  photobiology::setHowMeasured(z, how)
   attr(z, "file.header") <- file_header
   z
 }

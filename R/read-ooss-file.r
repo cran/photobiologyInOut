@@ -48,6 +48,13 @@ read_oo_ssirrad <- function(file,
   }
   file_header <- scan(file = file, nlines = 16, 
                       skip = 0, what="character", sep = "\n")
+  NonASCII <- tools::showNonASCII(file_header)
+  if (length(NonASCII) > 0L) {
+    warning("Found non-ASCII characters in file header: ", 
+            NonASCII,
+            "replacing with ' '.")
+    file_header <- iconv(file_header, to = "ASCII", sub = " ")
+  }
   
   npixels <- as.integer(sub("Number of Pixels in Processed Spectrum: ", "", 
                             file_header[16], fixed = TRUE))
@@ -157,6 +164,8 @@ read_oo_ssdata<- function(file,
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhatMeasured(z, label)
+  how <- "Measured with an array spectrometer."
+  photobiology::setHowMeasured(z, how)
   attr(z, "file.header") <- file_header
   z
 }
