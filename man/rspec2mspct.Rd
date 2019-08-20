@@ -55,18 +55,20 @@ Objects of class \code{pavo::rspec} do not contain metadata or class
 }
 
 \examples{
+# example run only if 'pavo' is available
+if (requireNamespace("pavo", quietly = TRUE)) {
+  library(pavo)
+  data(sicalis, package = "pavo")
+  sicalis.mspct <- rspec2mspct(sicalis)
+  class(sicalis.mspct)
 
-library(pavo)
-data(sicalis)
-sicalis.mspct <- rspec2mspct(sicalis)
-class(sicalis.mspct)
-
-data(teal)
-teal.spct <- rspec2spct(teal)
-class(teal.spct)
-levels(teal.spct[["spct.idx"]])
-angles <- seq(from = 15, to = 75, by = 5) # from teal's documentation
-teal.spct[["angle"]] <- angles[as.numeric(teal.spct[["spct.idx"]])]
-teal.spct
+  data(teal, package = "pavo")
+  teal.spct <- rspec2spct(teal)
+  class(teal.spct)
+  levels(teal.spct[["spct.idx"]])
+  angles <- seq(from = 15, to = 75, by = 5) # from teal's documentation
+  teal.spct[["angle"]] <- angles[as.numeric(teal.spct[["spct.idx"]])]
+  teal.spct
+}
 
 }

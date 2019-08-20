@@ -66,13 +66,15 @@ Objects of class \code{hyperSpec::hyperSpec} contain metadata or class
 }
 
 \examples{
-
-library(hyperSpec)
-data(laser)
-wl(laser) <- 
-list (wl = 1e7 / (1/405e-7 - wl (laser)),
-      label = expression (lambda / nm))
-laser.mspct <- hyperSpec2mspct(laser, "source_spct", "s.e.irrad")
-class(laser.mspct)
+# example run only if 'hyperSpec' is available
+if (requireNamespace("hyperSpec", quietly = TRUE)) {
+  library(hyperSpec)
+  data(laser)
+  wl(laser) <- 
+    list(wl = 1e7 / (1/405e-7 - wl (laser)),
+         label = expression (lambda / nm))
+  laser.mspct <- hyperSpec2mspct(laser, "source_spct", "s.e.irrad")
+  class(laser.mspct)
+}
 
 }

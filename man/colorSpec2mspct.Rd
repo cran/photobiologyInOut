@@ -95,11 +95,13 @@ Objects of class \code{colorSpec::colorSpec} do not contain metadata or
 }
 
 \examples{
-
-library(colorSpec)
-colorSpec2mspct(Fs.5nm)
-colorSpec2spct(Fs.5nm)
-colorSpec2mspct(C.5nm)
-colorSpec2spct(C.5nm)
+# example run only if 'colorSpec' is available
+if (requireNamespace("colorSpec", quietly = TRUE)) {
+  library(colorSpec)
+  colorSpec2mspct(Fs.5nm)
+  colorSpec2spct(Fs.5nm)
+  colorSpec2mspct(C.5nm)
+  colorSpec2spct(C.5nm)
+} 
 
 }

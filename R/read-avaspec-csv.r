@@ -116,15 +116,6 @@ read_avaspec_xls <- function(path,
   z["s.e.irrad"] <- z["s.e.irrad"] * 1e-2 # 1e4 * 1e-6
   z["s.q.irrad"] <- z["s.q.irrad"] * 1e-6
   
-  # if (length(grep("Watt/cm", file_header[2], fixed = TRUE))) {
-  #   mult <- 10e-4
-  # } else {
-  #   mult <- NA
-  # }
-  
-  # dots <- list(~s.e.irrad * mult)
-  # z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
-  
   old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.source_spct(z, time.unit = "second")
   options(old.opts)

@@ -14,14 +14,20 @@ vignette: >
 
 ## Introduction
 
-This package defines functions for importing spectral data from
-different instruments, simulation
-models, and for data exchange with R packages
-'hyperSpec' and 'pavo' (see Tables at the start of each section).
+Package 'photobiologyInOut' defines functions for importing spectral data from different
+instruments, data repositories and simulation models, and for data exchange with R packages
+'hyperSpec', 'colorSpec' and 'pavo' by reading or writing objects of classes 
+defined in them (see Tables at the start of each section).
 
-All functions attempt to decode and store as metadata as much of the information present in file headers as possible. In most cases, the unchanged header of the file is stored as is as a comment in the constructed objects.
+As of version 0.4.21 packages 'hyperSpec' and 'pavo' need to be installed only if the
+corresponding functions will be used. This avoids bloat when
+these functions are not needed. If the vignette is built or examples attempted to run in
+a system where these packages are not installed, some output will be missing but
+no error will be triggered.
 
-It should be remembered, though, that this package has been developed based on the example files I had access to. Files from the same instruments with different hardware configurations, different firmware versions, or even settings may differ substantially. In many cases the output is produced by software in a host computer rather by the instrument itself, adding further uncertainties and possible differences due to for example the operating system of the host computer. A further complication is that in some cases the format of dates, times and numbers depends on the locale settings in use at the time of data acquisition, or analysis. For all those reasons, do expect to have to do some debugging, and most importantly always validate the imported data against the original file (remembering to run a new validation each time there is a software or firmware update) or update of this package as I test each version before release only with the example files I have available, which are not many.
+All functions that read data from files attempt to decode and store as metadata the information present in file headers. In addition, in most cases the unchanged header of the file is stored unaltered as a comment in the constructed objects.
+
+It should be remembered, though, that this package has been developed based on the _example files_ I had access to. Files from the same instruments with different hardware configurations, different firmware versions, or even settings may differ substantially. In many cases the output is produced by software in a host computer rather by the instrument itself, adding further uncertainties and possible differences due to for example the operating system of the host computer. A further complication is that in some cases the format of dates, times and numbers depends on the locale settings in use at the time of data acquisition, or analysis. For all those reasons, do expect to have to do some debugging, and most importantly always validate the imported data against the original file (remembering to run a new validation each time there is a software or firmware update) or update of this package as I test each version before release only with the example files I have available, which are not many.
 
 ## Preliminaries
 
@@ -35,6 +41,8 @@ options(replace.assign = TRUE, width = 55,
         warnPartialMatchArgs = FALSE)
 ```
 
+When loading suggested packages flags are set based on success and later used to selectively evaluate code chunks.
+
 ```{r, example-0-hiden, eval=TRUE, message=FALSE}
 # setting TZ may be needed in some geographic locations as some Windows TZ 
 # strings are not recognized by all versions of R
@@ -44,10 +52,14 @@ library(photobiologyWavebands)
 library(photobiologyInOut)
 library(lubridate)
 library(ggspectra)
-library(hyperSpec)
-library(colorSpec)
-library(pavo)
 library(readr)
+# eval_colorSpec <- requireNamespace("colorSpec", quietly = TRUE)
+library(colorSpec)
+eval_colorSpec <- TRUE
+eval_pavo <- requireNamespace("pavo", quietly = TRUE)
+if (eval_pavo) {library(pavo)}
+eval_hyperSpec <- requireNamespace("hyperSpec", quietly = TRUE)
+if (eval_hyperSpec) {library(hyperSpec)}
 ```
 
 ```{r}
@@ -897,7 +909,7 @@ Functions for exchanging data with _foreign_ R packages.
 
 Can export to `''hyperSpec''` objects only collections of spectra where all members have identical `w.length` vectors, as objects of class `hyperSpec` store a single vector of wavelengths for the whole collection of spectra.
 
-```{r}
+```{r, eval=eval_hyperSpec}
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")
 class(z2.hspct)
 # plot(z2.hspct)
@@ -907,7 +919,8 @@ class(z2.hspct)
 
 Can import only data with wavelength in nanometres. Other quantities and units are not supported by the 'photobiology' classes for spectral data. See package 'hyperSpec' vignette "laser" for details on the data and the conversion of the original wavelength units into nanometres.
 
-```{r}
+```{r, eval=eval_hyperSpec}
+data(laser)
 class(laser)
 laser
 plot(laser)
@@ -919,7 +932,7 @@ wrong but for the sake of showing how the conversion takes place is irrelevant.
 The parameter `multiplier` can be passed a numeric argument to rescale
 the original data. The default multiplier is 1.
 
-```{r}
+```{r, eval=eval_hyperSpec}
 wl(laser) <- list (
   wl = 1e7 / (1/405e-7 - wl (laser)),
   label = expression (lambda / nm)
@@ -935,37 +948,37 @@ ggplot(laser.mspct[[1]]) +
 
 ### From 'colorSpec'
 
-```{r}
+```{r, eval = eval_colorSpec}
 # bug that needs to be fixed
-fluorescent.mspct <- colorSpec2mspct(Fs.5nm)
+fluorescent.mspct <- colorSpec2mspct(colorSpec::Fs.5nm)
 print(fluorescent.mspct, n = 3, n.members = 3)
 ```
 
-```{r}
-colorSpec2mspct(Hoya)
+```{r, eval = eval_colorSpec}
+colorSpec2mspct(colorSpec::Hoya)
 ```
 
-```{r}
-fluorescent.spct <- colorSpec2spct(Fs.5nm)
-plot(fluorescent.spct) + aes(linetype = spct.idx)
+```{r, eval = eval_colorSpec}
+fluorescent.spct <- colorSpec2spct(colorSpec::Fs.5nm)
+autoplot(fluorescent.spct) + aes(linetype = spct.idx)
 ```
 
-```{r}
-colorSpec2chroma_spct(xyz1931.5nm)
+```{r, eval = eval_colorSpec}
+colorSpec2chroma_spct(colorSpec::xyz1931.5nm)
 ```
 
 ### To 'colorSpec'
 
-```{r}
+```{r, eval = eval_colorSpec}
 sun.cspec <- spct2colorSpec(sun.spct)
 plot(sun.cspec, col = "blue")
 ```
 
-```{r}
+```{r, eval = eval_colorSpec}
 spct2colorSpec(yellow_gel.spct)
 ```
 
-```{r}
+```{r, eval = eval_colorSpec}
 chroma_spct2colorSpec(beesxyzCMF.spct)
 ```
 
@@ -973,7 +986,7 @@ chroma_spct2colorSpec(beesxyzCMF.spct)
 
 In this example we convert an `rspec` object from package 'pavo' into a collection of spectra and then we plot it with `ggplot` methods from package `ggspectra' (an extension to `ggplot2'). The data are the spectral reflectance of the plumage from seven different individual birds of the same species, measured in three different body parts.
 
-```{r}
+```{r, eval = eval_pavo}
 data(sicalis)
 class(sicalis)
 names(sicalis)
@@ -981,7 +994,7 @@ names(sicalis)
 
 We convert the data into a collection of spectra, and calculate summaries for three spectra.
 
-```{r}
+```{r, eval = eval_pavo}
 sicalis.mspct <- rspec2mspct(sicalis, "reflector_spct", "Rpc")
 summary(sicalis.mspct[[1]])
 summary(sicalis.mspct[[2]])
@@ -990,7 +1003,7 @@ summary(sicalis.mspct[[3]])
 
 We convert the subset of the collection corresponding to the first individual into a single spectra object for plotting with `ggplot`.
 
-```{r}
+```{r, eval = eval_pavo}
 ggplot(rbindspct(sicalis.mspct[1:3])) +
   aes(linetype = spct.idx) +
   ylim(0,0.3) +
@@ -999,7 +1012,7 @@ ggplot(rbindspct(sicalis.mspct[1:3])) +
 
 Here we extract the ``crown'' data from all individuals and plot these spectra in a single plot.
 
-```{r}
+```{r, eval = eval_pavo}
 print(sicalis.mspct[c(TRUE, FALSE, FALSE)])
 ggplot(rbindspct(sicalis.mspct[c(TRUE, FALSE, FALSE)])) +
   aes(linetype = spct.idx) +
@@ -1010,12 +1023,12 @@ ggplot(rbindspct(sicalis.mspct[c(TRUE, FALSE, FALSE)])) +
 
 We calculate the mean reflectance in wavebands corresponding to ISO colors obtaining a data frame. We then add to this returned data frame a factor indicating the body parts.
 
-```{r}
+```{r, eval = eval_pavo}
 refl.by.band <- reflectance(sicalis.mspct, w.band = list(Red(), Green(), Blue(), UVA()))
 refl.by.band$body.part <- c("crown", "throat", "breast")
 ```
 
-```{r}
+```{r, eval = eval_pavo}
 refl.red <- reflectance(sicalis.mspct, w.band = Red())
 names(refl.red)[2] <- "red.reflectance"
 refl.red$body.part <- c("crown", "throat", "breast")

@@ -83,8 +83,8 @@ read_tuv_usrout <- function(file,
   
   wl.length <- length(wide.df[["w.length"]])
 
-  z <- tidyr::gather(wide.df, .dots = -c("w.length"), 
-                      value = "s.e.irrad", key = "spct.idx")
+  z <- tidyr::gather(wide.df, value = "s.e.irrad", key = "spct.idx", 
+                     setdiff(colnames(wide.df), "w.length"))
   
   z[["angle"]] <- with(z, rep(angles, rep(wl.length, num.spectra)))
   z[["date"]] <- with(z, rep(as.POSIXct(date), rep(wl.length, num.spectra)))

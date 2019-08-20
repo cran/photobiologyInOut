@@ -60,40 +60,47 @@
 #' @export
 #' 
 #' @examples 
-#' 
-#' library(hyperSpec)
-#' data(laser)
-#' wl(laser) <- 
-#' list (wl = 1e7 / (1/405e-7 - wl (laser)),
-#'       label = expression (lambda / nm))
-#' laser.mspct <- hyperSpec2mspct(laser, "source_spct", "s.e.irrad")
-#' class(laser.mspct)
+#' # example run only if 'hyperSpec' is available
+#' if (requireNamespace("hyperSpec", quietly = TRUE)) {
+#'   library(hyperSpec)
+#'   data(laser)
+#'   wl(laser) <- 
+#'     list(wl = 1e7 / (1/405e-7 - wl (laser)),
+#'          label = expression (lambda / nm))
+#'   laser.mspct <- hyperSpec2mspct(laser, "source_spct", "s.e.irrad")
+#'   class(laser.mspct)
+#' }
 #' 
 hyperSpec2mspct <- function(x, 
                             member.class, 
                             spct.data.var,
                             multiplier = 1,
                             ...) {
-  stopifnot(inherits(x, "hyperSpec"))
-  # spc data (spectra) are stored as rows in a matrix, consequently
-  # we transpose the matrix so that each spectrum is in a column
-  y <- cbind(hyperSpec::wl(x), t(x$spc) * multiplier) 
-  colnames(y) <- c("w.length", paste("spc", 1:nrow(x), sep = ""))
-  y <- tibble::as_data_frame(y)
-  z <- split2mspct(x = y, 
-                   member.class = member.class, 
-                   spct.data.var = spct.data.var)
-  other.vars <- setdiff(colnames(x), "spc")
-  for (r in seq_along(z)) { # nrow(x) is same as length(z)
-    for (var in other.vars) {
-      z[[r]][[var]] <- rep(x@data[[var]][r], hyperSpec::nwl(x))
+  if (requireNamespace("hyperSpec", quietly = TRUE)) {
+    stopifnot(inherits(x, "hyperSpec"))
+    # spc data (spectra) are stored as rows in a matrix, consequently
+    # we transpose the matrix so that each spectrum is in a column
+    y <- cbind(hyperSpec::wl(x), t(x$spc) * multiplier) 
+    colnames(y) <- c("w.length", paste("spc", 1:nrow(x), sep = ""))
+    y <- tibble::as_data_frame(y)
+    z <- split2mspct(x = y, 
+                     member.class = member.class, 
+                     spct.data.var = spct.data.var)
+    other.vars <- setdiff(colnames(x), "spc")
+    for (r in seq_along(z)) { # nrow(x) is same as length(z)
+      for (var in other.vars) {
+        z[[r]][[var]] <- rep(x@data[[var]][r], hyperSpec::nwl(x))
+      }
     }
+    comment(z) <- paste('Converted from "hyperSpec" object\n',
+                        'dim: ', 
+                        paste(names(dim(x)), dim(x), collapse = " "),
+                        '\ncolnames: ', paste(colnames(x), collapse = ", "),
+                        sep = "")
+  } else {
+    warning("Package 'hyperSpec' needs to be installed.")
+    z <- call(sub("spct", "mscpt", member.class))
   }
-  comment(z) <- paste('Converted from "hyperSpec" object\n',
-                      'dim: ', 
-                      paste(names(dim(x)), dim(x), collapse = " "),
-                      '\ncolnames: ', paste(colnames(x), collapse = ", "),
-                      sep = "")
   z
 }
 
@@ -116,31 +123,36 @@ mspct2hyperSpec <- function(x,
                             spct.data.var,
                             multiplier = 1,
                             ...) {
-  stopifnot(is.any_mspct(x))
-  spct.names <- names(x)
-  spct.selector <- rep(TRUE, length(x))
-  for (i in seq_along(x)) {
-    temp <- x[[i]]
-    s.column <- temp[[spct.data.var]] * multiplier
-    wl.current <- temp[["w.length"]]
-    if (i == 1L) {
-      mat <- s.column
-      wl.prev <- wl.current
-    } else {
-      if (!all(wl.current == wl.prev)) {
-        spct.selector[i] <- FALSE
-        next()
+  if (requireNamespace("hyperSpec", quietly = TRUE)) {
+    stopifnot(is.any_mspct(x))
+    spct.names <- names(x)
+    spct.selector <- rep(TRUE, length(x))
+    for (i in seq_along(x)) {
+      temp <- x[[i]]
+      s.column <- temp[[spct.data.var]] * multiplier
+      wl.current <- temp[["w.length"]]
+      if (i == 1L) {
+        mat <- s.column
+        wl.prev <- wl.current
+      } else {
+        if (!all(wl.current == wl.prev)) {
+          spct.selector[i] <- FALSE
+          next()
+        }
+        mat <- rbind(mat, s.column) # as row!
       }
-      mat <- rbind(mat, s.column) # as row!
     }
+    methods::new("hyperSpec", 
+                 spc = mat, 
+                 wavelength = wl.prev, 
+                 data = data.frame(spct_name = factor(spct.names[spct.selector])), 
+                 labels = list(spct = expression("spct_name"), 
+                               spc = expression("I / a.u."),
+                               .wavelength = expression("lambda/nm")))
+  } else {
+    warning("Package 'hyperSpec' needs to be installed.")
+    NA
   }
-  methods::new("hyperSpec", 
-               spc = mat, 
-               wavelength = wl.prev, 
-               data = data.frame(spct_name = factor(spct.names[spct.selector])), 
-               labels = list(spct = expression("spct_name"), 
-                             spc = expression("I / a.u."),
-                             .wavelength = expression("lambda/nm")))
 }
 
 #' @rdname hyperSpec2mspct
@@ -199,25 +211,28 @@ spct2hyperSpec <- function(x,
 #' @export
 #' 
 #' @examples 
+#' # example run only if 'pavo' is available
+#' if (requireNamespace("pavo", quietly = TRUE)) {
+#'   library(pavo)
+#'   data(sicalis, package = "pavo")
+#'   sicalis.mspct <- rspec2mspct(sicalis)
+#'   class(sicalis.mspct)
 #' 
-#' library(pavo)
-#' data(sicalis)
-#' sicalis.mspct <- rspec2mspct(sicalis)
-#' class(sicalis.mspct)
-#' 
-#' data(teal)
-#' teal.spct <- rspec2spct(teal)
-#' class(teal.spct)
-#' levels(teal.spct[["spct.idx"]])
-#' angles <- seq(from = 15, to = 75, by = 5) # from teal's documentation
-#' teal.spct[["angle"]] <- angles[as.numeric(teal.spct[["spct.idx"]])]
-#' teal.spct
+#'   data(teal, package = "pavo")
+#'   teal.spct <- rspec2spct(teal)
+#'   class(teal.spct)
+#'   levels(teal.spct[["spct.idx"]])
+#'   angles <- seq(from = 15, to = 75, by = 5) # from teal's documentation
+#'   teal.spct[["angle"]] <- angles[as.numeric(teal.spct[["spct.idx"]])]
+#'   teal.spct
+#' }
 #' 
 rspec2mspct <- function(x, 
                         member.class = "reflector_spct", 
                         spct.data.var = "Rpc", 
                         multiplier = 1,
                         ...) {
+  if (requireNamespace("pavo", quietly = TRUE)) {
   stopifnot(inherits(x, "rspec"))
   spct.names <- colnames(x)[-1]
   z <- split2mspct(x = x, 
@@ -230,6 +245,10 @@ rspec2mspct <- function(x,
                       paste(names(dim(x)), dim(x), collapse = " "),
                       '\ncolnames: ', paste(colnames(x), collapse = ", "),
                       sep = "")
+  } else {
+    warning("Package 'pavo' needs to be installed.")
+    z <- call(sub("spct", "mscpt", member.class))
+  }
   z
 }
 
@@ -282,69 +301,76 @@ rspec2spct <- function(x, multiplier = 1, ...) {
 #' 
 #' @export
 #' 
-#' @examples 
-#' 
-#' library(colorSpec)
-#' colorSpec2mspct(Fs.5nm)
-#' colorSpec2spct(Fs.5nm)
-#' colorSpec2mspct(C.5nm)
-#' colorSpec2spct(C.5nm)
+#' @examples
+#' # example run only if 'colorSpec' is available
+#' if (requireNamespace("colorSpec", quietly = TRUE)) {
+#'   library(colorSpec)
+#'   colorSpec2mspct(Fs.5nm)
+#'   colorSpec2spct(Fs.5nm)
+#'   colorSpec2mspct(C.5nm)
+#'   colorSpec2spct(C.5nm)
+#' } 
 #' 
 colorSpec2mspct <- function(x, multiplier = 1, ...) {
-  stopifnot(inherits(x, "colorSpec"))
-  stopifnot(multiplier > 0)
-  spct.type <- colorSpec::type(x)
-  spct.quantity <- colorSpec::quantity(x)
-  spct.metadata <- attr(x, "metadata", exact = TRUE)
-  comment.spct <- paste('Converted from "colorSpec::colorSpec" object\n',
-                        '"type": ', spct.type, "\n",
-                        '"quantity": ', spct.quantity, "\n",
-                        '"metadata path": ', spct.metadata[["path"]], "\n",
-                        '"metadata header": \n', 
-                        paste(spct.metadata[["header"]], collapse = "\n"), sep = "")
-  y <- as.data.frame(as.matrix(x) * multiplier)
-  y[["w.length"]] <- colorSpec::wavelength(x)
-  if (spct.type == "light") {
-    if (colorSpec::is.radiometric(x)) {
-      z <- photobiology::split2source_mspct(y, 
-                                            spct.data.var = "s.e.irrad")
-    } else if (colorSpec::is.actinometric(x)) {
-      z <- photobiology::split2source_mspct(y, 
-                                            spct.data.var = "s.q.irrad")
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    stopifnot(inherits(x, "colorSpec"))
+    stopifnot(multiplier > 0)
+    spct.type <- colorSpec::type(x)
+    spct.quantity <- colorSpec::quantity(x)
+    spct.metadata <- attr(x, "metadata", exact = TRUE)
+    comment.spct <- paste('Converted from "colorSpec::colorSpec" object\n',
+                          '"type": ', spct.type, "\n",
+                          '"quantity": ', spct.quantity, "\n",
+                          '"metadata path": ', spct.metadata[["path"]], "\n",
+                          '"metadata header": \n', 
+                          paste(spct.metadata[["header"]], collapse = "\n"), sep = "")
+    y <- as.data.frame(as.matrix(x) * multiplier)
+    y[["w.length"]] <- colorSpec::wavelength(x)
+    if (spct.type == "light") {
+      if (colorSpec::is.radiometric(x)) {
+        z <- photobiology::split2source_mspct(y, 
+                                              spct.data.var = "s.e.irrad")
+      } else if (colorSpec::is.actinometric(x)) {
+        z <- photobiology::split2source_mspct(y, 
+                                              spct.data.var = "s.q.irrad")
+      } else {
+        stop("unkown 'quantity': ", spct.quantity)
+      }
+    } else if (spct.type == 'responsivity.light') {
+      if ( colorSpec::is.radiometric(x)) {
+        z <- photobiology::split2response_mspct(y, 
+                                                spct.data.var = "s.e.response")
+      } else if (colorSpec::is.actinometric(x)) {
+        z <- photobiology::split2response_mspct(y, 
+                                                spct.data.var = "s.q.response")
+      } else {
+        stop("unkown 'quantity': ", spct.quantity)
+      }
+    } else if (spct.type == 'material') {
+      if (spct.quantity == 'reflectance') {
+        z <- photobiology::split2reflector_mspct(y, 
+                                                 spct.data.var = "Rfr")
+      } else if (spct.quantity == 'transmittance') {
+        z <- photobiology::split2filter_mspct(y, 
+                                              spct.data.var = "Tfr")
+      } else if (spct.quantity == 'absorbance') {
+        z <- photobiology::split2filter_mspct(y, 
+                                              spct.data.var = "A")
+      } else {
+        stop("unkown 'quantity': ", spct.quantity)
+      }
     } else {
-      stop("unkown 'quantity': ", spct.quantity)
+      return(list())
+      # z <- photobiology::split2generic_mspct(y, 
+      #                                        spct.data.var = spct.quantity)
     }
-  } else if (spct.type == 'responsivity.light') {
-    if ( colorSpec::is.radiometric(x)) {
-      z <- photobiology::split2response_mspct(y, 
-                                              spct.data.var = "s.e.response")
-    } else if (colorSpec::is.actinometric(x)) {
-      z <- photobiology::split2response_mspct(y, 
-                                              spct.data.var = "s.q.response")
-    } else {
-      stop("unkown 'quantity': ", spct.quantity)
-    }
-  } else if (spct.type == 'material') {
-    if (spct.quantity == 'reflectance') {
-      z <- photobiology::split2reflector_mspct(y, 
-                                               spct.data.var = "Rfr")
-    } else if (spct.quantity == 'transmittance') {
-      z <- photobiology::split2filter_mspct(y, 
-                                            spct.data.var = "Tfr")
-    } else if (spct.quantity == 'absorbance') {
-      z <- photobiology::split2filter_mspct(y, 
-                                            spct.data.var = "A")
-    } else {
-      stop("unkown 'quantity': ", spct.quantity)
-    }
+    comment(z) <- comment.spct
+    scaled <- ifelse(multiplier == 1, FALSE, multiplier)
+    setScaled(z, scaled)
   } else {
-    return(list())
-    # z <- photobiology::split2generic_mspct(y, 
-    #                                        spct.data.var = spct.quantity)
+    warning("Package 'colorSpec' needs to be installed.")
+    NA
   }
-  comment(z) <- comment.spct
-  scaled <- ifelse(multiplier == 1, FALSE, multiplier)
-  setScaled(z, scaled)
   z
 }
 
@@ -353,10 +379,15 @@ colorSpec2mspct <- function(x, multiplier = 1, ...) {
 #' @export
 #'
 as.source_spct.colorSpec <- function(x, multiplier = 1, ...) {
-  stopifnot(colorSpec::type(x) == "light")
-  colorSpec2spct(x = x, 
-                 multiplier = multiplier, 
-                 ...)
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    stopifnot(colorSpec::type(x) == "light")
+    colorSpec2spct(x = x, 
+                   multiplier = multiplier, 
+                   ...)
+  } else {
+    warning("Package 'colorSpec' needs to be installed.")
+    photobiology::source_spct()
+  }
 }
 
 #' @rdname colorSpec2mspct
@@ -364,10 +395,15 @@ as.source_spct.colorSpec <- function(x, multiplier = 1, ...) {
 #' @export
 #'
 as.source_mspct.colorSpec <- function(x, multiplier = 1, ...) {
-  stopifnot(colorSpec::type(x) == "light")
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    stopifnot(colorSpec::type(x) == "light")
   colorSpec2spct(x = x, 
                  multiplier = multiplier, 
                  ...)
+  } else {
+    warning("Package 'colorSpec' needs to be installed.")
+    photobiology::source_mspct()
+  }
 }
 
 #' @rdname colorSpec2mspct
@@ -375,10 +411,15 @@ as.source_mspct.colorSpec <- function(x, multiplier = 1, ...) {
 #' @export
 #'
 as.response_spct.colorSpec <- function(x, multiplier = 1, ...) {
-  stopifnot(colorSpec::type(x) == "responsivity.light")
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    stopifnot(colorSpec::type(x) == "responsivity.light")
   colorSpec2spct(x = x, 
                  multiplier = multiplier, 
                  ...)
+  } else {
+    warning("Package 'colorSpec' needs to be installed.")
+    photobiology::response_spct()
+  }
 }
 
 #' @rdname colorSpec2mspct
@@ -386,10 +427,15 @@ as.response_spct.colorSpec <- function(x, multiplier = 1, ...) {
 #' @export
 #'
 as.response_mspct.colorSpec <- function(x, multiplier = 1, ...) {
-  stopifnot(colorSpec::type(x) == "responsivity.light")
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    stopifnot(colorSpec::type(x) == "responsivity.light")
   colorSpec2mspct(x = x, 
                   multiplier = multiplier, 
                   ...)
+  } else {
+    warning("Package 'colorSpec' needs to be installed.")
+    photobiology::response_mspct()
+  }
 }
 
 #' @rdname colorSpec2mspct
@@ -397,11 +443,16 @@ as.response_mspct.colorSpec <- function(x, multiplier = 1, ...) {
 #' @export
 #'
 as.filter_spct.colorSpec <- function(x, multiplier = 1, ...) {
-  stopifnot(colorSpec::type(x) == "material" &&
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    stopifnot(colorSpec::type(x) == "material" &&
               colorSpec::quantity(x) %in% c("absorbance", "transmittance"))
   colorSpec2spct(x = x, 
                  multiplier = multiplier, 
                  ...)
+  } else {
+    warning("Package 'colorSpec' needs to be installed.")
+    photobiology::filter_spct()
+  }
 }
 
 #' @rdname colorSpec2mspct
@@ -409,11 +460,16 @@ as.filter_spct.colorSpec <- function(x, multiplier = 1, ...) {
 #' @export
 #'
 as.filter_mspct.colorSpec <- function(x, multiplier = 1, ...) {
-  stopifnot(colorSpec::type(x) == "material" &&
-              colorSpec::quantity(x) %in% c("absorbance", "transmittance"))
-  colorSpec2mspct(x = x, 
-                  multiplier = multiplier, 
-                  ...)
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    stopifnot(colorSpec::type(x) == "material" &&
+                colorSpec::quantity(x) %in% c("absorbance", "transmittance"))
+    colorSpec2mspct(x = x, 
+                    multiplier = multiplier, 
+                    ...)
+  } else {
+    warning("Package 'colorSpec' needs to be installed.")
+    photobiology::filter_mspct()
+  }
 }
 
 #' @rdname colorSpec2mspct
@@ -421,11 +477,16 @@ as.filter_mspct.colorSpec <- function(x, multiplier = 1, ...) {
 #' @export
 #'
 as.reflector_spct.colorSpec <- function(x, multiplier = 1, ...) {
-  stopifnot(colorSpec::type(x) == "material" &&
-              colorSpec::quantity(x) == "reflectance")
-  colorSpec2spct(x = x, 
-                 multiplier = multiplier, 
-                 ...)
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    stopifnot(colorSpec::type(x) == "material" &&
+                colorSpec::quantity(x) == "reflectance")
+    colorSpec2spct(x = x, 
+                   multiplier = multiplier, 
+                   ...)
+  } else {
+    warning("Package 'colorSpec' needs to be installed.")
+    photobiology::reflector_spct()
+  }
 }
 
 #' @rdname colorSpec2mspct
@@ -433,11 +494,16 @@ as.reflector_spct.colorSpec <- function(x, multiplier = 1, ...) {
 #' @export
 #'
 as.reflector_mspct.colorSpec <- function(x, multiplier = 1, ...) {
-  stopifnot(colorSpec::type(x) == "material" &&
-              colorSpec::quantity(x) == "reflectance")
-  colorSpec2mspct(x = x, 
-                  multiplier = multiplier, 
-                  ...)
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    stopifnot(colorSpec::type(x) == "material" &&
+                colorSpec::quantity(x) == "reflectance")
+    colorSpec2mspct(x = x, 
+                    multiplier = multiplier, 
+                    ...)
+  } else {
+    warning("Package 'colorSpec' needs to be installed.")
+    photobiology::reflector_mspct()
+  }
 }
 
 #' @rdname colorSpec2mspct
@@ -445,9 +511,14 @@ as.reflector_mspct.colorSpec <- function(x, multiplier = 1, ...) {
 #' @export
 #'
 as.chroma_mspct.colorSpec <- function(x, multiplier = 1, ...) {
-  colorSpec2mspct(x = x, 
-                  multiplier = multiplier, 
-                  ...)
+  if (requireNamespace("colorSpec", quietly = TRUE)) {
+    colorSpec2mspct(x = x, 
+                    multiplier = multiplier, 
+                    ...)
+  } else {
+    warning("Package 'colorSpec' needs to be installed.")
+    photobiology::chroma_mspct()
+  }
 }
 
 #' @rdname colorSpec2mspct
@@ -661,7 +732,8 @@ chroma_spct2colorSpec <- function(x,
 #' 
 #' @examples 
 #' 
-#' library(colorSpec)
+#' if (requireNamespace("colorSpec", quietly = TRUE)) {
+#' }
 #' 
 as.colorSpec.generic_mspct <- function(x, 
                                        spct.data.var = NULL,

@@ -66,6 +66,7 @@ Objects of class \code{colorSpec::colorSpec} do not contain metadata or
 
 \examples{
 
-library(colorSpec)
+if (requireNamespace("colorSpec", quietly = TRUE)) {
+}
 
 }

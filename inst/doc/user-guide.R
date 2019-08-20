@@ -16,10 +16,14 @@ library(photobiologyWavebands)
 library(photobiologyInOut)
 library(lubridate)
 library(ggspectra)
-library(hyperSpec)
-library(colorSpec)
-library(pavo)
 library(readr)
+# eval_colorSpec <- requireNamespace("colorSpec", quietly = TRUE)
+library(colorSpec)
+eval_colorSpec <- TRUE
+eval_pavo <- requireNamespace("pavo", quietly = TRUE)
+if (eval_pavo) {library(pavo)}
+eval_hyperSpec <- requireNamespace("hyperSpec", quietly = TRUE)
+if (eval_hyperSpec) {library(hyperSpec)}
 
 ## ----------------------------------------------------
 theme_set(theme_bw()) # ggplot2
@@ -299,17 +303,18 @@ aster.spct
 cat(comment(aster.spct))
 plot(aster.spct)
 
-## ----------------------------------------------------
+## ---- eval=eval_hyperSpec----------------------------
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")
 class(z2.hspct)
 # plot(z2.hspct)
 
-## ----------------------------------------------------
+## ---- eval=eval_hyperSpec----------------------------
+data(laser)
 class(laser)
 laser
 plot(laser)
 
-## ----------------------------------------------------
+## ---- eval=eval_hyperSpec----------------------------
 wl(laser) <- list (
   wl = 1e7 / (1/405e-7 - wl (laser)),
   label = expression (lambda / nm)
@@ -322,49 +327,49 @@ ggplot(laser.mspct[[1]]) +
   geom_line() +
   stat_peaks(geom = "text", vjust = -1, label.fmt = "%.6g nm", color = "red")
 
-## ----------------------------------------------------
+## ---- eval = eval_colorSpec--------------------------
 # bug that needs to be fixed
-fluorescent.mspct <- colorSpec2mspct(Fs.5nm)
+fluorescent.mspct <- colorSpec2mspct(colorSpec::Fs.5nm)
 print(fluorescent.mspct, n = 3, n.members = 3)
 
-## ----------------------------------------------------
-colorSpec2mspct(Hoya)
+## ---- eval = eval_colorSpec--------------------------
+colorSpec2mspct(colorSpec::Hoya)
 
-## ----------------------------------------------------
-fluorescent.spct <- colorSpec2spct(Fs.5nm)
-plot(fluorescent.spct) + aes(linetype = spct.idx)
+## ---- eval = eval_colorSpec--------------------------
+fluorescent.spct <- colorSpec2spct(colorSpec::Fs.5nm)
+autoplot(fluorescent.spct) + aes(linetype = spct.idx)
 
-## ----------------------------------------------------
-colorSpec2chroma_spct(xyz1931.5nm)
+## ---- eval = eval_colorSpec--------------------------
+colorSpec2chroma_spct(colorSpec::xyz1931.5nm)
 
-## ----------------------------------------------------
+## ---- eval = eval_colorSpec--------------------------
 sun.cspec <- spct2colorSpec(sun.spct)
 plot(sun.cspec, col = "blue")
 
-## ----------------------------------------------------
+## ---- eval = eval_colorSpec--------------------------
 spct2colorSpec(yellow_gel.spct)
 
-## ----------------------------------------------------
+## ---- eval = eval_colorSpec--------------------------
 chroma_spct2colorSpec(beesxyzCMF.spct)
 
-## ----------------------------------------------------
+## ---- eval = eval_pavo-------------------------------
 data(sicalis)
 class(sicalis)
 names(sicalis)
 
-## ----------------------------------------------------
+## ---- eval = eval_pavo-------------------------------
 sicalis.mspct <- rspec2mspct(sicalis, "reflector_spct", "Rpc")
 summary(sicalis.mspct[[1]])
 summary(sicalis.mspct[[2]])
 summary(sicalis.mspct[[3]])
 
-## ----------------------------------------------------
+## ---- eval = eval_pavo-------------------------------
 ggplot(rbindspct(sicalis.mspct[1:3])) +
   aes(linetype = spct.idx) +
   ylim(0,0.3) +
   geom_line()
 
-## ----------------------------------------------------
+## ---- eval = eval_pavo-------------------------------
 print(sicalis.mspct[c(TRUE, FALSE, FALSE)])
 ggplot(rbindspct(sicalis.mspct[c(TRUE, FALSE, FALSE)])) +
   aes(linetype = spct.idx) +
@@ -372,11 +377,11 @@ ggplot(rbindspct(sicalis.mspct[c(TRUE, FALSE, FALSE)])) +
   geom_line() +
   ggtitle("'crown' reflectance spectra")
 
-## ----------------------------------------------------
+## ---- eval = eval_pavo-------------------------------
 refl.by.band <- reflectance(sicalis.mspct, w.band = list(Red(), Green(), Blue(), UVA()))
 refl.by.band$body.part <- c("crown", "throat", "breast")
 
-## ----------------------------------------------------
+## ---- eval = eval_pavo-------------------------------
 refl.red <- reflectance(sicalis.mspct, w.band = Red())
 names(refl.red)[2] <- "red.reflectance"
 refl.red$body.part <- c("crown", "throat", "breast")
