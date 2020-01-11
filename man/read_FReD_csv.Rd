@@ -4,8 +4,14 @@
 \alias{read_FReD_csv}
 \title{Read '.CSV' FReD database.}
 \usage{
-read_FReD_csv(file, date = NA, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale())
+read_FReD_csv(
+  file,
+  date = NA,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 }
 \arguments{
 \item{file}{character string}

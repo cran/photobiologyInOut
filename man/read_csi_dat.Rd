@@ -4,8 +4,14 @@
 \alias{read_csi_dat}
 \title{Read '.DAT' file(s) saved by modern Campbell Scientific loggers.}
 \usage{
-read_csi_dat(file, geocode = NULL, label = NULL, data_skip = 0,
-  n_max = Inf, locale = readr::default_locale())
+read_csi_dat(
+  file,
+  geocode = NULL,
+  label = NULL,
+  data_skip = 0,
+  n_max = Inf,
+  locale = readr::default_locale()
+)
 }
 \arguments{
 \item{file}{Path to file as a character string.}

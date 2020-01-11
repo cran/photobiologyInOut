@@ -5,12 +5,25 @@
 \alias{read_m_licor_prn}
 \title{Read '.PRN' File(s) Saved by LI-COR's PC1800 Program.}
 \usage{
-read_licor_prn(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale(), s.qty = NULL)
+read_licor_prn(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale(),
+  s.qty = NULL
+)
 
-read_m_licor_prn(files, date = NULL, geocode = NULL, label = NULL,
-  tz = Sys.timezone(), locale = readr::default_locale(),
-  s.qty = NULL)
+read_m_licor_prn(
+  files,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = Sys.timezone(),
+  locale = readr::default_locale(),
+  s.qty = NULL
+)
 }
 \arguments{
 \item{file}{Path to file as a character string.}

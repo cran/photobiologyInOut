@@ -4,8 +4,15 @@
 \alias{read_ASTER_txt}
 \title{Read File downloaded from ASTER data base.}
 \usage{
-read_ASTER_txt(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale(), npixels = 2048)
+read_ASTER_txt(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale(),
+  npixels = 2048
+)
 }
 \arguments{
 \item{file}{character string}

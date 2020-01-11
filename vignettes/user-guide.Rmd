@@ -140,7 +140,7 @@ jazraw.spct <- trim_wl(jazraw.spct, range = c(250, 900))
 Plotting the spectrum.
 
 ```{r}
-plot(jazraw.spct)
+autoplot(jazraw.spct)
 ```
 
 The metadata stored in attributes can be accessed with functions. It is clear, that not all settings can be recovered from the file. However, we store the record will all the fields which would have been filled if the data had been acquired directly from R using package 'ooacquire'.
@@ -202,7 +202,7 @@ jaz.spct <- trim_wl(jaz.spct, range = c(290, 800))
 Plotting the spectrum.
 
 ```{r}
-plot(jaz.spct)
+autoplot(jaz.spct)
 ```
 
 ### Cleaning spectral data
@@ -220,14 +220,14 @@ scale zero. Afterwards we discard data ``known'' to be zero, and for which the i
 ```{r}
 jaz.spct <- fshift(jaz0.spct, range = c(255, 290), f = "mean")
 jaz.spct <- trim_wl(jaz.spct, range = c(290, 800))
-plot(jaz.spct)
+autoplot(jaz.spct)
 ```
 
 We can next try to smooth the spectrum as it is very noisy outside the visible region.
 
 ```{r}
 jaz.spct <- smooth_spct(jaz.spct)
-plot(jaz.spct)
+autoplot(jaz.spct)
 ```
 
 Photon and energy irradiances.
@@ -240,20 +240,20 @@ e_irrad(jaz.spct, PAR())       # W m-2
 All in one statement.
 
 ```{r}
-plot(read_oo_jazirrad(file = jaz.s.irrad.file))
+autoplot(read_oo_jazirrad(file = jaz.s.irrad.file))
 ```
 
 As above but limiting the wavelength range plotted.
 
 ```{r}
-plot(read_oo_jazirrad(file = jaz.s.irrad.file),
+autoplot(read_oo_jazirrad(file = jaz.s.irrad.file),
      range = c(250,850))
 ```
 
 Adding our custom ``adaptive'' smoothing.
 
 ```{r}
-plot(smooth_spct(read_oo_jazirrad(file = jaz.s.irrad.file)),
+autoplot(smooth_spct(read_oo_jazirrad(file = jaz.s.irrad.file)),
      range = c(250,850))
 ```
 
@@ -290,7 +290,7 @@ Number of Pixels in Processed Spectrum: 1044
 q.raw.file <- 
   system.file("extdata", "spectrum.SSIrrad", 
               package = "photobiologyInOut", mustWork = TRUE)
-plot(read_oo_ssirrad(file = q.raw.file))
+autoplot(read_oo_ssirrad(file = q.raw.file))
 ```
 
 ### Modular spectrometers from Avantes
@@ -301,7 +301,7 @@ Avantes' two column .csv files can also be imported.
 ava.raw.file <- 
   system.file("extdata", "spectrum-avaspec.csv", 
               package = "photobiologyInOut", mustWork = TRUE)
-plot(read_avaspec_csv(file = ava.raw.file),
+autoplot(read_avaspec_csv(file = ava.raw.file),
      range = c(280, 900), unit.out = "photon")
 ```
 
@@ -328,7 +328,7 @@ The first few lines of the file look like this with all data in a single column 
 macam.raw.file <- 
   system.file("extdata", "spectrum.DTA", 
               package = "photobiologyInOut", mustWork = TRUE)
-plot(read_macam_dta(file = macam.raw.file))
+autoplot(read_macam_dta(file = macam.raw.file))
 ```
 
 ### LI-1800 scanning spectrometer from LI-COR
@@ -367,7 +367,7 @@ are preserved as comments in the source.spct objects.
 ```{r}
 licor.spct
 cat(comment(licor.spct))
-plot(licor.spct, unit.out = "photon")
+autoplot(licor.spct, unit.out = "photon")
 ```
 
 It is also possible to use the same function to import reflectance, and 
@@ -408,7 +408,7 @@ are preserved as comments in the source.spct objects.
 ```{r}
 licor.spct
 cat(comment(licor.spct))
-plot(licor.spct)
+autoplot(licor.spct)
 ```
 
 ## Data from loggers
@@ -516,7 +516,7 @@ It is possible to extract individual spectra with subset, or as done here
 plot them in different panels.
 
 ```{r, fig.height=10}
-plot(tuv.spct, annotations = c("colour.guide")) +
+autoplot(tuv.spct, annotations = c("colour.guide")) +
   facet_wrap(~date, ncol = 2)
 ```
 
@@ -588,7 +588,7 @@ uvspec.01.spct <- source_spct(w.length = lrt.df$w.length,
                                s.e.irrad = lrt.df$s.e.irrad * 1e-3)
 summary(uvspec.01.spct)
 cat(comment(uvspec.01.spct))
-plot(uvspec.01.spct, range = c(250, 2500), unit.out = "photon")
+autoplot(uvspec.01.spct, range = c(250, 2500), unit.out = "photon")
 ```
 
 An example using solver `disort` and our function read_uvspec_disort() follows.
@@ -609,7 +609,7 @@ uvspec.disort.file <-
 uvspec.02.spct <- read_uvspec_disort(uvspec.disort.file)
 summary(uvspec.02.spct)
 cat(comment(uvspec.02.spct))
-plot(uvspec.02.spct, unit.out = "photon")
+autoplot(uvspec.02.spct, unit.out = "photon")
 ```
 
 The data contains also estimates of diffuse and direct spectral irradiance. Here we plot the total energy irradiance with a solid line and the diffuse component with a dashed line.
@@ -827,7 +827,7 @@ by the user.
 ```{r}
 fred.spct
 cat(comment(fred.spct))
-plot(fred.spct)
+autoplot(fred.spct)
 ```
 
 ### ASTER spectral database
@@ -882,7 +882,7 @@ The label and comment are set from the file header.
 ```{r}
 aster.spct
 cat(comment(aster.spct))
-plot(aster.spct)
+autoplot(aster.spct)
 ```
 
 ## Other R packages
@@ -1093,8 +1093,6 @@ getWhenMeasured(jaz03.spct)
 When can add a geocode, either directly by giving latitude and longitude coordinates or by generating it from a Google maps search using function `ggmap::geocode()` as shown here.
 
 ```{r, message=FALSE,warning=FALSE}
-# because of Google's query restrictions call may occasionally fail
-# my.geocode <- ggmap::geocode("Vikki, 00790 Helsinki, Finland", source = "google")
 my.geocode <- data.frame(lon = 25.02006, lat = 60.22525)
 jaz04.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                geocode = my.geocode)

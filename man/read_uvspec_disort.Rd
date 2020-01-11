@@ -4,9 +4,16 @@
 \alias{read_uvspec_disort}
 \title{Read libRadtran's uvspec output file.}
 \usage{
-read_uvspec_disort(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale(), multiplier = 0.001,
-  qty = "irradiance")
+read_uvspec_disort(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale(),
+  multiplier = 0.001,
+  qty = "irradiance"
+)
 }
 \arguments{
 \item{file}{character string}

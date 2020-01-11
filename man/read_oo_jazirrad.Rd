@@ -6,15 +6,35 @@
 \alias{read_oo_jazdata}
 \title{Read Files Saved by Ocean Optics' Jaz spectrometer.}
 \usage{
-read_oo_jazirrad(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale())
+read_oo_jazirrad(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 
-read_oo_jazpc(file, qty.in = "Tpc", Tfr.type = c("total", "internal"),
-  Rfr.type = c("total", "specular"), date = NULL, geocode = NULL,
-  label = NULL, tz = NULL, locale = readr::default_locale())
+read_oo_jazpc(
+  file,
+  qty.in = "Tpc",
+  Tfr.type = c("total", "internal"),
+  Rfr.type = c("total", "specular"),
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 
-read_oo_jazdata(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale())
+read_oo_jazdata(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 }
 \arguments{
 \item{file}{character string.}

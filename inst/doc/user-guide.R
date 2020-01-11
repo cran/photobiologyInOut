@@ -39,7 +39,7 @@ jazraw.spct <- read_oo_jazdata(file = jaz.raw.file)
 jazraw.spct <- trim_wl(jazraw.spct, range = c(250, 900))
 
 ## ----------------------------------------------------
-plot(jazraw.spct)
+autoplot(jazraw.spct)
 
 ## ----------------------------------------------------
 getWhenMeasured(jazraw.spct)
@@ -59,49 +59,49 @@ jaz0.spct <- jaz.spct
 jaz.spct <- trim_wl(jaz.spct, range = c(290, 800))
 
 ## ----------------------------------------------------
-plot(jaz.spct)
+autoplot(jaz.spct)
 
 ## ----------------------------------------------------
 jaz.spct <- fshift(jaz0.spct, range = c(255, 290), f = "mean")
 jaz.spct <- trim_wl(jaz.spct, range = c(290, 800))
-plot(jaz.spct)
+autoplot(jaz.spct)
 
 ## ----------------------------------------------------
 jaz.spct <- smooth_spct(jaz.spct)
-plot(jaz.spct)
+autoplot(jaz.spct)
 
 ## ----------------------------------------------------
 e_irrad(jaz.spct, PAR())       # W m-2
 
 ## ----------------------------------------------------
-plot(read_oo_jazirrad(file = jaz.s.irrad.file))
+autoplot(read_oo_jazirrad(file = jaz.s.irrad.file))
 
 ## ----------------------------------------------------
-plot(read_oo_jazirrad(file = jaz.s.irrad.file),
+autoplot(read_oo_jazirrad(file = jaz.s.irrad.file),
      range = c(250,850))
 
 ## ----------------------------------------------------
-plot(smooth_spct(read_oo_jazirrad(file = jaz.s.irrad.file)),
+autoplot(smooth_spct(read_oo_jazirrad(file = jaz.s.irrad.file)),
      range = c(250,850))
 
 ## ----------------------------------------------------
 q.raw.file <- 
   system.file("extdata", "spectrum.SSIrrad", 
               package = "photobiologyInOut", mustWork = TRUE)
-plot(read_oo_ssirrad(file = q.raw.file))
+autoplot(read_oo_ssirrad(file = q.raw.file))
 
 ## ----------------------------------------------------
 ava.raw.file <- 
   system.file("extdata", "spectrum-avaspec.csv", 
               package = "photobiologyInOut", mustWork = TRUE)
-plot(read_avaspec_csv(file = ava.raw.file),
+autoplot(read_avaspec_csv(file = ava.raw.file),
      range = c(280, 900), unit.out = "photon")
 
 ## ----------------------------------------------------
 macam.raw.file <- 
   system.file("extdata", "spectrum.DTA", 
               package = "photobiologyInOut", mustWork = TRUE)
-plot(read_macam_dta(file = macam.raw.file))
+autoplot(read_macam_dta(file = macam.raw.file))
 
 ## ----------------------------------------------------
 licor.file <- 
@@ -112,7 +112,7 @@ licor.spct <- read_licor_prn(file = licor.file)
 ## ----------------------------------------------------
 licor.spct
 cat(comment(licor.spct))
-plot(licor.spct, unit.out = "photon")
+autoplot(licor.spct, unit.out = "photon")
 
 ## ----------------------------------------------------
 licor.file <- 
@@ -123,7 +123,7 @@ licor.spct <- read_licor_prn(file = licor.file, s.qty = "Rfr")
 ## ----------------------------------------------------
 licor.spct
 cat(comment(licor.spct))
-plot(licor.spct)
+autoplot(licor.spct)
 
 ## ----------------------------------------------------
 cs.day.file <- 
@@ -168,7 +168,7 @@ summary(subset(tuv.spct, spct.idx == "A"))
 tuv.spct
 
 ## ---- fig.height=10----------------------------------
-plot(tuv.spct, annotations = c("colour.guide")) +
+autoplot(tuv.spct, annotations = c("colour.guide")) +
   facet_wrap(~date, ncol = 2)
 
 ## ----------------------------------------------------
@@ -197,7 +197,7 @@ uvspec.01.spct <- source_spct(w.length = lrt.df$w.length,
                                s.e.irrad = lrt.df$s.e.irrad * 1e-3)
 summary(uvspec.01.spct)
 cat(comment(uvspec.01.spct))
-plot(uvspec.01.spct, range = c(250, 2500), unit.out = "photon")
+autoplot(uvspec.01.spct, range = c(250, 2500), unit.out = "photon")
 
 ## ----------------------------------------------------
 uvspec.disort.file <- 
@@ -206,7 +206,7 @@ uvspec.disort.file <-
 uvspec.02.spct <- read_uvspec_disort(uvspec.disort.file)
 summary(uvspec.02.spct)
 cat(comment(uvspec.02.spct))
-plot(uvspec.02.spct, unit.out = "photon")
+autoplot(uvspec.02.spct, unit.out = "photon")
 
 ## ----------------------------------------------------
 ggplot(uvspec.02.spct) +
@@ -290,7 +290,7 @@ fred.spct <- read_FReD_csv(file = fred.file,
 ## ----------------------------------------------------
 fred.spct
 cat(comment(fred.spct))
-plot(fred.spct)
+autoplot(fred.spct)
 
 ## ----------------------------------------------------
 aster.file <- 
@@ -301,7 +301,7 @@ aster.spct <- read_ASTER_txt(file = aster.file)
 ## ----------------------------------------------------
 aster.spct
 cat(comment(aster.spct))
-plot(aster.spct)
+autoplot(aster.spct)
 
 ## ---- eval=eval_hyperSpec----------------------------
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")
@@ -421,8 +421,6 @@ jaz03.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
 getWhenMeasured(jaz03.spct)
 
 ## ---- message=FALSE,warning=FALSE--------------------
-# because of Google's query restrictions call may occasionally fail
-# my.geocode <- ggmap::geocode("Vikki, 00790 Helsinki, Finland", source = "google")
 my.geocode <- data.frame(lon = 25.02006, lat = 60.22525)
 jaz04.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                geocode = my.geocode)

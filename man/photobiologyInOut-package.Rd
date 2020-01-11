@@ -24,8 +24,8 @@ From version 0.4.4 the time zone (tz) used for decoding dates
   and are a moving target because of changes in instrument firmware and
   support software. In addition the output format, especially with models,
   can depend on settings that users can alter. So do check that import is
-  working as expected, and if not, please please raise a bug or support
-  ticket and upload one example of an incorrectly decoded file.
+  working as expected, and if not, please please raise an issuet and upload
+  one example of an incorrectly decoded file.
 }
 
 \references{
@@ -41,11 +41,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Pedro J. Aphalo \email{pedro.aphalo@helsinki.fi} (0000-0003-3385-972X)
+\strong{Maintainer}: Pedro J. Aphalo \email{pedro.aphalo@helsinki.fi} (\href{https://orcid.org/0000-0003-3385-972X}{ORCID})
 
 Other contributors:
 \itemize{
-  \item Titta K. Kotilainen (0000-0002-2822-9734) [contributor]
+  \item Titta K. Kotilainen (\href{https://orcid.org/0000-0002-2822-9734}{ORCID}) [contributor]
   \item Glenn Davis \email{gdavis@gluonics.com} [contributor]
 }
 

@@ -5,11 +5,23 @@
 \alias{read_avaspec_xls}
 \title{Read '.csv' File Saved by Avantes' Software for AvaSpec.}
 \usage{
-read_avaspec_csv(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale())
+read_avaspec_csv(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 
-read_avaspec_xls(path, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale())
+read_avaspec_xls(
+  path,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 }
 \arguments{
 \item{file}{character string}

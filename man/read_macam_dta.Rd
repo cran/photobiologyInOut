@@ -4,8 +4,14 @@
 \alias{read_macam_dta}
 \title{Read '.DTA' File Saved by Macam's Software.}
 \usage{
-read_macam_dta(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale())
+read_macam_dta(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 }
 \arguments{
 \item{file}{character string}

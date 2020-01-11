@@ -5,11 +5,23 @@
 \alias{read_oo_ssdata}
 \title{Read File Saved by Ocean Optics' SpectraSuite.}
 \usage{
-read_oo_ssirrad(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale())
+read_oo_ssirrad(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 
-read_oo_ssdata(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale())
+read_oo_ssdata(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 }
 \arguments{
 \item{file}{character string}

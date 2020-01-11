@@ -5,13 +5,25 @@
 \alias{read_tuv_usrout2mspct}
 \title{Read TUV output file.}
 \usage{
-read_tuv_usrout(file, ozone.du = NULL, date = lubridate::today(),
-  geocode = NULL, label = NULL, tz = NULL,
-  locale = readr::default_locale())
+read_tuv_usrout(
+  file,
+  ozone.du = NULL,
+  date = lubridate::today(),
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 
-read_tuv_usrout2mspct(file, ozone.du = NULL, date = lubridate::today(),
-  geocode = NULL, label = NULL, tz = NULL,
-  locale = readr::default_locale())
+read_tuv_usrout2mspct(
+  file,
+  ozone.du = NULL,
+  date = lubridate::today(),
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 }
 \arguments{
 \item{file}{character string}

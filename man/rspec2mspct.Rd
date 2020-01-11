@@ -5,8 +5,13 @@
 \alias{rspec2spct}
 \title{Convert "pavo::rspec" objects}
 \usage{
-rspec2mspct(x, member.class = "reflector_spct", spct.data.var = "Rpc",
-  multiplier = 1, ...)
+rspec2mspct(
+  x,
+  member.class = "reflector_spct",
+  spct.data.var = "Rpc",
+  multiplier = 1,
+  ...
+)
 
 rspec2spct(x, multiplier = 1, ...)
 }

@@ -8,10 +8,11 @@ checks](https://cranchecks.info/badges/worst/photobiologyInOut)](https://cran.r-
 
 Package ‘**photobiologyInOut**’ provides functions for importing
 spectral data from diverse sources including instrument-specific files,
-as well as spectral data output by solar-radiation simulation models. It
-also includes functions for exchanging spectral data with other R
-packages. Package ‘**photobiologyInOut**’ complements other packages in
-the ‘**r4photobiology suite**’ by allowing reading and writing “foreign”
+spectral data output by solar-radiation simulation models, and files
+from on-line data repositories. It also includes functions for
+conversion of spectral data from/to classes defined in other R packages.
+Package ‘**photobiologyInOut**’ complements other packages in the
+‘**r4photobiology suite**’ by allowing reading and writing “foreign”
 spectral data as well as reading data saved from data loggers.
 
 Data files from **spectrometers** from the following suppliers are
@@ -23,8 +24,8 @@ currently supported: Campbell Scientific and YoctoPuce.
 Data files from output by **radiation transfer models**: libRadtran and
 TUV.
 
-Data objects of classes defined in **R packages**: hyperSpec, colorSpec
-and pavo.
+Data objects of classes defined in **R packages**: ‘hyperSpec’,
+‘colorSpec’ and ‘pavo’.
 
 Data files downloaded from **repositories of spectral data**: ASTER
 (NASA’s ECOSTRESS Spectral Library) and FReD (Floral Reflectance

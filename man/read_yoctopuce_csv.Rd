@@ -4,8 +4,14 @@
 \alias{read_yoctopuce_csv}
 \title{Read '.CSV' file(s) dowloaded from YoctoPuce modules.}
 \usage{
-read_yoctopuce_csv(file, geocode = NULL, label = NULL, data_skip = 0,
-  n_max = Inf, locale = readr::default_locale())
+read_yoctopuce_csv(
+  file,
+  geocode = NULL,
+  label = NULL,
+  data_skip = 0,
+  n_max = Inf,
+  locale = readr::default_locale()
+)
 }
 \arguments{
 \item{file}{Path to file as a character string.}

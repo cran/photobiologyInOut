@@ -4,8 +4,13 @@
 \alias{read_qtuv_txt}
 \title{Read Quick TUV output file.}
 \usage{
-read_qtuv_txt(file, ozone.du = NULL, label = NULL, tz = NULL,
-  locale = readr::default_locale())
+read_qtuv_txt(
+  file,
+  ozone.du = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale()
+)
 }
 \arguments{
 \item{file}{character string with the name of a text file.}

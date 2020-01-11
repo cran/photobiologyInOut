@@ -7,14 +7,11 @@
 \alias{as.colorSpec.chroma_spct}
 \title{Convert into 'colorSpec::colorSpec' objects}
 \usage{
-\method{as.colorSpec}{generic_mspct}(x, spct.data.var = NULL,
-  multiplier = 1, ...)
+\method{as.colorSpec}{generic_mspct}(x, spct.data.var = NULL, multiplier = 1, ...)
 
-\method{as.colorSpec}{generic_spct}(x, spct.data.var = NULL,
-  multiplier = 1, ...)
+\method{as.colorSpec}{generic_spct}(x, spct.data.var = NULL, multiplier = 1, ...)
 
-\method{as.colorSpec}{chroma_spct}(x, spct.data.var = NULL,
-  multiplier = 1, ...)
+\method{as.colorSpec}{chroma_spct}(x, spct.data.var = NULL, multiplier = 1, ...)
 }
 \arguments{
 \item{x}{R object}

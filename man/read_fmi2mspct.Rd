@@ -4,8 +4,15 @@
 \alias{read_fmi2mspct}
 \title{Read multiple solar spectra from a data file.}
 \usage{
-read_fmi2mspct(file, geocode = NULL, label = NULL, tz = NULL,
-  locale = readr::default_locale(), .skip = 3, .n_max = -1)
+read_fmi2mspct(
+  file,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale(),
+  .skip = 3,
+  .n_max = -1
+)
 }
 \arguments{
 \item{file}{Either a path to a file, a connection, or literal data (either a

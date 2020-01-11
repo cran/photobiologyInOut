@@ -23,10 +23,10 @@ test_that("single spectrum (quantum)", {
   expect_equal(sum(is.na(avaspec.spct[[2]])), 0)
   expect_is(avaspec.spct, "source_spct")
   expect_named(avaspec.spct, c("w.length", "s.e.irrad"))
-  expect_equal(as.numeric(getWhenMeasured(avaspec.spct)), 
-               NA_real_)
-  expect_equal(getWhereMeasured(avaspec.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_))
+  expect_true(is.na(getWhenMeasured(avaspec.spct)))
+  expect_equivalent(getWhereMeasured(avaspec.spct), 
+                    data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
+                               stringsAsFactors = FALSE))
   expect_gt(length(getWhatMeasured(avaspec.spct)), 0)
   expect_gt(length(comment(avaspec.spct)), 0)
 })

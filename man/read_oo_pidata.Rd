@@ -4,9 +4,16 @@
 \alias{read_oo_pidata}
 \title{Read File Saved by Ocean Optics' Raspberry Pi software.}
 \usage{
-read_oo_pidata(file, date = NULL, geocode = NULL, label = NULL,
-  tz = NULL, locale = readr::default_locale(), npixels = 2048,
-  spectrometer.sn = "FLMS00673")
+read_oo_pidata(
+  file,
+  date = NULL,
+  geocode = NULL,
+  label = NULL,
+  tz = NULL,
+  locale = readr::default_locale(),
+  npixels = 2048,
+  spectrometer.sn = "FLMS00673"
+)
 }
 \arguments{
 \item{file}{character string}

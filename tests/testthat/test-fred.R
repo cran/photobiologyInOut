@@ -25,7 +25,8 @@ test_that("single spectrum", {
   expect_is(fred.spct, "reflector_spct")
   expect_named(fred.spct, c("flower.id", "w.length", "Rfr"))
   expect_equal(getWhereMeasured(fred.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_))
+               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
+                          stringsAsFactors = FALSE))
   expect_gt(length(getWhatMeasured(fred.spct)), 0)
   expect_gt(length(comment(fred.spct)), 0)
 })
