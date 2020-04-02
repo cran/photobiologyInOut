@@ -379,12 +379,12 @@ ggplot(rbindspct(sicalis.mspct[c(TRUE, FALSE, FALSE)])) +
 
 ## ---- eval = eval_pavo-------------------------------
 refl.by.band <- reflectance(sicalis.mspct, w.band = list(Red(), Green(), Blue(), UVA()))
-refl.by.band$body.part <- c("crown", "throat", "breast")
+refl.by.band$body.part <- rep(c("crown", "throat", "breast"), 7)
 
 ## ---- eval = eval_pavo-------------------------------
 refl.red <- reflectance(sicalis.mspct, w.band = Red())
 names(refl.red)[2] <- "red.reflectance"
-refl.red$body.part <- c("crown", "throat", "breast")
+refl.red$body.part <- rep(c("crown", "throat", "breast"), 7)
 ggplot(refl.red, aes(x = body.part, y = red.reflectance)) +
   stat_summary(fun.data = "mean_se", color = "red") +
   geom_point(alpha = 0.5)

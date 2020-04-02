@@ -115,8 +115,8 @@ citation("photobiologyInOut")
 #> 
 #> To cite package 'photobiologyInOut' in publications, please use:
 #> 
-#>   Aphalo, Pedro J. (2015) The r4photobiology suite. UV4Plants
-#>   Bulletin, 2015:1, 21-29. DOI:10.19232/uv4pb.2015.1.14
+#>   Aphalo, Pedro J. (2015) The r4photobiology suite. UV4Plants Bulletin,
+#>   2015:1, 21-29. DOI:10.19232/uv4pb.2015.1.14
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -134,6 +134,6 @@ citation("photobiologyInOut")
 
 ## License
 
-© 2015-2019 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
+© 2015-2020 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
 the GPL, version 2 or greater. This software carries no warranty of any
 kind.

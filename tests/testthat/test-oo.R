@@ -29,8 +29,7 @@ test_that("jaz", {
   expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
                as.numeric(ymd_hms("2015-02-03 09:44:41", tz = "EET"), tz = "EET"))
   expect_equal(getWhereMeasured(jaz.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum.JazIrrad")
   expect_equal(getTimeUnit(jaz.spct), "second")
   expect_gt(length(comment(jaz.spct)), 0)
@@ -55,8 +54,7 @@ test_that("jaz", {
   expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
                as.numeric(ymd_hms("2016-01-01 00:00:01", tz = "EET"), tz = "EET"))
   expect_equal(getWhereMeasured(jaz.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum.JazIrrad")
   expect_equal(getTimeUnit(jaz.spct), "second")
   expect_gt(length(comment(jaz.spct)), 0)
@@ -88,8 +86,7 @@ test_that("jaz_Tpc", {
   expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
                as.numeric(ymd_hms("2018-09-17 14:58:29", tz = "EET"), tz = "EET"))
   expect_equal(getWhereMeasured(jaz.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: reflectance.jaz")
   expect_equal(getTimeUnit(jaz.spct), "unknown")
   expect_gt(length(comment(jaz.spct)), 0)
@@ -120,8 +117,7 @@ test_that("jaz_Rpc", {
   expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
                as.numeric(ymd_hms("2018-09-17 14:58:29", tz = "EET"), tz = "EET"))
   expect_equal(getWhereMeasured(jaz.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: reflectance.jaz")
   expect_equal(getTimeUnit(jaz.spct), "unknown")
   expect_gt(length(comment(jaz.spct)), 0)
@@ -152,8 +148,7 @@ test_that("jaz_raw", {
   expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
                as.numeric(ymd_hms("2016-04-25 12:49:02", tz = "EET"), tz = "EET"))
   expect_equal(getWhereMeasured(jaz.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum.jaz")
   expect_gt(length(comment(jaz.spct)), 0)
   
@@ -174,8 +169,7 @@ test_that("jaz_raw", {
   expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
                as.numeric(ymd_hms("2016-01-01 00:00:01", tz = "EET"), tz = "EET"))
   expect_equal(getWhereMeasured(jaz.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum.jaz")
   expect_gt(length(comment(jaz.spct)), 0)
   
@@ -204,8 +198,7 @@ test_that("SpectraSuite", {
   expect_equal(as.numeric(getWhenMeasured(ss.spct), tz = "CET"),
                as.numeric(ymd_hms("2013-05-06 15:13:40", tz = "CET"), tz = "CET"))
   expect_equal(getWhereMeasured(ss.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(ss.spct), "File: spectrum.SSIrrad")
   expect_equal(getTimeUnit(ss.spct), "second")
   expect_gt(length(comment(ss.spct)), 0)
@@ -237,8 +230,7 @@ test_that("jazz-comma", {
   expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
                as.numeric(ymd_hms("2015-02-03 09:44:41", tz = "EET"), tz = "EET"))
   expect_equal(getWhereMeasured(jaz.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum-comma.JazIrrad")
   expect_equal(getTimeUnit(jaz.spct), "second")
   expect_gt(length(comment(jaz.spct)), 0)
@@ -267,8 +259,7 @@ test_that("jazz_raw-comma", {
   expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
                as.numeric(ymd_hms("2016-04-25 12:49:02", tz = "EET"), tz = "EET"))
   expect_equal(getWhereMeasured(jaz.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum-comma.jaz")
   expect_gt(length(comment(jaz.spct)), 0)
 })
@@ -298,8 +289,7 @@ test_that("SpectraSuite-comma", {
   expect_equal(as.numeric(getWhenMeasured(ss.spct), tz = "CET"), 
                as.numeric(ymd_hms("2013-05-06 15:13:40", tz = "CET"), tz = "CET"))
   expect_equal(getWhereMeasured(ss.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(ss.spct), "File: spectrum-comma.SSIrrad")
   expect_equal(getTimeUnit(ss.spct), "second")
   expect_gt(length(comment(ss.spct)), 0)
@@ -329,8 +319,7 @@ test_that("pi_raw", {
   expect_equal(as.numeric(getWhenMeasured(pi.spct), tz = "EET"),
                as.numeric(my.date, tz = "EET"))
   expect_equal(getWhereMeasured(pi.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(pi.spct), "File: spectrum.pi")
   expect_gt(length(comment(pi.spct)), 0)
 
@@ -356,8 +345,7 @@ test_that("pi_raw", {
   expect_equal(as.numeric(getWhenMeasured(pi.spct), tz = "EET"),
                as.numeric(my.date, tz = "EET"))
   expect_equal(getWhereMeasured(pi.spct), 
-               data.frame(lon = NA_real_, lat = NA_real_, address = NA_character_, 
-                          stringsAsFactors = FALSE))
+               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(pi.spct), "File: spectrum-seq-dark.pi")
   expect_gt(length(comment(pi.spct)), 0)
 })

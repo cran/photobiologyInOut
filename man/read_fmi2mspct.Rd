@@ -6,11 +6,18 @@
 \usage{
 read_fmi2mspct(
   file,
+  scale.factor = 0.001,
   geocode = NULL,
-  label = NULL,
+  what.measured = NULL,
+  how.measured = NULL,
+  date.field = 2L,
+  time.field = 3L,
+  date.format = "ymd",
+  time.format = "hms",
   tz = NULL,
+  time.shift.min = 0,
   locale = readr::default_locale(),
-  .skip = 3,
+  .skip = 0,
   .n_max = -1
 )
 }
@@ -18,14 +25,29 @@ read_fmi2mspct(
 \item{file}{Either a path to a file, a connection, or literal data (either a
 single string or a raw vector).}
 
+\item{scale.factor}{numeric A multiplier to be applied to the spectral
+irradiance values.}
+
 \item{geocode}{A data frame with columns \code{lon} and \code{lat} used to
 set attribute \code{"where.measured"}.}
 
-\item{label}{character string, but if \code{NULL} the value of \code{file} is
-used, and if \code{NA} the "what.measured" attribute is not set.}
+\item{what.measured}{character string, but if \code{NULL} the value of
+\code{file} is used, and if \code{NA} the "what.measured" attribute is not
+set.}
 
-\item{tz}{character Time zone used for interpreting times saved in the
-file header.}
+\item{how.measured}{character string, but if \code{NULL} or \code{NA} the
+"how.measured" attribute is not set.}
+
+\item{date.field, time.field}{integer. Word positions in the header line.}
+
+\item{date.format}{character string. One of "ymd", "ydm", "dmy", or "mdy".}
+
+\item{time.format}{character string. One of "hms", "hm".}
+
+\item{tz}{character Time zone used for interpreting times saved in the file
+header.}
+
+\item{time.shift.min, }{numeric. Time shift with respect to TZ in minutes.}
 
 \item{locale}{The locale controls defaults that vary from place to place. The
 default locale is US-centric (like R), but you can use
@@ -38,16 +60,24 @@ names.}
 \item{.n_max}{Maximum number of records to read.}
 }
 \value{
-\code{read_fmi2mspct()} returns a \code{source_mspct} object 
-  containing \code{source_spct} objects as members, \code{time.unit} 
-  attribute set to \code{"second"} and \code{when.measured}
-  attribute set to the date-time values extracted from the file body.
+\code{read_fmi2mspct()} returns a \code{source_mspct} object
+  containing \code{source_spct} objects as members, \code{time.unit}
+  attribute set to \code{"second"} and \code{when.measured} attribute set to
+  the date-time values extracted from the file body.
 }
 \description{
 Read spectral irradiance file as output by Anders Lindors' model based on
-libRadTrans for hourly simulation.
+libRadTrans for hourly simulation, or measured data from FMI's Brewer
+spectrometer.
 }
 \note{
 See \code{\link[readr]{read_table}} for details of acceptable values
- for \code{file}.
+  for \code{file}. Individual spectra are names based on time and date in
+  ISO format, at the time zone given by \code{tz} but the time shift 
+  subtracted. Say for times expressed in headers at UTC + 120 min, we use
+  \code{tz = UTC} and {time.shift.min = 120} to convert times to UTC. This
+  is different from using \code{tz = EET}, which is not invariant through
+  the course of the year because of daylight saving time. Local time zones is
+  not necessarily consistent across years because of changes in legislation.
+  In contrast UTC is more consistent, making it preferable for time series.
 }

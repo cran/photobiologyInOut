@@ -15,14 +15,14 @@ test_that("colorSpec", {
                     irrad(colorSpec2spct(spct2colorSpec(sun.spct))))
   expect_equivalent(transmittance(yellow_gel.spct),
                     transmittance(colorSpec2spct(spct2colorSpec(yellow_gel.spct))))
-  expect_equal(signif(sum(irrad(colorSpec2mspct(Fs.5nm))[["irrad_Total"]]), 7), 
+  expect_equal(signif(sum(irrad(colorSpec2mspct(Fs.5nm))[["E_Total"]]), 7), 
                38468.75)
   expect_equal(names(colorSpec2mspct(Fs.5nm)),
                specnames(Fs.5nm))
   expect_is(colorSpec2mspct(Fs.5nm), "source_mspct")
   expect_is(colorSpec2spct(Fs.5nm), "source_spct")
   expect_equal(getMultipleWl(colorSpec2spct(Fs.5nm)), numSpectra(Fs.5nm))
-  expect_equal(signif(irrad(colorSpec2mspct(C.5nm))[["irrad_Total"]], 7), 
+  expect_equal(signif(irrad(colorSpec2mspct(C.5nm))[["E_Total"]], 7), 
                364.8822)
   expect_equal(names(colorSpec2mspct(C.5nm)),
                specnames(C.5nm))
