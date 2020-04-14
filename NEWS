@@ -7,6 +7,12 @@ functions to handle character vectors of paths.
 Add test cases for new functions for exchange of foreign data (currently tested 
 through examples in vignette) (URGENT otherwise bugs creep-in easily).
 
+photobiologyInOut 0.4.22-1 (2020-04-09)
+=======================================
+
+* Fix two bad test cases that passed with 'photobiology' (== 0.10.0) but not
+with 'photobiology' (>= 0.10.1).
+
 photobiologyInOut 0.4.22 (2020-04-02)
 =======================================
 

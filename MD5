@@ -1,6 +1,6 @@
-5e49d92948b9e1025eb5592a73900138 *DESCRIPTION
+df1049ccd613b9235eaa016d84190f79 *DESCRIPTION
 9f9b2e26c44365b426424da512c15d91 *NAMESPACE
-28280e00a8d847889769c1426b9afd7f *NEWS
+7de1ccc7ff8d6d58ebe0e4c4cc571a88 *NEWS
 2ba1d95cf07fde2486c5fa75e466cc78 *R/foreign-conversion.r
 023d6c7ebe65fb4a3640f0b49b2056ec *R/photobiologyInOut.r
 6d0025a5048b02181cfa8f4886e4835c *R/read-aster-file.r
@@ -21,7 +21,7 @@ e932363b46c0c540c53b7b223b6855f1 *build/vignette.rds
 513db777f0565d1b92ee39e5013ffd9c *inst/CITATION
 48a501a64163d43c85ed71f45e2dfa60 *inst/doc/user-guide.R
 55f44bcb5a957e7741047171806fd2df *inst/doc/user-guide.Rmd
-bd746cda301469dc4d7a4ae54fc60048 *inst/doc/user-guide.html
+f1c4391dac2b4b88b2b80b545464bca7 *inst/doc/user-guide.html
 5cbcc304724982c1cb3c49d0aa55fc7f *inst/extdata/2013-05-01.hel
 e5881c2cb49f1bdabeca1a53900efdda *inst/extdata/2014-08-21_cum.hel
 afc5b7ea01d616f52f9b4364dd40c0e1 *inst/extdata/2014-08-22_cum.hel
@@ -69,7 +69,7 @@ ffa7bc17247db5a8307cc7e3aee62a73 *man/as.colorSpec.Rd
 a80852d59647de316fd7675f99a8a4d9 *man/as.generic_spct.Rd
 f84397ed30bc5c4e75edb6ccf850a340 *man/colorSpec2mspct.Rd
 e38156a0b3fa6eb953e9b9d0ddf5f863 *man/hyperSpec2mspct.Rd
-a79af766368587f19d0bf1d43a637b15 *man/photobiologyInOut-package.Rd
+09c4995ac9c3a5bb1a2e87c2688ae4cc *man/photobiologyInOut-package.Rd
 9e6abbf5a98065f44ee77cd7ef102f0d *man/read_ASTER_txt.Rd
 d90665e51b938a4ce0d910ec4f20464f *man/read_FReD_csv.Rd
 8ff918bf611c0a97ff6a60baf20419a0 *man/read_avaspec_csv.Rd
@@ -95,7 +95,7 @@ aa7507903d1736c470415e65dd697d73 *tests/testthat/test-foreign.R
 be0a986d6d7399dbdec1bfbf225067bf *tests/testthat/test-fred.R
 bb366fc96b8b6807c1446ee0571d5f2e *tests/testthat/test-licor.R
 8577d7ddd5f5755d0da062e271d45121 *tests/testthat/test-macam.R
-c1b5d646c91b4bdc642e1c02e98b54b3 *tests/testthat/test-oo.R
+a3525f7b027a4d64814c320001b702b9 *tests/testthat/test-oo.R
 c71d2013dec0ffc1f48a11cafbe69b82 *tests/testthat/test-tuv.R
 b5fae97e7ee51e375da7e0018dd40ba8 *tests/testthat/test-yoctopuce.R
 55f44bcb5a957e7741047171806fd2df *vignettes/user-guide.Rmd
