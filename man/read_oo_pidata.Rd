@@ -11,7 +11,7 @@ read_oo_pidata(
   label = NULL,
   tz = NULL,
   locale = readr::default_locale(),
-  npixels = 2048,
+  npixels = Inf,
   spectrometer.sn = "FLMS00673"
 )
 }
@@ -47,19 +47,36 @@ A raw_spct object.
 \description{
 Reads and parses the header of a raw data file as output by the server
 running on a Raspberry Pi board to extract the whole header remark field. The
-time field is retrieved and decoded.
+time field is retrieved and decoded. 
+The company formerly named Ocean Optics is now called Ocean Insight.
 }
 \note{
-The header in these files has very little information, so the user
-needs to supply the number of pixels in the array as well as the date-time.
+The header in these files has very little information.
 The file contains a time in milliseconds but as the Raspberry Pi board
 contains no real-time clock, it seems to default to number of milliseconds
-since the Pi was switched on. If no argument is passed to date this
-attribute is set to the file modification date obtained with file.mtime().
+since the Pi was switched on. The user may wish to supply the date-time as
+an argument, but if no argument is passed to \code{date} this
+attribute is set to the file modification date obtained with \code{file.mtime()}.
 This date-time gives an upper limit to the real time of measurement as in
 some operating systems it is reset when the file is copied or even without
-any good apparent reason.
+any good apparent reason. The user may need to supply the number of pixels 
+in the array although the default of \code{npixels = Inf} usually works
+and triggers no warnings.
+}
+\examples{
+
+ file.name <- 
+   system.file("extdata", "spectrum.pi", 
+               package = "photobiologyInOut", mustWork = TRUE)
+                
+ oopi.spct <- read_oo_pidata(file = file.name)
+ 
+ oopi.spct
+ getWhenMeasured(oopi.spct)
+ getWhatMeasured(oopi.spct)
+ cat(comment(oopi.spct))
+
 }
 \references{
-\url{https://www.r4photobiology.info} \url{https://oceanoptics.com/} \url{https://www.raspberrypi.org/}
+\url{https://www.oceaninsight.com/} \url{https://www.raspberrypi.org/}
 }

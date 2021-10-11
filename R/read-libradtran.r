@@ -27,7 +27,7 @@
 #' @return a source_spct object, possibly containing several spectra in long
 #'  form and a datetime column.
 #'   
-#' @references \url{https://www.r4photobiology.info} \url{http://www.libradtran.org}
+#' @references \url{http://www.libradtran.org}
 #'
 #' @export
 #' 
@@ -54,22 +54,26 @@ read_uvspec_disort_vesa <- function(file,
                          col_names = c("w.length", "day", "time", 
                                        "s.e.irrad.dir", "s.e.irrad.diff"),
                          col_types = "dccdd",
+                         progress = FALSE,
                          locale = locale)
-  dots <- list(~lubridate::ymd_hms(paste(day, time), tz = tz),
-               ~s.e.irrad.dir * multiplier,
-               ~s.e.irrad.diff * multiplier,
-               ~s.e.irrad.dir + s.e.irrad.diff)
-  dots.names <- c("datetime", "s.e.irrad.dir", "s.e.irrad.diff", "s.e.irrad")
-  z <- dplyr::mutate_(z, .dots = stats::setNames(dots, dots.names))
-
+  
+  z <- tibble::tibble(
+    w.length = z[["w.length"]],
+    datetime = lubridate::ymd_hms(paste(z[["day"]], z[["time"]]), tz = tz),
+    s.e.irrad.dir = z[["s.e.irrad.dir"]] * multiplier,
+    s.e.irrad.diff = z[["s.e.irrad.diff"]] * multiplier,
+    s.e.irrad = (z[["s.e.irrad.dir"]] + z[["s.e.irrad.diff"]]) * multiplier)
   datetimes <- unique(z[["datetime"]])
   num.spectra <- length(datetimes)
   if (simplify && num.spectra == 1) {
-    z <- dplyr::select_(z, "w.length", 
-                        lazyeval::interp(~starts_with(x), x = "s.e.irrad"))
+    z <- dplyr::select(z, 
+                       "w.length", 
+                       starts_with("s.e.irrad"))
   } else if (simplify && num.spectra > 1) {
-    z <- dplyr::select_(z, "w.length", "datetime", 
-                        lazyeval::interp(~starts_with(x), x = "s.e.irrad"))
+    z <- dplyr::select(z,
+                       "datetime", 
+                       "w.length", 
+                       starts_with("s.e.irrad"))
   }
   photobiology::setSourceSpct(z, time.unit = "second", multiple.wl = num.spectra)
   comment(z) <- paste("libRadtran file '", basename(file),
@@ -147,13 +151,13 @@ read_uvspec_disort <- function(file,
                                        "edir", "edn", "eup", 
                                        "uavgdir", "uavgdn", "uavgup"),
                          col_types = "ddddddd",
+                         progress = FALSE,
                          locale = locale)
-  dots <- list(~lambda,
-               ~edir * multiplier,
-               ~edn * multiplier,
-               ~(edir + edn) * multiplier)
-  dots.names <- c("w.length", "s.e.irrad.dir", "s.e.irrad.diff", "s.e.irrad")
-  z <- dplyr::transmute_(z, .dots = stats::setNames(dots, dots.names))
+
+  z <- tibble::tibble(w.length = z[["lambda"]],
+                      s.e.irrad.dir = z[["edir"]] * multiplier,
+                      s.e.irrad.diff = z[["edn"]] * multiplier,
+                      s.e.irrad = (z[["edir"]] + z[["edn"]]) * multiplier)
   
   photobiology::setSourceSpct(z, time.unit = "second", multiple.wl = 1)
   comment(z) <- paste("libRadtran file '", basename(file),

@@ -27,7 +27,7 @@ test_that("single spectrum (quantum)", {
   expect_equal(as.numeric(getWhenMeasured(macam.spct), tz = "EET"),
                as.numeric(ymd_hms("1997-05-19 17:44:58", tz = "EET"), tz = "EET"))
   expect_equal(getWhereMeasured(macam.spct), 
-               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
+               tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_gt(length(getWhatMeasured(macam.spct)), 0)
   expect_gt(length(comment(macam.spct)), 0)
 })

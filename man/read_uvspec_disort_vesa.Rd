@@ -53,5 +53,5 @@ simulations. The header and time and date fields are converted into a
 datetime object.
 }
 \references{
-\url{https://www.r4photobiology.info} \url{http://www.libradtran.org}
+\url{http://www.libradtran.org}
 }

@@ -28,7 +28,7 @@ test_that("single spectrum (quantum)", {
   # expect_equal(as.numeric(getWhenMeasured(licor.spct), tz = "UTC"), 
   #              as.numeric(ymd_hms("0000-08-23 14:52:11", tz = "UTC"), tz = "UTC"))
   expect_equal(getWhereMeasured(licor.spct), 
-               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
+               tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_gt(length(getWhatMeasured(licor.spct)), 0)
   expect_gt(length(comment(licor.spct)), 0)
   
@@ -74,7 +74,7 @@ test_that("single spectrum Tfr", {
   # expect_equal(as.numeric(getWhenMeasured(licor.spct), tz = "UTC"), 
   #              as.numeric(ymd_hms("0000-08-23 14:52:11", tz = "UTC"), tz = "UTC"))
   expect_equal(getWhereMeasured(licor.spct), 
-               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
+               tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_gt(length(getWhatMeasured(licor.spct)), 0)
   expect_gt(length(comment(licor.spct)), 0)
   
@@ -104,7 +104,7 @@ test_that("single spectrum Rfr", {
   # expect_equal(as.numeric(getWhenMeasured(licor.spct), tz = "UTC"), 
   #              as.numeric(ymd_hms("0000-08-23 14:52:11", tz = "UTC"), tz = "UTC"))
   expect_equal(getWhereMeasured(licor.spct), 
-               tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
+               tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_gt(length(getWhatMeasured(licor.spct)), 0)
   expect_gt(length(comment(licor.spct)), 0)
   

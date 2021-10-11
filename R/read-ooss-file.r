@@ -2,7 +2,8 @@
 #' 
 #' Reads and parses the header of a processed data file as output by
 #' SpectraSuite to extract the whole header remark field. The time field is
-#' retrieved and decoded.
+#' retrieved and decoded. SpectraSuite was a program, now replaced by OceanView.
+#' The company formerly named Ocean Optics is now called Ocean Insight.
 #' 
 #' @param file character string
 #' @param date a \code{POSIXct} object to use to set the \code{"when.measured"}
@@ -21,8 +22,21 @@
 #'   
 #' @return A source_spct object.
 #' @export
-#' @references \url{https://www.r4photobiology.info} \url{https://oceanoptics.com/}
+#' @references \url{https://www.oceaninsight.com/}
 #' @keywords misc
+#' 
+#' @examples
+#' 
+#'  file.name <- 
+#'    system.file("extdata", "spectrum.SSIrrad", 
+#'                package = "photobiologyInOut", mustWork = TRUE)
+#'                 
+#'  ooss.spct <- read_oo_ssirrad(file = file.name)
+#'  
+#'  ooss.spct
+#'  getWhenMeasured(ooss.spct)
+#'  getWhatMeasured(ooss.spct)
+#'  cat(comment(ooss.spct))
 #' 
 read_oo_ssirrad <- function(file,
                             date = NULL,
@@ -41,13 +55,15 @@ read_oo_ssirrad <- function(file,
     label <- paste(label.file, label, sep = "\n")
   }
   
-  line01 <- scan(file = file, nlines =  1, skip = 0, what="character")
+  line01 <- scan(file = file, nlines =  1, skip = 0, 
+                 what="character", quiet = TRUE)
   if (line01[1] != "SpectraSuite") {
     warning("Input file was not created by SpectrSuite as expected: skipping")
-    return(source_spct())
+    return(photobiology::source_spct())
   }
   file_header <- scan(file = file, nlines = 16, 
-                      skip = 0, what="character", sep = "\n")
+                      skip = 0, what="character", 
+                      sep = "\n", quiet = TRUE)
   NonASCII <- tools::showNonASCII(file_header)
   if (length(NonASCII) > 0L) {
     warning("Found non-ASCII characters in file header: ", 
@@ -76,13 +92,16 @@ read_oo_ssirrad <- function(file,
     skip = 17,
     n_max = npixels,
     col_types = readr::cols(),
+    progress = FALSE,
     locale = locale
   )
   
-  dots <- list(~s.e.irrad * 1e-2) # uW cm-2 nm-1 -> W m-2 nm-1
-  z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
+  # dots <- list(~s.e.irrad * 1e-2) # uW cm-2 nm-1 -> W m-2 nm-1
+  # z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
 
-  old.opts <- options("photobiology.strict.range" = NA_integer_)
+  z[["s.e.irrad"]] <- z[["s.e.irrad"]] * 1e-2 # uW cm-2 nm-1 -> W m-2 nm-1
+
+    old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.source_spct(z, time.unit = "second")
   options(old.opts)
 
@@ -120,13 +139,15 @@ read_oo_ssdata<- function(file,
     label <- paste(label.file, label, sep = "\n")
   }
   
-  line01 <- scan(file = file, nlines =  1, skip = 0, what="character")
+  line01 <- scan(file = file, nlines =  1, skip = 0, 
+                 what="character", quiet = TRUE)
   if (line01[1] != "SpectraSuite") {
     warning("Input file was not created by SpectrSuite as expected: skipping")
-    return(raw_spct())
+    return(photobiology::raw_spct())
   }
   file_header <- scan(file = file, nlines = 16, 
-                      skip = 0, what="character", sep = "\n")
+                      skip = 0, what="character", 
+                      sep = "\n", quiet = TRUE)
   
   npixels <- as.integer(sub("Number of Pixels in Processed Spectrum: ", "", 
                             file_header[16], fixed = TRUE))
@@ -148,6 +169,7 @@ read_oo_ssdata<- function(file,
     skip = 17,
     n_max = npixels,
     col_types = readr::cols(),
+    progress = FALSE,
     locale = locale
   )
   

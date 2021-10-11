@@ -11,7 +11,7 @@ read_ASTER_txt(
   label = NULL,
   tz = NULL,
   locale = readr::default_locale(),
-  npixels = 2048
+  npixels = Inf
 )
 }
 \arguments{
@@ -46,14 +46,28 @@ ASTER reflectance database. The Name field is retrieved and copied to
 attribute "what.measured". The header of the file is preserved as a comment.
 }
 \note{
-The header in these files has very little information, so the user
-needs to supply the number of pixels in the array as well as the date-time.
-The file contains a date in milliseconds but as the Raspberry Pi board
-contains no real-time clock, it seems to default to number of milliseconds
-since the Pi was switched on.
+The header in these files has metadata information, but mostly on the
+  origin of the data. For a date and/or geocode are to be added to the return
+  object it must be supplied by the user.  as well as the date-time. Some
+  metadata is extracted and added as attributes, while the whole header is
+  copied to the \code{comment} attribute.
+}
+\examples{
+
+ file.name <- 
+   system.file("extdata", "drygrass-spectrum.txt", 
+               package = "photobiologyInOut", mustWork = TRUE)
+                
+ fred.spct <- read_ASTER_txt(file = file.name, npixels = Inf)
+ 
+ fred.spct
+ getWhatMeasured(fred.spct)
+ cat(comment(fred.spct))
+ 
 }
 \references{
-\url{https://www.r4photobiology.info} \url{https://speclib.jpl.nasa.gov/}
+\url{https://speclib.jpl.nasa.gov}
+
 Baldridge, A.; Hook, S.; Grove, C. & Rivera, G. (2009) The ASTER spectral 
 library version 2.0. Remote Sensing of Environment. 113, 711-715
 }

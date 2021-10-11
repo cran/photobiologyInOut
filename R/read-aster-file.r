@@ -22,26 +22,41 @@
 #'   
 #' @return A raw_spct object.
 #' @export
-#' @references \url{https://www.r4photobiology.info} \url{https://speclib.jpl.nasa.gov/}
+#' @references 
+#' 
+#' \url{https://speclib.jpl.nasa.gov}
+#' 
 #' Baldridge, A.; Hook, S.; Grove, C. & Rivera, G. (2009) The ASTER spectral 
 #' library version 2.0. Remote Sensing of Environment. 113, 711-715
 #' 
-#' @note The header in these files has very little information, so the user
-#' needs to supply the number of pixels in the array as well as the date-time.
-#' The file contains a date in milliseconds but as the Raspberry Pi board
-#' contains no real-time clock, it seems to default to number of milliseconds
-#' since the Pi was switched on.
+#' @note The header in these files has metadata information, but mostly on the
+#'   origin of the data. For a date and/or geocode are to be added to the return
+#'   object it must be supplied by the user.  as well as the date-time. Some
+#'   metadata is extracted and added as attributes, while the whole header is
+#'   copied to the \code{comment} attribute.
 #' 
+#' @examples
+#' 
+#'  file.name <- 
+#'    system.file("extdata", "drygrass-spectrum.txt", 
+#'                package = "photobiologyInOut", mustWork = TRUE)
+#'                 
+#'  fred.spct <- read_ASTER_txt(file = file.name, npixels = Inf)
+#'  
+#'  fred.spct
+#'  getWhatMeasured(fred.spct)
+#'  cat(comment(fred.spct))
+#'  
 read_ASTER_txt <- function(file,
                            date = NULL,
                            geocode = NULL,
                            label = NULL,
                            tz = NULL,
                            locale = readr::default_locale(),
-                           npixels = 2048) {
+                           npixels = Inf) {
   
   file_header <- scan(file = file, nlines = 26, 
-                      skip = 0, what = "character", sep = "\n")
+                      skip = 0, what = "character", sep = "\n", quiet = TRUE)
   
   label.file <- paste("File: ", basename(file), sep = "")
   label.file <- paste(file_header[[1]], label.file, sep = "\n") 

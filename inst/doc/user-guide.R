@@ -1,32 +1,41 @@
 ## ---- setup, include=FALSE, cache=FALSE--------------
 library(knitr)
+# Are the packages used in examples installed?
+eval_chunks <- requireNamespace("ggspectra", quietly = TRUE) &&
+                 requireNamespace("photobiologyWavebands", quietly = TRUE)
+# eval_colorSpec <- requireNamespace("colorSpec", quietly = TRUE) && eval_chunks
+eval_colorSpec <- eval_chunks
+eval_pavo <- requireNamespace("pavo", quietly = TRUE) && eval_chunks
+eval_hyperSpec <- requireNamespace("hyperSpec", quietly = TRUE) && eval_chunks
+
 opts_chunk$set(fig.align='center', fig.show='hold',
-               fig.width=7, fig.height=6, size="footnotesize")
+               fig.width=7, fig.height=6, size="footnotesize",
+               eval=eval_chunks)
+
 options(replace.assign = TRUE, width = 55,
         warnPartialMatchAttr = FALSE,
         warnPartialMatchDollar = FALSE,
         warnPartialMatchArgs = FALSE)
-
-## ---- example-0-hiden, eval=TRUE, message=FALSE------
 # setting TZ may be needed in some geographic locations as some Windows TZ 
 # strings are not recognized by all versions of R
 Sys.setenv(TZ = 'UTC')
+
+## ---- message=FALSE----------------------------------
 library(photobiology)
 library(photobiologyWavebands)
 library(photobiologyInOut)
 library(lubridate)
 library(ggspectra)
 library(readr)
-# eval_colorSpec <- requireNamespace("colorSpec", quietly = TRUE)
 library(colorSpec)
-eval_colorSpec <- TRUE
-eval_pavo <- requireNamespace("pavo", quietly = TRUE)
 if (eval_pavo) {library(pavo)}
-eval_hyperSpec <- requireNamespace("hyperSpec", quietly = TRUE)
 if (eval_hyperSpec) {library(hyperSpec)}
 
 ## ----------------------------------------------------
+# plot defaults
 theme_set(theme_bw()) # ggplot2
+set_annotations_default(annotations = c("+", "title:what:when"))
+# decrease lines printed
 options(tibble.print_max = 5,
         tibble.print_min = 3,
         photobiology.strict.range = NA_integer_)
@@ -91,6 +100,20 @@ q.raw.file <-
 autoplot(read_oo_ssirrad(file = q.raw.file))
 
 ## ----------------------------------------------------
+file.name <- 
+    system.file("extdata", "enlighten-wasatch-scope.csv",
+                package = "photobiologyInOut", mustWork = TRUE)
+              
+wasatch.raw.spct <- 
+    read_wasatch_csv(file = file.name, extra.cols = "drop")
+
+## ----------------------------------------------------
+summary(wasatch.raw.spct)
+
+## ----------------------------------------------------
+autoplot(wasatch.raw.spct)
+
+## ----------------------------------------------------
 ava.raw.file <- 
   system.file("extdata", "spectrum-avaspec.csv", 
               package = "photobiologyInOut", mustWork = TRUE)
@@ -102,6 +125,19 @@ macam.raw.file <-
   system.file("extdata", "spectrum.DTA", 
               package = "photobiologyInOut", mustWork = TRUE)
 autoplot(read_macam_dta(file = macam.raw.file))
+
+## ----------------------------------------------------
+licor_espd.file <- 
+  system.file("extdata", "LI-180-irradiance.txt", 
+              package = "photobiologyInOut", mustWork = TRUE)
+li180.spct <- read_li180_txt(file = licor_espd.file)
+
+## ----------------------------------------------------
+li180.spct
+cat(comment(li180.spct))
+getInstrDesc(li180.spct)
+getInstrSettings(li180.spct)
+autoplot(li180.spct, unit.out = "photon")
 
 ## ----------------------------------------------------
 licor.file <- 
@@ -337,7 +373,7 @@ colorSpec2mspct(colorSpec::Hoya)
 
 ## ---- eval = eval_colorSpec--------------------------
 fluorescent.spct <- colorSpec2spct(colorSpec::Fs.5nm)
-autoplot(fluorescent.spct) + aes(linetype = spct.idx)
+autoplot(fluorescent.spct, annotations = "")
 
 ## ---- eval = eval_colorSpec--------------------------
 colorSpec2chroma_spct(colorSpec::xyz1931.5nm)

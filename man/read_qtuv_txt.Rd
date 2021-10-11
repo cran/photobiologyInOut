@@ -35,9 +35,8 @@ a source_spct object obtained by finding the center of wavelength
 }
 \description{
 Reads and parses the header of a text file output by the Quick TUV on-line
-web front-end at \url{http://cprm.acom.ucar.edu/Models/TUV/Interactive_TUV/}
-to extract the header and spectral data. The time field is converted to a
-date.
+web front-end at UCAR to extract the header and spectral data. The time field
+is converted to a date.
 }
 \note{
 The ozone column value used in the simulation cannot be retrieved from
@@ -47,6 +46,5 @@ in the imported file and resistent to the presence of extraneous text or
 even summaries.
 }
 \references{
-\url{https://www.r4photobiology.info} 
-\url{http://cprm.acom.ucar.edu/Models/TUV/Interactive_TUV/}
+\url{https://www.acom.ucar.edu/Models/TUV/Interactive_TUV/}
 }

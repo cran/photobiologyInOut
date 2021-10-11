@@ -2,7 +2,7 @@
 % Please edit documentation in R/read-yoctopuce-csv.r
 \name{read_yoctopuce_csv}
 \alias{read_yoctopuce_csv}
-\title{Read '.CSV' file(s) dowloaded from YoctoPuce modules.}
+\title{Read '.CSV' file(s) downloaded from YoctoPuce modules.}
 \usage{
 read_yoctopuce_csv(
   file,
@@ -34,19 +34,44 @@ like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
 }
 \value{
-\code{read_yoctopuce_csv()} returns a \code{tibble::tibble} object.
+\code{read_yoctopuce_csv()} returns a \code{tibble::tibble} object,
+  with the number of columns dependent on the CSV file read.
 }
 \description{
 Reads and parses the header of processed data CSV files as output by the
-virtual- or hardware-hubs and modules from Yoctupuce. Uses the comment
+virtual- or hardware-hubs and modules from Yoctopuce. Uses the comment
 attribute to store the metadata.
+}
+\details{
+Yoctopuce modules are small USB connected and USB powered, but
+  isolated, very high quality miniature data acquisition and interface
+  modules. All modules capable of data acquisition can log measured data
+  autonomously and these data can be locally or remotely downloaded as a CSV
+  file. (It is also possible and very easy to access these modules from R
+  using package 'reticulate' and the Python library provided by Yoctopuce, or
+  to send commands and retrieve data through the built-in HTML server of the
+  modules or dedicated hubs.)
 }
 \note{
 This function should be able to read data log files from any YoctoPuce
   USB interface module with data logging capabilities as the format is
   consistent among them.
 }
+\examples{
+
+  
+  # We read a CSV file previously downloaded from a YoctoMeteo module.
+
+ file.name <- 
+   system.file("extdata", "yoctopuce-data.csv", 
+               package = "photobiologyInOut", mustWork = TRUE)
+                
+ yoctopc.tb <- read_yoctopuce_csv(file = file.name)
+ 
+ yoctopc.tb
+ cat(comment(yoctopc.tb))
+
+}
 \references{
-\url{https://www.r4photobiology.info}
-  \url{https://www.yoctopuce.com/}
+\url{https://www.yoctopuce.com/}
 }

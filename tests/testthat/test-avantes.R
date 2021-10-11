@@ -2,7 +2,7 @@ library("photobiology")
 library("photobiologyInOut")
 library("lubridate")
 
-context("read LI-1800 PRN file)")
+context("read Avaspec .csv file)")
 
 test_that("single spectrum (quantum)", {
 

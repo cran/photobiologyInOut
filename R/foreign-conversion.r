@@ -82,10 +82,10 @@ hyperSpec2mspct <- function(x,
     # we transpose the matrix so that each spectrum is in a column
     y <- cbind(hyperSpec::wl(x), t(x$spc) * multiplier) 
     colnames(y) <- c("w.length", paste("spc", 1:nrow(x), sep = ""))
-    y <- tibble::as_data_frame(y)
-    z <- split2mspct(x = y, 
-                     member.class = member.class, 
-                     spct.data.var = spct.data.var)
+    y <- tibble::as_tibble(y)
+    z <- photobiology::split2mspct(x = y, 
+                                   member.class = member.class, 
+                                   spct.data.var = spct.data.var)
     other.vars <- setdiff(colnames(x), "spc")
     for (r in seq_along(z)) { # nrow(x) is same as length(z)
       for (var in other.vars) {
@@ -110,7 +110,7 @@ hyperSpec2mspct <- function(x,
 #'
 hyperSpec2spct <- function(x, multiplier = 1, ...) {
   y <- hyperSpec2mspct(x, multiplier = multiplier, ...)
-  z <- rbindspct(y)
+  z <- photobiology::rbindspct(y)
   comment(z) <- comment(x[[1]])
   z
 }
@@ -163,7 +163,7 @@ spct2hyperSpec <- function(x,
                            spct.data.var = NULL,
                            multiplier = 1,
                            ...) {
-  y <- generic_mspct(list(x), class = class(x)[1])
+  y <- photobiology::generic_mspct(list(x), class = class(x)[1])
   mspct2hyperSpec(y,
                   spct.data.var,
                   multiplier)
@@ -235,10 +235,10 @@ rspec2mspct <- function(x,
   if (requireNamespace("pavo", quietly = TRUE)) {
   stopifnot(inherits(x, "rspec"))
   spct.names <- colnames(x)[-1]
-  z <- split2mspct(x = x, 
-                   member.class = member.class, 
-                   spct.data.var = spct.data.var,
-                   w.length.var = "wl")
+  z <- photobiology::split2mspct(x = x, 
+                                 member.class = member.class, 
+                                 spct.data.var = spct.data.var,
+                                 w.length.var = "wl")
   names(z) <- spct.names
   comment(z) <- paste('Converted from "pavo::rspec" object\n',
                       'dim: ', 
@@ -258,7 +258,7 @@ rspec2mspct <- function(x,
 #'
 rspec2spct <- function(x, multiplier = 1, ...) {
   y <- rspec2mspct(x, multiplier = multiplier, ...)
-  z <- rbindspct(y)
+  z <- photobiology::rbindspct(y)
   comment(z) <- comment(x[[1]])
   z
 }
@@ -366,7 +366,7 @@ colorSpec2mspct <- function(x, multiplier = 1, ...) {
     }
     comment(z) <- comment.spct
     scaled <- ifelse(multiplier == 1, FALSE, multiplier)
-    setScaled(z, scaled)
+    photobiology::setScaled(z, scaled)
   } else {
     warning("Package 'colorSpec' needs to be installed.")
     NA
@@ -530,7 +530,7 @@ colorSpec2spct <- function(x, multiplier = 1, ...) {
   if (length(y) < 2) {
     z <- y[[1]]
   } else {
-    z <- rbindspct(y)
+    z <- photobiology::rbindspct(y)
   }
   comment(z) <- comment(x[[1]])
   z
@@ -592,7 +592,7 @@ mspct2colorSpec <- function(x,
                             spct.data.var = NULL,
                             multiplier = 1,
                             ...) {
-  stopifnot(is.any_mspct(x))
+  stopifnot(photobiology::is.any_mspct(x))
   #  warning("Deprecated: please use as.colorSpec() instead.")
   class.mspct <- class(x)[1]
   comment.mspct <- comment(x)
@@ -601,19 +601,19 @@ mspct2colorSpec <- function(x,
           comment.mspct, sep = "")
   if (class.mspct == "source_mspct") {
     if (is.null(spct.data.var)) {
-      x <- q2e(x, action = "replace")
+      x <- photobiology::q2e(x, action = "replace")
       spct.data.var <- "s.e.irrad"
     }
     quantity <- 'energy'
   } else if (class.mspct == "response_mspct") {
     if (is.null(spct.data.var)) {
-      x <- q2e(x, action = "replace")
+      x <- photobiology::q2e(x, action = "replace")
       spct.data.var <- "s.e.response"
     }
     quantity <- 'energy->neural'
   } else if (class.mspct == "filter_mspct") {
     if (is.null(spct.data.var)) {
-      x <- A2T(x, action = "replace")
+      x <- photobiology::A2T(x, action = "replace")
       spct.data.var <- "Tfr"
     }
     quantity <- 'transmittance'
@@ -669,7 +669,7 @@ spct2colorSpec <- function(x,
                            spct.data.var = NULL,
                            multiplier = 1,
                            ...) {
-  y <- generic_mspct(list(x), class = class(x)[1])
+  y <- photobiology::generic_mspct(list(x), class = class(x)[1])
   mspct2colorSpec(y,
                   spct.data.var,
                   multiplier)
@@ -683,7 +683,7 @@ chroma_spct2colorSpec <- function(x,
                                   spct.data.var = NULL,
                                   multiplier = 1,
                                   ...) {
-  stopifnot(is.chroma_spct(x))
+  stopifnot(photobiology::is.chroma_spct(x))
   colorSpec::colorSpec(data = as.matrix(x[ , c("x", "y", "z")]) * multiplier,
                        wavelength = x[["w.length"]],
                        quantity = 'power->neural')

@@ -1,8 +1,17 @@
-#' Read '.CSV' file(s) dowloaded from YoctoPuce modules.
+#' Read '.CSV' file(s) downloaded from YoctoPuce modules.
 #'
 #' Reads and parses the header of processed data CSV files as output by the
-#' virtual- or hardware-hubs and modules from Yoctupuce. Uses the comment
+#' virtual- or hardware-hubs and modules from Yoctopuce. Uses the comment
 #' attribute to store the metadata.
+#' 
+#' @details Yoctopuce modules are small USB connected and USB powered, but
+#'   isolated, very high quality miniature data acquisition and interface
+#'   modules. All modules capable of data acquisition can log measured data
+#'   autonomously and these data can be locally or remotely downloaded as a CSV
+#'   file. (It is also possible and very easy to access these modules from R
+#'   using package 'reticulate' and the Python library provided by Yoctopuce, or
+#'   to send commands and retrieve data through the built-in HTML server of the
+#'   modules or dedicated hubs.)
 #'
 #' @param file Path to file as a character string.
 #' @param geocode A data frame with columns \code{lon} and \code{lat} used to
@@ -18,15 +27,30 @@
 #'   like the default time zone, encoding, decimal mark, big mark, and day/month
 #'   names.
 #'
-#' @return \code{read_yoctopuce_csv()} returns a \code{tibble::tibble} object.
+#' @return \code{read_yoctopuce_csv()} returns a \code{tibble::tibble} object,
+#'   with the number of columns dependent on the CSV file read.
 #' @export
-#' @references \url{https://www.r4photobiology.info}
-#'   \url{https://www.yoctopuce.com/}
+#' @references  \url{https://www.yoctopuce.com/}
 #'
 #' @note This function should be able to read data log files from any YoctoPuce
 #'   USB interface module with data logging capabilities as the format is
 #'   consistent among them.
 #'   
+#' @examples
+#' 
+#' @examples
+#'   
+#'   # We read a CSV file previously downloaded from a YoctoMeteo module.
+#' 
+#'  file.name <- 
+#'    system.file("extdata", "yoctopuce-data.csv", 
+#'                package = "photobiologyInOut", mustWork = TRUE)
+#'                 
+#'  yoctopc.tb <- read_yoctopuce_csv(file = file.name)
+#'  
+#'  yoctopc.tb
+#'  cat(comment(yoctopc.tb))
+#' 
 read_yoctopuce_csv <- function(file,
                                geocode = NULL,
                                label = NULL,
@@ -43,9 +67,10 @@ read_yoctopuce_csv <- function(file,
   }
   
   z <- readr::read_delim(file = file,file,
-                  delim = ";",
-                  col_types = readr::cols(), 
-                  n_max = n_max + data_skip)
+                         delim = ";",
+                         col_types = readr::cols(), 
+                         progress = FALSE,
+                         n_max = n_max + data_skip)
   
   names(z) <- make.names(names(z), unique = TRUE)
   

@@ -3,9 +3,9 @@ library("photobiologyInOut")
 library("lubridate")
 library("readr")
 
-context("YoctoPuce")
+context("Read YoctoPuce .csv")
 
-test_that("read CSV", {
+test_that("read Meteo CSV", {
 
   file.name <- 
     system.file("extdata", "yoctopuce-data.csv", 

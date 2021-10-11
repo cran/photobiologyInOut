@@ -36,14 +36,27 @@ like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
 }
 \value{
-A source_spct object.
+A \code{source_spct} object.
 }
 \description{
 Reads and parses the header of a processed data file as output by the PC
 program to extract the time and date fields and a user label if present,
 and then imports wavelengths and spectral energy irradiance values.
 }
-\references{
-\url{https://www.r4photobiology.info} \url{http://www.irradian.co.uk/}
+\examples{
+
+ file.name <- 
+   system.file("extdata", "spectrum.DTA", 
+               package = "photobiologyInOut", mustWork = TRUE)
+                
+ macam.spct <- read_macam_dta(file = file.name)
+ 
+ macam.spct
+ getWhenMeasured(macam.spct)
+ getWhatMeasured(macam.spct)
+ cat(comment(macam.spct))
+
 }
-\keyword{misc}
+\references{
+\url{https://www.irradian.co.uk/}
+}

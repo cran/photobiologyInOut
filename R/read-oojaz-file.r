@@ -3,8 +3,8 @@
 #' Reads and parses the header of processed data text files output by
 #' Jaz instruments extracting the spectral data from the body of the file 
 #' and the metadata, including time and date of measurement from the header.
-#' Jaz modular spectrometers are manufactured by Ocean Optics, Dunedin, Florida,
-#' USA.
+#' Jaz modular spectrometers were manufactured by Ocean Optics.
+#' The company formerly named Ocean Optics is now called Ocean Insight.
 #' 
 #' @details Function \code{read_oo_jazirrad} can read processed irradiance
 #' output files. Function \code{read_oo_jazpc} can read processed transmittance
@@ -28,14 +28,28 @@
 #'   names.
 #'   
 #' @note Although the parameter is called \code{date} a date time is accepted 
-#'   and expected. Time resolution is 1 s.
+#'   and expected. Time resolution is < 1 s if seconds are entered with a
+#'   decimal fraction, such as "2021-10-05 10:10:10.1234".
 #'   
 #' @return A source_spct object, a filter_spct object, a reflector_spct object
 #'   or a raw_spct object.
 #' 
 #' @export
 #' 
-#' @references \url{https://www.r4photobiology.info} \url{https://oceanoptics.com/}
+#' @references \url{https://www.oceaninsight.com/}
+#' 
+#' @examples
+#' 
+#'  file.name <- 
+#'    system.file("extdata", "spectrum.jaz", 
+#'                package = "photobiologyInOut", mustWork = TRUE)
+#'                 
+#'  jaz.spct <- read_oo_jazpc(file = file.name)
+#'  
+#'  jaz.spct
+#'  getWhenMeasured(jaz.spct)
+#'  getWhatMeasured(jaz.spct)
+#'  cat(comment(jaz.spct))
 #' 
 read_oo_jazirrad <- function(file,
                              date = NULL,
@@ -59,15 +73,16 @@ read_oo_jazirrad <- function(file,
       file = file,
       nlines =  1,
       skip = 0,
-      what = "character"
+      what = "character", 
+      quiet = TRUE
     )
   if (line01[1] != "Jaz") {
     warning("Input file was not created by a Jaz spectrometer as expected: skipping")
-    return(source_spct())
+    return(photobiology::source_spct())
   }
   if (line01[3] != "Irradiance") {
     warning("Input file does not contain data labeled as 'Irradiance' as expected: skipping")
-    return(source_spct())
+    return(photobiology::source_spct())
   }
   file_header <-
     scan(
@@ -75,7 +90,8 @@ read_oo_jazirrad <- function(file,
       nlines = 18,
       skip = 0,
       what = "character",
-      sep = "\n"
+      sep = "\n", 
+      quiet = TRUE
     )
   NonASCII <- tools::showNonASCII(file_header)
   if (length(NonASCII) > 0L) {
@@ -102,12 +118,14 @@ read_oo_jazirrad <- function(file,
     skip = 19,
     n_max = npixels,
     col_types = readr::cols(),
+    progress = FALSE,
     locale = locale
   )
   dots <- list(~W, ~P)
-  z <- dplyr::select_(z, .dots = stats::setNames(dots, c("w.length", "s.e.irrad")))
-  dots <- list(~s.e.irrad * 1e-2) # uW cm-2 nm-1 -> W m-2 nm-1
-  z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
+  z <- dplyr::select(z, 
+                     w.length = "W",
+                     s.e.irrad = "S")
+  z[["s.e.irrad"]] <- z[["s.e.irrad"]] * 1e-2 # uW cm-2 nm-1 -> W m-2 nm-1
   
   old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.source_spct(z, time.unit = "second")
@@ -163,11 +181,12 @@ read_oo_jazpc <- function(file,
       file = file,
       nlines =  1,
       skip = 0,
-      what = "character"
+      what = "character", 
+      quiet = TRUE
     )
   if (line01[1] != "Jaz") {
     warning("Input file was not created by a Jaz spectrometer as expected: skipping")
-    return(source_spct())
+    return(photobiology::source_spct())
   }
   file_header <-
     scan(
@@ -175,7 +194,8 @@ read_oo_jazpc <- function(file,
       nlines = 16,
       skip = 0,
       what = "character",
-      sep = "\n"
+      sep = "\n", 
+      quiet = TRUE
     )
   
   npixels <- as.integer(sub("Number of Pixels in Processed Spectrum: ", "", 
@@ -195,11 +215,13 @@ read_oo_jazpc <- function(file,
     skip = 17,
     n_max = npixels,
     col_types = readr::cols(),
+    progress = FALSE,
     locale = locale
   )
-  dots <- list(~W, ~P)
-  z <- dplyr::select_(z, .dots = stats::setNames(dots, c("w.length", qty.in)))
-  
+
+  z <- z[ , c("W", "P")]
+  colnames(z) <- c("w.length", qty.in)
+
   old.opts <- options("photobiology.strict.range" = NA_integer_)
   if (qty.in == "Rpc") {
     z <- photobiology::as.reflector_spct(z, Rfr.type = Rfr.type)
@@ -246,15 +268,16 @@ read_oo_jazdata <- function(file,
       file = file,
       nlines =  1,
       skip = 0,
-      what = "character"
+      what = "character", 
+      quiet = TRUE
     )
   if (line01[1] != "Jaz") {
     warning("Input file was not created by a Jaz spectrometer as expected: skipping")
-    return(source_spct())
+    return(photobiology::source_spct())
   }
   if (line01[2] != "Data") {
     warning("Input file does not contain data labeled as 'Data' as expected: skipping")
-    return(source_spct())
+    return(photobiology::source_spct())
   }
   file_header <-
     scan(
@@ -262,7 +285,8 @@ read_oo_jazdata <- function(file,
       nlines = 16,
       skip = 0,
       what = "character",
-      sep = "\n"
+      sep = "\n", 
+      quiet = TRUE
     )
   
   npixels <- as.integer(sub("Number of Pixels in Processed Spectrum: ", "", 
@@ -339,10 +363,13 @@ read_oo_jazdata <- function(file,
     skip = 17,
     n_max = npixels,
     col_types = readr::cols(),
+    progress = FALSE,
     locale = locale
   )
-  dots <- list(~W, ~S)
-  z <- dplyr::select_(z, .dots = stats::setNames(dots, c("w.length", "counts")))
+
+  z <- dplyr::select(z, 
+                     w.length = "W",
+                     counts = "S")
   
   old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.raw_spct(z)

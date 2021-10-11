@@ -33,37 +33,46 @@ It should be remembered, though, that this package has been developed based on t
 
 ```{r, setup, include=FALSE, cache=FALSE}
 library(knitr)
+# Are the packages used in examples installed?
+eval_chunks <- requireNamespace("ggspectra", quietly = TRUE) &&
+                 requireNamespace("photobiologyWavebands", quietly = TRUE)
+# eval_colorSpec <- requireNamespace("colorSpec", quietly = TRUE) && eval_chunks
+eval_colorSpec <- eval_chunks
+eval_pavo <- requireNamespace("pavo", quietly = TRUE) && eval_chunks
+eval_hyperSpec <- requireNamespace("hyperSpec", quietly = TRUE) && eval_chunks
+
 opts_chunk$set(fig.align='center', fig.show='hold',
-               fig.width=7, fig.height=6, size="footnotesize")
+               fig.width=7, fig.height=6, size="footnotesize",
+               eval=eval_chunks)
+
 options(replace.assign = TRUE, width = 55,
         warnPartialMatchAttr = FALSE,
         warnPartialMatchDollar = FALSE,
         warnPartialMatchArgs = FALSE)
+# setting TZ may be needed in some geographic locations as some Windows TZ 
+# strings are not recognized by all versions of R
+Sys.setenv(TZ = 'UTC')
 ```
 
 When loading suggested packages flags are set based on success and later used to selectively evaluate code chunks.
 
-```{r, example-0-hiden, eval=TRUE, message=FALSE}
-# setting TZ may be needed in some geographic locations as some Windows TZ 
-# strings are not recognized by all versions of R
-Sys.setenv(TZ = 'UTC')
+```{r, message=FALSE}
 library(photobiology)
 library(photobiologyWavebands)
 library(photobiologyInOut)
 library(lubridate)
 library(ggspectra)
 library(readr)
-# eval_colorSpec <- requireNamespace("colorSpec", quietly = TRUE)
 library(colorSpec)
-eval_colorSpec <- TRUE
-eval_pavo <- requireNamespace("pavo", quietly = TRUE)
 if (eval_pavo) {library(pavo)}
-eval_hyperSpec <- requireNamespace("hyperSpec", quietly = TRUE)
 if (eval_hyperSpec) {library(hyperSpec)}
 ```
 
 ```{r}
+# plot defaults
 theme_set(theme_bw()) # ggplot2
+set_annotations_default(annotations = c("+", "title:what:when"))
+# decrease lines printed
 options(tibble.print_max = 5,
         tibble.print_min = 3,
         photobiology.strict.range = NA_integer_)
@@ -81,17 +90,23 @@ Functions for importing measured spectral data.
 | read_oo_ssdata()     | Ocean Optics spectrom. | SpectraSuite      | raw_spct        |
 | read_oo_jazirrad()   | Ocean Optics Jaz       | *instrument*      | source_spct     |
 | read_oo_jazpc()      | Ocean Optics Jaz       | *instrument*      | filter_spct     |
-| read_oo_jazpc()      | Ocean Optics Jaz       | *instrument*      | reflector_spct     |
+| read_oo_jazpc()      | Ocean Optics Jaz       | *instrument*      | reflector_spct  |
 | read_oo_jazdata()    | Ocean Optics Jaz       | *instrument*      | raw_spct        |
 | read_oo_pidata()     | Ocean Optics spectrom. | STS DK (Raspbian) | raw_spct        |
-| read_avaspec_csv()   | Avantes spectrom.      | *instrument*      | source_spct     |
+| read_wasatch_csv()   | Wasatch Phot. spectrom. | Enlighten        | raw_spct        |
+| read_wasatch_csv()   | Wasatch Phot. spectrom. | Enlighten        | filter_spct     |
+| read_wasatch_csv()   | Wasatch Phot. spectrom. | Enlighten        | reflector_spct  |
+| read_wasatch_csv()   | Wasatch Phot. spectrom. | Enlighten        | source_spct     |
+| read_avaspec_csv()   | Avantes spectrom.      | *instrument?*     | source_spct     |
 | read_macam_file()    | Macam                  | *instrument*      | source_spct     |
-| read_licor_file()    | LI-COR LI-1800         | PC1800 (MS-DOS)   | source_spct     |
-| read_licor_file()    | LI-COR LI-1800         | PC1800 (MS-DOS)   | filter_spct     |
-| read_licor_file()    | LI-COR LI-1800         | PC1800 (MS-DOS)   | reflector_spct  |
-| read_m_licor_file() | LI-COR LI-1800         | PC1800 (MS-DOS)   | source_mspct    |
-| read_m_licor_file() | LI-COR LI-1800         | PC1800 (MS-DOS)   | filter_mspct    |
-| read_m_licor_file() | LI-COR LI-1800         | PC1800 (MS-DOS)   | reflector_mspct |
+| read_li180_txt()    | LI-COR LI-180          | *instrument*      | source_spct     |
+| read_m_li180_txt()  | LI-COR LI-180          | *instrument*      | source_mspct    |
+| read_licor_prn()    | LI-COR LI-1800         | PC1800 (MS-DOS)   | source_spct     |
+| read_licor_prn()    | LI-COR LI-1800         | PC1800 (MS-DOS)   | filter_spct     |
+| read_licor_prn()    | LI-COR LI-1800         | PC1800 (MS-DOS)   | reflector_spct  |
+| read_m_licor_prn() | LI-COR LI-1800         | PC1800 (MS-DOS)   | source_mspct    |
+| read_m_licor_prn() | LI-COR LI-1800         | PC1800 (MS-DOS)   | filter_mspct    |
+| read_m_licor_prn() | LI-COR LI-1800         | PC1800 (MS-DOS)   | reflector_mspct |
 
 ### Ocean Optics Jaz
 
@@ -293,6 +308,68 @@ q.raw.file <-
 autoplot(read_oo_ssirrad(file = q.raw.file))
 ```
 
+### Array spectrometers from Wasatch Photonics
+
+Enlighten can save spectral data in a variety of file formats. The function `read_wasatch_csv()` reads CSV files with spectral data in columns. It is designed so that it can read any variation of this file format. In Enlighten it is possible to select which columns are included in the file so their number can vary. However, the header is rich in information and this allows in many but not all cases to guess based on the "Technique" used in Enlighten the type of data being imported. This means that in some cases the user needs to pass an argument to parameter `s.qty`. This is also the case when the column to be extracted is not that with heading "Processed" in the CSV file. The metadata is as for Ocean Insight/Ocean Optics spectrometers copied to attributes in the returned object.
+
+Format of the header is simple and rather easy to parse. The header of the file and the first few lines look like this:
+```
+ENLIGHTEN Version,2.2.7
+Measurement ID,20211003-134004-612972-WP-00591
+Serial Number,WP-00591
+Model,WP-UV-VIS-C-S-25
+Label,13:40:04 WP-00591
+Declared Match,
+Declared Score,0
+Scan Averaging,1
+Boxcar,0
+Technique,Scope
+Baseline Correction Algo,
+ROI Pixel Start,0
+ROI Pixel End,1023
+Slit Width,25
+Vignetted,False
+Interpolated,False
+Raman Intensity Corrected,False
+Deconvolved,False
+Integration Time,60
+Timestamp,2021-10-03 13:40:04.612972
+Note,Dark substracted
+Temperature,-15.327480412352088
+CCD C0,247.9385986328125
+CCD C1,0.5131465792655945
+CCD C2,-0.00012270470324438065
+CCD C3,7.728250039917839e-08
+CCD Offset,0
+CCD Gain,1.9
+Laser Wavelength,0.0
+Laser Enable,False
+Laser Power,100
+Laser Temperature,0
+Pixel Count,1024
+
+Pixel,Wavelength,Processed
+0,247.94,175.00
+1,248.45,178.00
+```
+
+```{r}
+file.name <- 
+    system.file("extdata", "enlighten-wasatch-scope.csv",
+                package = "photobiologyInOut", mustWork = TRUE)
+              
+wasatch.raw.spct <- 
+    read_wasatch_csv(file = file.name, extra.cols = "drop")
+```
+
+```{r}
+summary(wasatch.raw.spct)
+```
+
+```{r}
+autoplot(wasatch.raw.spct)
+```
+
 ### Modular spectrometers from Avantes
 
 Avantes' two column .csv files can also be imported.
@@ -331,11 +408,134 @@ macam.raw.file <-
 autoplot(read_macam_dta(file = macam.raw.file))
 ```
 
+### LI-180 array dector spectrometer from LI-COR
+
+The LI-COR LI-180 is a portable, self-contained instrument, with relatively low
+spectral resolution. This instrument measures spectral irradiance in the range 
+380 nm to 780 nm. There is only one hardware configuration but firmware updates
+have been released.
+
+This instrument can save the spectral data in different formats. The "XXX" 
+format includes a rather long header, followed by spectral data, then followed 
+by a file footer. The long header can contain various summaries computed from
+the spectrum, as well as date and time, and information on the instrument.
+
+The top of the file we will read looks like this:
+
+```
+Model Name	LI-180
+Serial Number	A18M0157
+Time	2021/03/02_09:24:26
+PPFD	129.879440
+PFD	171.178452
+PFD-UV	2.336031
+PFD-B	33.417435
+PFD-G	46.992531
+PFD-R	49.469433
+PFD-FR	38.963074
+Custom1(655~665nm)	5.057602
+Custom2(725~735nm)	4.957998
+Custom3(650~670nm)	10.137251
+Custom4(720~740nm)	9.965228
+UV%	1.364676
+B%	19.521980
+G%	27.452354
+R%	28.899324
+FR%	22.761662
+Custom1%	2.954579
+Custom2%	2.896391
+Custom3%	5.922037
+Custom4%	5.821544
+R:B	1.480348
+R:FR	1.269649
+R:G	1.052708
+B:G	0.711122
+UV:B	0.069905
+UV:FR	0.059955
+B:G:R	0.000000
+B:R:FR	0.000000
+UV:B:G:R:FR	0.000000
+Ratio1(Custom1:Custom2)	1.020090
+Ratio2(Custom3:Custom4)	1.017262
+Ratio3	0.000000
+Ratio4	0.000000
+LambdaP	495.000000
+LambdaPV	106.211479
+LambdaD	554.000000
+LUX	7366.741699
+IRR	35.163498
+fc	684.641418
+I-Time	92.000000
+380nm	27.503876
+381nm	27.968113
+382nm	28.452974
+383nm	28.665405
+...
+```
+And the footer containing chromaticity data:
+
+```
+...
+778nm	82.020149
+779nm	82.078781
+780nm	82.042412
+CCT	5465.000000
+Duv	0.004667
+x	0.333318
+y	0.351069
+u'	0.203671
+v'	0.482666
+deltax	0.000063
+deltay	0.009303
+deltau'	-0.003491
+deltav'	0.004648
+Purity	5.337072
+CRI	98.779282
+R1	98.665459
+R2	99.470703
+R3	98.974945
+R4	98.248100
+R5	98.830368
+R6	99.473335
+R7	98.902351
+R8	97.668961
+R9	94.101921
+R10	99.232346
+R11	98.246521
+R12	99.336227
+R13	98.899147
+R14	99.324699
+R15	97.831963
+```
+
+Function `read_licor_espd()` will automatically extract the spectral data, 
+date and time, and serial number.
+
+```{r}
+licor_espd.file <- 
+  system.file("extdata", "LI-180-irradiance.txt", 
+              package = "photobiologyInOut", mustWork = TRUE)
+li180.spct <- read_li180_txt(file = licor_espd.file)
+```
+
+In all cases as much information as possible is decoded, and the data file headers
+are preserved as comments in the source.spct objects.
+
+```{r}
+li180.spct
+cat(comment(li180.spct))
+getInstrDesc(li180.spct)
+getInstrSettings(li180.spct)
+autoplot(li180.spct, unit.out = "photon")
+```
+
 ### LI-1800 scanning spectrometer from LI-COR
 
-And a spectral photon irradiance output file generated by LI-COR's PC1800 program for the LI-1800 spectroradiometer.
+The LI-COR LI-1800 was developed in the early 1980's and remained available for
+many years. Some units are still in use although the technology has been
+superceeded. If re-calibrated these instruments are still useful.
 
-The output has a relatively detailed header, but it lacks year information. Files can contain either energy or photon based spectral irradiances, and this is signalled in the header. In this example photon (= quantum) spectral irradiance is returned. The first few lines of the file look like this:
+Spectral photon irradiance output files generated by LI-COR's PC1800 program for the LI-1800 spectroradiometer. These files have a relatively detailed header, but it lacks year information. Files can contain either energy or photon based spectral irradiances, and this is signalled in the header. In this example photon (= quantum) spectral irradiance is returned. The first few lines of the file look like this:
 
 ```
 "FILE:FL2"
@@ -456,7 +656,7 @@ ggplot(hour.dat, aes(TIMESTAMP, PAR_Den_Avg)) + geom_line()
 
 [Yocto Puce Sarl](https://www.yoctopuce.com/) sells numerous different USB modules. Those capable of data
 input can log the data to memory and these data can be downloaded as a CSV
-file. These files can be easily read into R but function `read_yoctopuce_csv()` makes this even simpler.
+file. These files can be easily read into R using base functions but function `read_yoctopuce_csv()` makes this even a bit simpler.
 
 ```{r}
 yoctopuce_hour.file <- 
@@ -960,7 +1160,7 @@ colorSpec2mspct(colorSpec::Hoya)
 
 ```{r, eval = eval_colorSpec}
 fluorescent.spct <- colorSpec2spct(colorSpec::Fs.5nm)
-autoplot(fluorescent.spct) + aes(linetype = spct.idx)
+autoplot(fluorescent.spct, annotations = "")
 ```
 
 ```{r, eval = eval_colorSpec}

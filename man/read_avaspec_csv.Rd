@@ -55,7 +55,20 @@ Reads and parses the header of a processed data file as output by the
 program Avaspec and then imports wavelength and spectral irradiance
 values. The file header has little useful metadata information.
 }
+\examples{
+
+ file.name <- 
+    system.file("extdata", "spectrum-avaspec.csv", 
+                package = "photobiologyInOut", mustWork = TRUE)
+                
+ avaspec.spct <- read_avaspec_csv(file = file.name)
+ 
+ avaspec.spct
+ getWhatMeasured(avaspec.spct)
+ cat(comment(avaspec.spct))
+ 
+}
 \references{
-\url{https://www.r4photobiology.info} \url{https://www.avantes.com/}
+\url{https://www.avantes.com/}
 }
 \keyword{misc}

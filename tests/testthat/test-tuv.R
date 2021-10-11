@@ -80,7 +80,7 @@ test_that("read Quick TUV", {
   expect_equal(getWhenMeasured(qtuv_long.spct),
                ymd_hms("2018-08-01 12:00:00", tz = "UTC"))
   expect_equal(getWhereMeasured(qtuv_long.spct), 
-               tibble(lon = -15, lat = 60, address = NA_character_))
+               tibble::tibble(lon = -15, lat = 60, address = NA_character_))
   expect_equal(getWhatMeasured(qtuv_long.spct), 
                "Quick TUV spectral simulation File: qtuv-long.txt")
   expect_equal(getTimeUnit(qtuv_long.spct), "second")
@@ -140,7 +140,7 @@ test_that("read Quick TUV", {
   expect_equal(getWhenMeasured(qtuv_spct_summ.spct),
                ymd_hms("2015-06-30 12:00:00"))
   expect_equal(getWhereMeasured(qtuv_spct_summ.spct),
-               tibble(lon = 0.0, lat = 0.0, address = NA_character_))
+               tibble::tibble(lon = 0.0, lat = 0.0, address = NA_character_))
   expect_named(getWhereMeasured(qtuv_spct_summ.spct), c("lon", "lat", "address"))
   expect_equal(getWhatMeasured(qtuv_spct_summ.spct), 
                "Quick TUV spectral simulation File: qtuv-spct-and-summaries.txt")
@@ -210,7 +210,7 @@ test_that("read TUV", {
                                "angle", "date"))
   expect_equal(length(getWhenMeasured(usrout.spct)), 8L)
   expect_equal(getWhereMeasured(usrout.spct), 
-               tibble(lon = -15, lat = 60, address = NA_character_))
+               tibble::tibble(lon = -15, lat = 60, address = NA_character_))
   expect_equal(getWhatMeasured(usrout.spct), "TUV spectral simulation File: usrout.txt")
   expect_equal(length(comment(usrout.spct)), 1L)
   
@@ -246,7 +246,7 @@ test_that("read TUV", {
                               "angle", "date"))
   expect_equal(length(getWhenMeasured(usrout2.spct)), 13L)
   expect_equal(getWhereMeasured(usrout2.spct), 
-               tibble(lon = -15, lat = 60, address = NA_character_))
+               tibble::tibble(lon = -15, lat = 60, address = NA_character_))
   expect_equal(getWhatMeasured(usrout2.spct), "TUV spectral simulation File: usrout2.txt")
   expect_equal(length(comment(usrout.spct)), 1L)
 })
@@ -280,7 +280,7 @@ test_that("read TUV to mspct", {
   # bug un subset2mspct()
   # expect_equal(length(getWhenMeasured(usrout.mspct[[1]])), 1L)
   expect_equal(getWhereMeasured(usrout.mspct[[1]]), 
-               tibble(lon = -15, lat = 60, address = NA_character_))
+               tibble::tibble(lon = -15, lat = 60, address = NA_character_))
   expect_equal(getWhatMeasured(usrout.mspct[[1]]), "TUV spectral simulation File: usrout.txt")
   expect_equal(length(comment(usrout.mspct[[1]])), 1L)
   expect_equal(length(comment(usrout.mspct)), 0L)
@@ -320,7 +320,7 @@ test_that("read TUV to mspct", {
   # bug un subset2mspct()
   # expect_equal(length(getWhenMeasured(usrout2.mspct[[1]])), 1L)
   expect_equal(getWhereMeasured(usrout2.mspct[[1]]), 
-               tibble(lon = -15, lat = 60, address = NA_character_))
+               tibble::tibble(lon = -15, lat = 60, address = NA_character_))
   expect_equal(getWhatMeasured(usrout2.mspct[[1]]),
                "TUV spectral simulation File: usrout2.txt")
   expect_equal(length(comment(usrout2.mspct[[1]])), 1L)

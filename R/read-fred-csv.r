@@ -13,11 +13,11 @@
 #'   used, and if \code{NA} the "what.measured" attribute is not set.
 #' @param tz character Time zone used for interpreting times saved in the
 #'   file header.
-#' @param locale	The locale controls defaults that vary from place to place. The
+#' @param locale The locale controls defaults that vary from place to place. The
 #'   default locale is US-centric (like R), but you can use
 #'   \code{\link[readr]{locale}} to create your own locale that controls things
 #'   like the default time zone, encoding, decimal mark, big mark, and day/month
-#'   names.
+#'   names. Those relevant should match the format of the CSV file being read.
 #'
 #' @return A reflectance_spct object.
 #' @export
@@ -27,7 +27,19 @@
 #' PLoS ONE 5(12): e14287. doi:10.1371/journal.pone.0014287
 #' 
 #' @keywords misc
-#'
+#' 
+#' @examples
+#' 
+#'   file.name <- 
+#'     system.file("extdata", "FReDflowerID_157.csv", 
+#'                 package = "photobiologyInOut", mustWork = TRUE)
+#'                 
+#'   fred.spct <- read_FReD_csv(file = file.name)
+#'   
+#'   fred.spct
+#'   getWhatMeasured(fred.spct)
+#'   cat(comment(fred.spct))
+#'   
 read_FReD_csv <- function(file,
                            date = NA,
                            geocode = NULL,

@@ -22,10 +22,9 @@
 #' @return a source_spct object obtained by 'melting' the TUV file, and adding a
 #'   factor \code{spct.idx}, and variables \code{zenith.angle} and \code{date}.
 #'
-#' @references \url{https://www.r4photobiology.info}
-#'   \url{https://www2.acom.ucar.edu/modeling/tuv-download}
-#' @keywords misc
-#'
+#' @references 
+#' \url{https://www2.acom.ucar.edu/modeling/tropospheric-ultraviolet-and-visible-tuv-radiation-model}
+#' 
 #' @note The ozone column value used in the simulation cannot be retrieved from
 #' the file. Tested only with TUV version 5.0.
 #'
@@ -52,7 +51,8 @@ read_tuv_usrout <- function(file,
     label <- paste(label.file, label, sep = "\n")
   }
   
-  file_header <- scan(file = file, nlines = 5, what = "character", sep = "\n" )
+  file_header <- scan(file = file, nlines = 5, what = "character", 
+                      sep = "\n", quiet = TRUE)
   NonASCII <- tools::showNonASCII(file_header)
   if (length(NonASCII) > 0L) {
     warning("Found non-ASCII characters in file header: ", 
@@ -62,7 +62,8 @@ read_tuv_usrout <- function(file,
   }
   
   hours <- scan(text = sub(pattern = "wc, nm", replacement = "",
-                           x = file_header[4], fixed = TRUE))
+                           x = file_header[4], fixed = TRUE), 
+                quiet = TRUE)
   num.spectra <- length(hours)
   
   minutes <- trunc((hours - trunc(hours)) * 60)
@@ -74,18 +75,20 @@ read_tuv_usrout <- function(file,
   date <- as.POSIXct(date)
   
   angles <- scan(text = sub(pattern = "sza = ", replacement = "", 
-                            x = file_header[5], fixed = TRUE))
+                            x = file_header[5], fixed = TRUE), 
+                 quiet = TRUE)
   
   wide.df <- readr::read_table(file = file, skip = 5, 
                                col_names = c("w.length", LETTERS[1:num.spectra]),
                                col_types = readr::cols(),
+                               progress = FALSE,
                                locale = locale)
   
   wl.length <- length(wide.df[["w.length"]])
 
   z <- tidyr::gather_(data = wide.df,
-                      value_col = "s.e.irrad", key_col = "spct.idx", 
-                      gather_cols = setdiff(colnames(wide.df), "w.length"))
+                     value_col = "s.e.irrad", key_col = "spct.idx", 
+                     gather_cols = setdiff(colnames(wide.df), "w.length"))
   
   z[["angle"]] <- with(z, rep(angles, rep(wl.length, num.spectra)))
   z[["date"]] <- with(z, rep(as.POSIXct(date), rep(wl.length, num.spectra)))
@@ -126,9 +129,8 @@ read_tuv_usrout2mspct <- function(file,
 #' Read Quick TUV output file.
 #' 
 #' Reads and parses the header of a text file output by the Quick TUV on-line
-#' web front-end at \url{http://cprm.acom.ucar.edu/Models/TUV/Interactive_TUV/}
-#' to extract the header and spectral data. The time field is converted to a
-#' date.
+#' web front-end at UCAR to extract the header and spectral data. The time field
+#' is converted to a date.
 #' 
 #' @param file character string with the name of a text file.
 #' @param ozone.du numeric Ozone column in Dobson units.
@@ -145,8 +147,7 @@ read_tuv_usrout2mspct <- function(file,
 #'   intervals in the Quick TUV output file, and adding variables \code{zenith.angle} and
 #'   \code{date}.
 #'   
-#' @references \url{https://www.r4photobiology.info} 
-#' \url{http://cprm.acom.ucar.edu/Models/TUV/Interactive_TUV/}
+#' @references \url{https://www.acom.ucar.edu/Models/TUV/Interactive_TUV/}
 #' 
 #' @note The ozone column value used in the simulation cannot be retrieved from
 #' the file. Tested only with Quick TUV versison 5.2 on 2018-07-30. This 
@@ -179,7 +180,7 @@ read_qtuv_txt <- function(file,
   header.start.idx <- grep("INPUT PARAMETERS:", file_header, fixed = TRUE)
   if (!length(header.start.idx)) {
     warning("File '", file, "' seems not to be output from Quick TUV Calculator.")
-    return(source_spct())
+    return(photobiology::source_spct())
   }
   
   # check that file contains spectral irradiance data
@@ -187,7 +188,7 @@ read_qtuv_txt <- function(file,
   header.end.idx <- grep("SPECTRAL IRRADIANCE", file_header, fixed = TRUE)
   if (!length(header.end.idx)) {
     warning("File '", file, "' does not contain spectral data.")
-    return(source_spct())
+    return(photobiology::source_spct())
   } else {
     data.header.line <- file_header[header.end.idx]
   }
@@ -200,7 +201,8 @@ read_qtuv_txt <- function(file,
   wgrid.line.idx <- grep("w-grid:", file_header, fixed = TRUE)
   temp <-
     scan(text = file_header[wgrid.line.idx], 
-         what = list(NULL, length = 1L, wl.min = 1, wl.max = 1))
+         what = list(NULL, length = 1L, wl.min = 1, wl.max = 1), 
+         quiet = TRUE)
   length.spct <- temp[["length"]] - 1L # number of wl intervals
   wl.min = temp[["wl.min"]]
   wl.max = temp[["wl.max"]]
@@ -209,25 +211,30 @@ read_qtuv_txt <- function(file,
   zgrid.line.idx <- grep("z-grid:", file_header, fixed = TRUE)
   temp <-
     scan(text = file_header[zgrid.line.idx], 
-         what = list(NULL, NULL, z.min = 1, z.max = 1))
+         what = list(NULL, NULL, z.min = 1, z.max = 1), 
+         quiet = TRUE)
   observer.km.asl <- temp["z.min"]
 
   # read date
   date.line <- grep("idate =", file_header)
   temp <- scan(text = file_header[date.line],
-                    what = list(NULL, NULL, idate = "", NULL, NULL, esfact = 1))
+               what = list(NULL, NULL, idate = "", NULL, NULL, esfact = 1), 
+               quiet = TRUE)
   date <- lubridate::ymd(temp[["idate"]], tz = tz)
 #  esfact <- temp[["esfact"]]
   
   # "solar zenith angle = " -> angle. Always present either user supplied or calculated
   zenith.angle.line <- file_header[grepl("solar zenith angle", file_header)]
-  zenith.angle <- scan(text = sub("solar zenith angle =", "", zenith.angle.line, fixed = TRUE))     
+  zenith.angle <- scan(text = sub("solar zenith angle =", "", 
+                                  zenith.angle.line, fixed = TRUE), 
+                       quiet = TRUE)     
   
   # "  measurement point: index            1  altitude=    0.000000". Always present.
   altitude.line <- file_header[grepl("altitude=", file_header)]
   temp <- unlist(
     scan(text = sub("measurement point: ", "", altitude.line, fixed = TRUE),
-       what = list(NULL, index = 1, NULL, alt = 1))
+         what = list(NULL, index = 1, NULL, alt = 1), 
+         quiet = TRUE)
     )
   ground.km.asl <- temp["alt"]
 
@@ -237,7 +244,9 @@ read_qtuv_txt <- function(file,
   if (length(geocode.line)) {
     temp <-
     unlist(
-      scan(text = geocode.line, what = list(NULL, lat = 1, NULL, lon = 1, NULL, utc = 1))
+      scan(text = geocode.line, 
+           what = list(NULL, lat = 1, NULL, lon = 1, NULL, utc = 1), 
+           quiet = TRUE)
     )
     lat <- temp["lat"]
     lon <- temp["lon"]
@@ -277,6 +286,7 @@ read_qtuv_txt <- function(file,
                                      "s.e.irrad.dir",
                                      "s.e.irrad.diff.down", "s.e.irrad.diff.up",
                                      "s.e.irrad"),
+                       progress = FALSE,
                        n_max = length.spct)
   spct.tb <- stats::na.omit(spct.tb)
   # convert to spectrum object

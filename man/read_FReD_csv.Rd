@@ -33,7 +33,7 @@ file header.}
 default locale is US-centric (like R), but you can use
 \code{\link[readr]{locale}} to create your own locale that controls things
 like the default time zone, encoding, decimal mark, big mark, and day/month
-names.}
+names. Those relevant should match the format of the CSV file being read.}
 }
 \value{
 A reflectance_spct object.
@@ -41,6 +41,19 @@ A reflectance_spct object.
 \description{
 Reads a CSV data file downloaded from the FReD (Floral Reflectance Database)
 and then imports wavelengths and spectral reflectance values and flower ID.
+}
+\examples{
+
+  file.name <- 
+    system.file("extdata", "FReDflowerID_157.csv", 
+                package = "photobiologyInOut", mustWork = TRUE)
+                
+  fred.spct <- read_FReD_csv(file = file.name)
+  
+  fred.spct
+  getWhatMeasured(fred.spct)
+  cat(comment(fred.spct))
+  
 }
 \references{
 \url{http://www.reflectance.co.uk}
