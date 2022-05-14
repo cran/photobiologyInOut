@@ -14,6 +14,7 @@ read_wasatch_csv(
   s.qty = NULL,
   extra.cols = "keep",
   scale.factor = 1,
+  simplify = TRUE,
   ...
 )
 }
@@ -49,6 +50,9 @@ in file. One of \code{"keep"}, \code{"drop.pixel"}, \code{"drop"} or
 \item{scale.factor}{numeric vector of length 1, or length equal to the number
 of rows (= detector pixels). Numeric multiplier applied to returned
 spectral values.}
+
+\item{simplify}{logical If TRUE, single spectra are returned as individual 
+spectra instead of collections of length one.}
 
 \item{...}{additional arguments passed to the constructor of the spectrum
 object.}

@@ -21,8 +21,8 @@ of the returned objects, in most cases both the headers as text and
 parsed metadata extracted from them.
 
 Data files from **spectrometers** from the following suppliers are
-currently supported: Wasatch Photonics, Avantes, LI-COR, Macam
-Photonics, and Ocean Optics/Ocean Insight.
+currently supported: CID Bio-Science, Wasatch Photonics, Avantes,
+LI-COR, Macam Photonics, and Ocean Optics/Ocean Insight.
 
 Data files from **data loggers** from the following suppliers are
 currently supported: Campbell Scientific and YoctoPuce.
@@ -140,6 +140,6 @@ citation("photobiologyInOut")
 
 ## License
 
-© 2015-2021 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
+© 2015-2022 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
 the GPL, version 2 or greater. This software carries no warranty of any
 kind.

@@ -7,11 +7,15 @@ editor_options:
 # Roadmap
 
 Add support for StellarNet, Brewer, and Bentham spectrometers (examples
-of data files are welcome for these and other instruments). Add a
-generic reader of files into a collection of spectra, or update current
-functions to handle character vectors of paths. Add test cases for new
-functions for exchange of foreign data (currently tested through
-examples in vignette) (URGENT otherwise bugs creep-in easily).
+of data files are welcome for these and other instruments).
+
+# photobiologyInOut 0.4.24
+
+-   Replace use of deprecated `tidyr::gather_()`.
+-   Add function `read_cid_spectravue_csv()` supporting data import from measurements CSV files output by CID Bio-Science's SpectraVue CI-710s leaf spectrometer.
+-   Add function `read_foreign2mspct()` to apply an import function to a
+list of files.
+-   Add color-related functions `spct_CRI()`, `spct_CCT()` and `expect_SSI()` implemented as wrappers to functions in package 'colorSpec' that accept `source_spct` objects as arguments. CRI, CCT and SSI are quantities used to describe light used for illumination, photography, cinematography and video.
 
 # photobiologyInOut 0.4.23
 

@@ -33,6 +33,7 @@
 #' @export
 #' 
 #' @references LI-COR Biosciences, Environmental.
+#'   \url{https://www.licor.com/env/}
 #' 
 #' @keywords misc
 #'   

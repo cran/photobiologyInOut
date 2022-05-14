@@ -74,30 +74,44 @@ read_tuv_usrout <- function(file,
   lubridate::second(date) <- trunc(seconds)
   date <- as.POSIXct(date)
   
-  angles <- scan(text = sub(pattern = "sza = ", replacement = "", 
-                            x = file_header[5], fixed = TRUE), 
-                 quiet = TRUE)
+  angles <- scan(
+    text = sub(pattern = "sza = ", 
+               replacement = "", 
+               x = file_header[5], fixed = TRUE), 
+    quiet = TRUE)
   
-  wide.df <- readr::read_table(file = file, skip = 5, 
-                               col_names = c("w.length", LETTERS[1:num.spectra]),
-                               col_types = readr::cols(),
-                               progress = FALSE,
-                               locale = locale)
+  wide.df <- readr::read_table(
+    file = file, skip = 5, 
+    col_names = c("w.length", LETTERS[1:num.spectra]),
+    col_types = readr::cols(),
+    progress = FALSE,
+    locale = locale)
   
   wl.length <- length(wide.df[["w.length"]])
 
-  z <- tidyr::gather_(data = wide.df,
-                     value_col = "s.e.irrad", key_col = "spct.idx", 
-                     gather_cols = setdiff(colnames(wide.df), "w.length"))
+  z <- tidyr::pivot_longer(
+    data = wide.df,
+    cols = tidyselect::all_of(setdiff(colnames(wide.df), "w.length")),
+    names_to = "spct.idx",
+    values_to = "s.e.irrad") 
+  z <- z[order(z[["spct.idx"]]), ]
   
-  z[["angle"]] <- with(z, rep(angles, rep(wl.length, num.spectra)))
-  z[["date"]] <- with(z, rep(as.POSIXct(date), rep(wl.length, num.spectra)))
+  z[["angle"]] <- rep(angles, rep(wl.length, num.spectra))
+  z[["date"]] <- rep(as.POSIXct(date), rep(wl.length, num.spectra))
   
-  photobiology::setSourceSpct(z, time.unit = "second", multiple.wl = num.spectra)
+  photobiology::setSourceSpct(z, 
+                              time.unit = "second", 
+                              multiple.wl = num.spectra)
 
-  comment(z) <- paste(paste("TUV file '", basename(file), "' imported on ", 
-                            lubridate::now(tzone = "UTC"), " UTC", sep = ""), 
-                      paste(file_header, collapse = "\n"), sep = "\n")
+  comment(z) <- paste(paste("TUV file '", 
+                            basename(file), 
+                            "' imported on ", 
+                            lubridate::now(tzone = "UTC"), 
+                            " UTC", 
+                            sep = ""), 
+                      paste(file_header, 
+                            collapse = "\n"), 
+                      sep = "\n")
   photobiology::setWhatMeasured(z, paste("TUV spectral simulation", label))
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhenMeasured(z, unique(z[["date"]]))

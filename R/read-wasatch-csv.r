@@ -31,6 +31,8 @@
 #'   \code{\link[readr]{locale}} to create your own locale that controls things
 #'   like the default time zone, encoding, decimal mark, big mark, and day/month
 #'   names.
+#' @param simplify logical If TRUE, single spectra are returned as individual 
+#'   spectra instead of collections of length one. 
 #'   
 #' @details Enlighten's column-wise CSV files contain at least two columns,
 #'   Wavelength and Processed. In the header the Technique used is recorded.
@@ -102,6 +104,7 @@ read_wasatch_csv <- function(file,
                              s.qty = NULL,
                              extra.cols = "keep",
                              scale.factor = 1,
+                             simplify = TRUE,
                              ...) {
   if (is.null(tz)) {
     tz <- locale$tz
@@ -330,9 +333,16 @@ read_wasatch_csv <- function(file,
     
   }
   
-  if (length(zz) == 1) {
+  if (simplify && length(zz) == 1) {
     zz[[1]]
   } else {
-    zz
+    switch(photobiology::shared_member_class(zz)[[1]],
+           raw_spct = photobiology::as.raw_mspct(zz),
+           cps_spct = photobiology::as.cps_mspct(zz),
+           source_spct = photobiology::as.source_mspct(zz),
+           object_spct = photobiology::as.object_mspct(zz),
+           filter_spct = photobiology::as.filter_mspct(zz),
+           reflector_spct = photobiology::as.reflector_mspct(zz),
+           zz)
   }
 }

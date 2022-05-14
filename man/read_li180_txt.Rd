@@ -98,4 +98,5 @@ The LI-180 spectroradiometer stores little information of the
 }
 \references{
 LI-COR Biosciences, Environmental.
+  \url{https://www.licor.com/env/}
 }

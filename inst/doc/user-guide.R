@@ -143,7 +143,7 @@ autoplot(li180.spct, unit.out = "photon")
 licor.file <- 
   system.file("extdata", "spectrum.PRN", 
               package = "photobiologyInOut", mustWork = TRUE)
-licor.spct <- read_licor_prn(file = licor.file)
+licor.spct <- read_licor_prn(file = licor.file, tz = "EET")
 
 ## ----------------------------------------------------
 licor.spct
@@ -160,6 +160,16 @@ licor.spct <- read_licor_prn(file = licor.file, s.qty = "Rfr")
 licor.spct
 cat(comment(licor.spct))
 autoplot(licor.spct)
+
+## ----------------------------------------------------
+  file.name <- 
+    system.file("extdata", "cid-spectravue-Rpc-Measurements.csv", 
+                package = "photobiologyInOut", mustWork = TRUE)
+  cid_Rpc.spct <- read_cid_spectravue_csv(file = file.name)
+  summary(cid_Rpc.spct)
+  autoplot(smooth_spct(cid_Rpc.spct, method = "supsmu"), 
+           range = c(400, 1000), annotations = "") %+%
+    ylim(0, 0.55)
 
 ## ----------------------------------------------------
 cs.day.file <- 
@@ -205,15 +215,16 @@ tuv.spct
 
 ## ---- fig.height=10----------------------------------
 autoplot(tuv.spct, annotations = c("colour.guide")) +
-  facet_wrap(~date, ncol = 2)
+  facet_wrap(~as.character(date), ncol = 2)
 
 ## ----------------------------------------------------
 tuv.mspct <- subset2mspct(tuv.spct)
-tuv.mspct
+summary(tuv.mspct)
+autoplot(tuv.mspct)
 
 ## ----------------------------------------------------
 tuv_nd.spct <- read_tuv_usrout(file = tuv.file)
-tuv_nd.spct
+when_measured(tuv_nd.spct)
 
 ## ----------------------------------------------------
 qtuv.file <- 
@@ -387,6 +398,12 @@ spct2colorSpec(yellow_gel.spct)
 
 ## ---- eval = eval_colorSpec--------------------------
 chroma_spct2colorSpec(beesxyzCMF.spct)
+
+## ----------------------------------------------------
+spct_CCT(white_led.source_spct) # correlated color temperature
+spct_CRI(white_led.source_spct) # color rendition index
+spct_CRI(white_led.source_spct, named = TRUE)
+spct_SSI(white_led.source_spct, sun.spct) # spectral similarity index
 
 ## ---- eval = eval_pavo-------------------------------
 data(sicalis)

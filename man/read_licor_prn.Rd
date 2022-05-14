@@ -96,5 +96,6 @@ version, if \code{NULL} is the argument to date, year is set to 0000.
 }
 \references{
 LI-COR Biosciences, Environmental.
+  \url{https://www.licor.com/env/}
 }
 \keyword{misc}
