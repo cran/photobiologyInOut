@@ -272,26 +272,33 @@ rspec2spct <- function(x, multiplier = 1, ...) {
 #' xxxx_mspct) as defined in package 'photobiology' and vice versa preserving
 #' as much information as possible.
 #' 
-#' @note Objects of class \code{colorSpec::colorSpec} do not contain metadata or
-#'   class data from which the units of expression could be obtained. When using
-#'   this function the user needs to use parameter \code{multiplier} to convert 
-#'   the data to what is expected by the object constructors defined in package 
-#'   'photobiology' but should only rarely need to use parameter
-#'   \code{spct.data.var} to select the quantity.
+#' @details Objects of class \code{colorSpec::colorSpec} do not contain metadata
+#' or class data from which the units of expression could be obtained. When
+#' using function \code{colorSpec2mspct} the user needs to use parameter
+#' \code{multiplier} to convert the data to what is expected by the object
+#' constructors defined in package 'photobiology' but should only rarely need to
+#' use parameter \code{spct.data.var} to select the quantity.
+#'
+#' \code{colorSpec::colorSpec} objects may use memory more efficiently than
+#' spectral objects of the classes for collections of spectra defined in package
+#' 'photobiology' as wavelengths are assumed to be the same for all member
+#' spectra, and stored only once while this assumption is not made for
+#' collections of spectra, allowing different wavelengths and lengths for the
+#' component spectra. When using \code{as.colorSpec} methods to convert
+#' collections of spectra into \code{colorSpec} objects, if the wavelengths of
+#' the individual spectra differe, only the shared range of wavelengths is
+#' retained and within the this range, wavelngth values are made consistent by
+#' interpolation.
 #'   
-#'   \code{colorSpec::colorSpec} objects may use memory more efficiently than
-#'   spectral objects of the classes for collections of spectra defined in
-#'   package 'photobiology' as wavelengths are assumed to be the same for all
-#'   member spectra, and stored only once while this assumption is not made for
-#'   collections of spectra, allowing different wavelengths and lengths for the
-#'   component spectra. Wavelengths are stored for each spectrum, but as
-#'   spectral classes are derived from 'tbl_df' in many cases no redundant
-#'   copies of wavelength data will be made in memory in spite of the more
-#'   flexible semantics of the objects.
+#' @note In \code{generic_mspct} objects, wavelengths are stored for each
+#'   spectrum, individual \code{generic_spct} objects. However, as spectral
+#'   classes are derived from 'tbl_df' in many cases no redundant copies of
+#'   wavelength data will be made in memory in spite of the more flexible
+#'   semantics of the objects.
 #' 
 #' @section Warning!: Always check the sanity of the imported or exported data
 #'   values, as guessing is needed when matching the different classes, and the
-#'   functions defined here are NOT guaranteed to return valid data wihtout help
+#'   functions defined here are NOT guaranteed to return valid data without help
 #'   from the user through optional function arguments.
 #' 
 #' @param x colorSpec object
@@ -565,7 +572,9 @@ colorSpec2chroma_spct <- function(x, multiplier = 1, ...) {
 #'
 #' @export
 #'
-as.chroma_spct.colorSpec <- function(x, multiplier = 1, ...) {
+as.chroma_spct.colorSpec <- function(x, 
+                                     multiplier = 1, 
+                                     ...) {
   colorSpec2spct(x = x, 
                  multiplier = multiplier, 
                  ...)
@@ -575,13 +584,39 @@ as.chroma_spct.colorSpec <- function(x, multiplier = 1, ...) {
 #'
 #' @export
 #'
-as.chroma_mspct.colorSpec <- function(x, multiplier = 1, ...) {
+as.chroma_mspct.colorSpec <- function(x, 
+                                      multiplier = 1, 
+                                      ...) {
   colorSpec2mspct(x = x, 
                   multiplier = multiplier, 
                   ...)
 }
 
 #' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.generic_spct.colorSpec <- function(x, 
+                                      multiplier = 1, 
+                                      ...) {
+  force(x)
+  colorSpec2spct(x = x,
+                 multiplier = multiplier,
+                 ...)
+}
+
+#' @rdname colorSpec2mspct
+#'
+#' @export
+#'
+as.generic_mspct.colorSpec <- function(x, 
+                                       multiplier = 1, 
+                                       ...) {
+  force(x)
+  colorSpec2mspct(x = x, multiplier = multiplier, ...)
+}
+
+#' @rdname as.colorSpec
 #'   
 #' @param spct.data.var character The name of the variable to read spectral data
 #'   from.
@@ -593,6 +628,36 @@ mspct2colorSpec <- function(x,
                             multiplier = 1,
                             ...) {
   stopifnot(photobiology::is.any_mspct(x))
+  if (length(x) > 1) {
+    # colorSpec expects all spectra to share the same wavelengths
+    wl.range <- c(photobiology::wl_range(x))
+    wl.stepsize <- photobiology::wl_stepsize(x)
+    wl.ranges.consistent <- 
+      length(unique(wl.range[["min.wl"]])) == 1 &&
+      length(unique(wl.range[["max.wl"]])) == 1
+    wl.stepsizes.consistent <- length(unique(wl.stepsize[["min.step.wl"]])) == 1 &&
+      length(unique(wl.stepsize[["max.step.wl"]])) == 1
+    
+    if (!wl.ranges.consistent || !wl.stepsizes.consistent) {
+      # overlapping range
+    wl.range.out <- c(max(wl.range[["min.wl"]]),
+                      min(wl.range[["max.wl"]]))
+    wl.stepsize.out <- stats::median(wl.stepsize[["min.step.wl"]]) / 2
+    # we try to find a nearby "nice" stepsize
+    wl.stepsize.out <- ifelse(wl.stepsize.out >= 1,
+                              trunc(wl.stepsize.out),
+                              ifelse(wl.stepsize.out >= 0.25,
+                              trunc(wl.stepsize.out * 4) / 4,
+                              round(wl.stepsize.out, digits = 2)))
+    wl.out <- seq(from = wl.range.out[1],
+                  to = wl.range.out[2],
+                  by = wl.stepsize.out)
+    x <- photobiology::interpolate_mspct(x,
+                                         w.length.out = wl.out,
+                                         fill = NULL)
+    message("Spectra interpolated and trimmed as wavelengths differed.")
+    }
+  }
   #  warning("Deprecated: please use as.colorSpec() instead.")
   class.mspct <- class(x)[1]
   comment.mspct <- comment(x)
@@ -661,7 +726,7 @@ mspct2colorSpec <- function(x,
   z
 }
 
-#' @rdname colorSpec2mspct
+#' @rdname as.colorSpec
 #' 
 #' @export
 #' 
@@ -675,7 +740,7 @@ spct2colorSpec <- function(x,
                   multiplier)
 }
 
-#' @rdname colorSpec2mspct
+#' @rdname as.colorSpec
 #' 
 #' @export
 #' 
@@ -714,7 +779,7 @@ chroma_spct2colorSpec <- function(x,
 #' 
 #' @section Warning!: Always check the sanity of the returned data values, as
 #'   guessing is needed when matching the different classes, and the functions
-#'   defined here are NOT guaranteed to return valid data wihtout help from the
+#'   defined here are NOT guaranteed to return valid data without help from the
 #'   user through optional function arguments.
 #' 
 #' @param x R object
@@ -728,11 +793,15 @@ chroma_spct2colorSpec <- function(x,
 #' 
 #' @importFrom colorSpec as.colorSpec
 #' 
-#' @export as.colorSpec
+#' @export
 #' 
 #' @examples 
 #' 
 #' if (requireNamespace("colorSpec", quietly = TRUE)) {
+#'   library(colorSpec)
+#'   as.colorSpec(polyester.spct)
+#'   as.colorSpec(sun.spct)
+#'   as.colorSpec(filter_mspct(list(polyester.spct, yellow_gel.spct)))
 #' }
 #' 
 as.colorSpec.generic_mspct <- function(x, 
@@ -772,46 +841,3 @@ as.colorSpec.chroma_spct <- function(x,
                        wavelength = x[["w.length"]],
                        quantity = 'energy->neural')
 }
-
-#' Coerce into generic_spct
-#' 
-#' @param x R object
-#' @param multiplier numeric A multiplier to be applied to the spectral quantity
-#'  data to do unit or scale conversion.
-#' @param ... currently ignored.
-#' 
-#' @name as.generic_spct
-#'
-#' @importFrom photobiology as.generic_spct
-#' 
-#' @export
-#' 
-as.generic_spct.colorSpec <- function(x, 
-                                      multiplier = 1, 
-                                      ...) {
-  force(x)
-  colorSpec2spct(x = x,
-                 multiplier = multiplier,
-                 ...)
-}
-
-#' Convert into generic_mspct
-#' 
-#' @param x R object
-#' @param multiplier numeric A multiplier to be applied to the spectral quantity
-#'  data to do unit or scale conversion.
-#' @param ... currently ignored.
-#' 
-#' @name as.generic_mspct
-#'
-#' @importFrom photobiology as.generic_mspct
-#' 
-#' @export
-#'
-as.generic_mspct.colorSpec <- function(x, 
-                                       multiplier = 1, 
-                                       ...) {
-  force(x)
-  colorSpec2mspct(x = x, multiplier = multiplier, ...)
-}
-

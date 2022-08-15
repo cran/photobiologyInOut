@@ -14,9 +14,8 @@
 \alias{colorSpec2spct}
 \alias{colorSpec2chroma_spct}
 \alias{as.chroma_spct.colorSpec}
-\alias{mspct2colorSpec}
-\alias{spct2colorSpec}
-\alias{chroma_spct2colorSpec}
+\alias{as.generic_spct.colorSpec}
+\alias{as.generic_mspct.colorSpec}
 \title{Convert 'colorSpec::colorSpec' objects}
 \usage{
 colorSpec2mspct(x, multiplier = 1, ...)
@@ -47,11 +46,9 @@ colorSpec2chroma_spct(x, multiplier = 1, ...)
 
 \method{as.chroma_mspct}{colorSpec}(x, multiplier = 1, ...)
 
-mspct2colorSpec(x, spct.data.var = NULL, multiplier = 1, ...)
+\method{as.generic_spct}{colorSpec}(x, multiplier = 1, ...)
 
-spct2colorSpec(x, spct.data.var = NULL, multiplier = 1, ...)
-
-chroma_spct2colorSpec(x, spct.data.var = NULL, multiplier = 1, ...)
+\method{as.generic_mspct}{colorSpec}(x, multiplier = 1, ...)
 }
 \arguments{
 \item{x}{colorSpec object}
@@ -60,37 +57,42 @@ chroma_spct2colorSpec(x, spct.data.var = NULL, multiplier = 1, ...)
 unit or scale conversion.}
 
 \item{...}{currently ignored.}
-
-\item{spct.data.var}{character The name of the variable to read spectral data
-from.}
 }
 \description{
 Convert 'colorSpec::colorSpec' objects into spectral objects (xxxx_spct,
 xxxx_mspct) as defined in package 'photobiology' and vice versa preserving
 as much information as possible.
 }
+\details{
+Objects of class \code{colorSpec::colorSpec} do not contain metadata
+or class data from which the units of expression could be obtained. When
+using function \code{colorSpec2mspct} the user needs to use parameter
+\code{multiplier} to convert the data to what is expected by the object
+constructors defined in package 'photobiology' but should only rarely need to
+use parameter \code{spct.data.var} to select the quantity.
+
+\code{colorSpec::colorSpec} objects may use memory more efficiently than
+spectral objects of the classes for collections of spectra defined in package
+'photobiology' as wavelengths are assumed to be the same for all member
+spectra, and stored only once while this assumption is not made for
+collections of spectra, allowing different wavelengths and lengths for the
+component spectra. When using \code{as.colorSpec} methods to convert
+collections of spectra into \code{colorSpec} objects, if the wavelengths of
+the individual spectra differe, only the shared range of wavelengths is
+retained and within the this range, wavelngth values are made consistent by
+interpolation.
+}
 \note{
-Objects of class \code{colorSpec::colorSpec} do not contain metadata or
-  class data from which the units of expression could be obtained. When using
-  this function the user needs to use parameter \code{multiplier} to convert 
-  the data to what is expected by the object constructors defined in package 
-  'photobiology' but should only rarely need to use parameter
-  \code{spct.data.var} to select the quantity.
-  
-  \code{colorSpec::colorSpec} objects may use memory more efficiently than
-  spectral objects of the classes for collections of spectra defined in
-  package 'photobiology' as wavelengths are assumed to be the same for all
-  member spectra, and stored only once while this assumption is not made for
-  collections of spectra, allowing different wavelengths and lengths for the
-  component spectra. Wavelengths are stored for each spectrum, but as
-  spectral classes are derived from 'tbl_df' in many cases no redundant
-  copies of wavelength data will be made in memory in spite of the more
-  flexible semantics of the objects.
+In \code{generic_mspct} objects, wavelengths are stored for each
+  spectrum, individual \code{generic_spct} objects. However, as spectral
+  classes are derived from 'tbl_df' in many cases no redundant copies of
+  wavelength data will be made in memory in spite of the more flexible
+  semantics of the objects.
 }
 \section{Warning!}{
  Always check the sanity of the imported or exported data
   values, as guessing is needed when matching the different classes, and the
-  functions defined here are NOT guaranteed to return valid data wihtout help
+  functions defined here are NOT guaranteed to return valid data without help
   from the user through optional function arguments.
 }
 

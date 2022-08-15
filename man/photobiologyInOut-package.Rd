@@ -6,9 +6,9 @@
 \alias{photobiologyInOut-package}
 \title{photobiologyInOut: Read Spectral and Logged Data from Foreign Files}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Functions for reading, and in some cases writing, foreign files containing spectral data from spectrometers and their associated software, output from daylight simulation models in common use, and some spectral data repositories. As well as functions for exchange of spectral data with other R packages. Part of the 'r4photobiology' suite, Aphalo P. J. (2015) <doi:10.19232/uv4pb.2015.1.14>.
+Functions for reading, and in some cases writing, foreign files containing spectral data from spectrometers and their associated software, output from daylight simulation models in common use, and some spectral data repositories. As well as functions for exchange of spectral data with other R packages. Part of the 'r4photobiology' suite, Aphalo P. J. (2015) \doi{10.19232/uv4pb.2015.1.14}.
 }
 \note{
 From version 0.4.4 the time zone (tz) used for decoding dates

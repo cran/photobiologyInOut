@@ -58,7 +58,6 @@ This function should be able to read data log files from any YoctoPuce
   consistent among them.
 }
 \examples{
-
   
   # We read a CSV file previously downloaded from a YoctoMeteo module.
 

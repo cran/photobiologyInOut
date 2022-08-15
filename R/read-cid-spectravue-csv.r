@@ -82,14 +82,12 @@
 #'   practice extremely noisy.
 #'
 #' @section Warning!!:
-#' I have made repeated attempts to get an answer from CID's support about the
-#' extremely biased (plainly wrong!) values of transmittance measured by this
-#' instrument. This has been to no avail, no useful information provided by any
-#' of the different CID staff members answering to my messages, but not to my
-#' questions. In practice, reflectance seems biased but usable as an
-#' instrument-specific quantity with arbitrary units. Transmittance and
-#' absorbance seem useless as values are wrong by an order of magnitude or
-#' more.
+#' CID's support has answered on 2022-05-19 that the extremely biased (plainly
+#' wrong!) values of transmittance measured by this instrument are due to a
+#' design flaw and that they are working on a solution for the problem. In
+#' practice, reflectance seems biased but usable as an instrument-specific
+#' quantity with arbitrary units. Transmittance and absorbance seem useless as
+#' values are wrong by about an order of magnitude.
 #' 
 #' @return An object of class \code{filter_spct}, \code{relector_spct},
 #'   \code{object_spct} or \code{generic_mspct}.

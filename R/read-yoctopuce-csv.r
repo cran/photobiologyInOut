@@ -37,8 +37,6 @@
 #'   consistent among them.
 #'   
 #' @examples
-#' 
-#' @examples
 #'   
 #'   # We read a CSV file previously downloaded from a YoctoMeteo module.
 #' 

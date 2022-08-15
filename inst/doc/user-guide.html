@@ -12,7 +12,7 @@
 
 <meta name="author" content="Pedro J. Aphalo" />
 
-<meta name="date" content="2022-05-14" />
+<meta name="date" content="2022-08-13" />
 
 <title>User Guide</title>
 
@@ -333,75 +333,82 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">User Guide</h1>
-<h3 class="subtitle">Package ‘photobiologyInOut’ 0.4.24</h3>
+<h3 class="subtitle">Package ‘photobiologyInOut’ 0.4.25</h3>
 <h4 class="author">Pedro J. Aphalo</h4>
-<h4 class="date">2022-05-14</h4>
+<h4 class="date">2022-08-13</h4>
 
 
 <div id="TOC">
 <ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#preliminaries">Preliminaries</a></li>
-<li><a href="#spectrometer-output-files">Spectrometer output files</a>
+<li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+<li><a href="#preliminaries" id="toc-preliminaries">Preliminaries</a></li>
+<li><a href="#spectrometer-output-files" id="toc-spectrometer-output-files">Spectrometer output files</a>
 <ul>
-<li><a href="#ocean-optics-jaz">Ocean Optics Jaz</a></li>
-<li><a href="#cleaning-spectral-data">Cleaning spectral data</a></li>
-<li><a href="#other-modular-spectrometers-from-ocean-optics">Other
-modular spectrometers from Ocean Optics</a></li>
-<li><a href="#array-spectrometers-from-wasatch-photonics">Array
-spectrometers from Wasatch Photonics</a></li>
-<li><a href="#modular-spectrometers-from-avantes">Modular spectrometers
-from Avantes</a></li>
-<li><a href="#scanning-spectrometer-from-macam">Scanning spectrometer
-from Macam</a></li>
-<li><a href="#li-180-array-dector-spectrometer-from-li-cor">LI-180 array
+<li><a href="#ocean-optics-jaz" id="toc-ocean-optics-jaz">Ocean Optics
+Jaz</a></li>
+<li><a href="#cleaning-spectral-data" id="toc-cleaning-spectral-data">Cleaning spectral data</a></li>
+<li><a href="#other-modular-spectrometers-from-ocean-optics" id="toc-other-modular-spectrometers-from-ocean-optics">Other modular
+spectrometers from Ocean Optics</a></li>
+<li><a href="#array-spectrometers-from-wasatch-photonics" id="toc-array-spectrometers-from-wasatch-photonics">Array spectrometers
+from Wasatch Photonics</a></li>
+<li><a href="#modular-spectrometers-from-avantes" id="toc-modular-spectrometers-from-avantes">Modular spectrometers from
+Avantes</a></li>
+<li><a href="#scanning-spectrometer-from-macam" id="toc-scanning-spectrometer-from-macam">Scanning spectrometer from
+Macam</a></li>
+<li><a href="#li-180-array-dector-spectrometer-from-li-cor" id="toc-li-180-array-dector-spectrometer-from-li-cor">LI-180 array
 dector spectrometer from LI-COR</a></li>
-<li><a href="#li-1800-scanning-spectrometer-from-li-cor">LI-1800
-scanning spectrometer from LI-COR</a></li>
-<li><a href="#the-leaf-spectrometer-from-cid-bio-science">The leaf
+<li><a href="#li-1800-scanning-spectrometer-from-li-cor" id="toc-li-1800-scanning-spectrometer-from-li-cor">LI-1800 scanning
+spectrometer from LI-COR</a></li>
+<li><a href="#the-leaf-spectrometer-from-cid-bio-science" id="toc-the-leaf-spectrometer-from-cid-bio-science">The leaf
 spectrometer from CID Bio-Science</a></li>
 </ul></li>
-<li><a href="#data-from-loggers">Data from loggers</a>
+<li><a href="#data-from-loggers" id="toc-data-from-loggers">Data from
+loggers</a>
 <ul>
-<li><a href="#campbell-scientific">Campbell Scientific</a></li>
-<li><a href="#yoctopuce">YoctoPuce</a></li>
+<li><a href="#campbell-scientific" id="toc-campbell-scientific">Campbell
+Scientific</a></li>
+<li><a href="#yoctopuce" id="toc-yoctopuce">YoctoPuce</a></li>
 </ul></li>
-<li><a href="#output-from-simulation-models">Output from simulation
-models</a>
+<li><a href="#output-from-simulation-models" id="toc-output-from-simulation-models">Output from simulation models</a>
 <ul>
-<li><a href="#tuv">TUV</a></li>
-<li><a href="#quick-tuv-calculator">Quick TUV calculator</a></li>
-<li><a href="#libradtran">libRadtran</a></li>
-<li><a href="#output-enriched-with-time-and-date-data">Output enriched
-with time and date data</a></li>
-<li><a href="#scripts-developed-by-anders-lindfors">Scripts developed by
+<li><a href="#tuv" id="toc-tuv">TUV</a></li>
+<li><a href="#quick-tuv-calculator" id="toc-quick-tuv-calculator">Quick
+TUV calculator</a></li>
+<li><a href="#libradtran" id="toc-libradtran">libRadtran</a></li>
+<li><a href="#output-enriched-with-time-and-date-data" id="toc-output-enriched-with-time-and-date-data">Output enriched with
+time and date data</a></li>
+<li><a href="#scripts-developed-by-anders-lindfors" id="toc-scripts-developed-by-anders-lindfors">Scripts developed by
 Anders Lindfors</a></li>
 </ul></li>
-<li><a href="#online-public-repositories-of-spectral-data">Online public
+<li><a href="#online-public-repositories-of-spectral-data" id="toc-online-public-repositories-of-spectral-data">Online public
 repositories of spectral data</a>
 <ul>
-<li><a href="#fred-floral-reflectance-database">FReD Floral Reflectance
+<li><a href="#fred-floral-reflectance-database" id="toc-fred-floral-reflectance-database">FReD Floral Reflectance
 Database</a></li>
-<li><a href="#aster-spectral-database">ASTER spectral database</a></li>
+<li><a href="#aster-spectral-database" id="toc-aster-spectral-database">ASTER spectral database</a></li>
 </ul></li>
-<li><a href="#other-r-packages">Other R packages</a>
+<li><a href="#other-r-packages" id="toc-other-r-packages">Other R
+packages</a>
 <ul>
-<li><a href="#to-hyperspec">To ‘hyperSpec’</a></li>
-<li><a href="#from-hyperspec">From ‘hyperSpec’</a></li>
-<li><a href="#from-colorspec">From ‘colorSpec’</a></li>
-<li><a href="#to-colorspec">To ‘colorSpec’</a></li>
-<li><a href="#wrappers-on-colorspec-functions.">Wrappers on ‘colorSpec’
+<li><a href="#to-hyperspec" id="toc-to-hyperspec">To
+‘hyperSpec’</a></li>
+<li><a href="#from-hyperspec" id="toc-from-hyperspec">From
+‘hyperSpec’</a></li>
+<li><a href="#from-colorspec" id="toc-from-colorspec">From
+‘colorSpec’</a></li>
+<li><a href="#to-colorspec" id="toc-to-colorspec">To
+‘colorSpec’</a></li>
+<li><a href="#wrappers-on-colorspec-functions." id="toc-wrappers-on-colorspec-functions.">Wrappers on ‘colorSpec’
 functions.</a></li>
-<li><a href="#from-pavo">From ‘pavo’</a></li>
+<li><a href="#from-pavo" id="toc-from-pavo">From ‘pavo’</a></li>
 </ul></li>
-<li><a href="#dealing-with-odd-and-bad-data">Dealing with odd and bad
-data</a>
+<li><a href="#dealing-with-odd-and-bad-data" id="toc-dealing-with-odd-and-bad-data">Dealing with odd and bad data</a>
 <ul>
-<li><a href="#using-locales">Using locales</a></li>
-<li><a href="#overriding-default-metadata">Overriding default
+<li><a href="#using-locales" id="toc-using-locales">Using
+locales</a></li>
+<li><a href="#overriding-default-metadata" id="toc-overriding-default-metadata">Overriding default
 metadata</a></li>
-<li><a href="#adding-additional-metadata">Adding additional
-metadata</a></li>
+<li><a href="#adding-additional-metadata" id="toc-adding-additional-metadata">Adding additional metadata</a></li>
 </ul></li>
 </ul>
 </div>
@@ -1043,9 +1050,10 @@ file headers are preserved as comments in the source.spct objects.</p>
 ## 1      380    0.0275
 ## 2      381    0.0280
 ## 3      382    0.0285
-## # … with 398 more rows</code></pre>
+## # … with 398 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">comment</span>(li180.spct))</span></code></pre></div>
-<pre><code>## LICOR LI-180 file &#39;LI-180-irradiance.txt&#39; imported on 2022-05-14 18:13:08 UTC
+<pre><code>## LICOR LI-180 file &#39;LI-180-irradiance.txt&#39; imported on 2022-08-13 11:03:53 UTC
 ## Model Name   LI-180
 ## Serial Number    A18M0157
 ## Time 2021/03/02_09:24:26
@@ -1156,9 +1164,10 @@ legislation.</p>
 ## 1      300  1.52e-10
 ## 2      301  3.36e-10
 ## 3      302  2.20e-10
-## # … with 598 more rows</code></pre>
+## # … with 598 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">comment</span>(licor.spct))</span></code></pre></div>
-<pre><code>## LICOR LI-1800 file &#39;spectrum.PRN&#39; imported on 2022-05-14 18:13:09 UTC
+<pre><code>## LICOR LI-1800 file &#39;spectrum.PRN&#39; imported on 2022-08-13 11:03:54 UTC
 ## &quot;FILE:FL2&quot;
 ## &quot;REM: TLD 36W/865       (QNTM)&quot;
 ## &quot;LIMS: 300- 900NM&quot;
@@ -1208,9 +1217,10 @@ file headers are preserved as comments in the source.spct objects.</p>
 ## 1      350 0.0514
 ## 2      352 0.0471
 ## 3      354 0.0532
-## # … with 223 more rows</code></pre>
+## # … with 223 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">comment</span>(licor.spct))</span></code></pre></div>
-<pre><code>## LICOR LI-1800 file &#39;reflectance.PRN&#39; imported on 2022-05-14 18:13:10 UTC
+<pre><code>## LICOR LI-1800 file &#39;reflectance.PRN&#39; imported on 2022-08-13 11:03:55 UTC
 ## &quot;FILE:RGD1&quot;
 ## &quot;REM: REFL GREEN AD 1 &quot;
 ## &quot;LIMS: 350- 800NM&quot;
@@ -1245,6 +1255,7 @@ of absorbance measurements it is possible to import the data into an
 ## Wavelength range 380.30945-1099.8846 nm, step 0.5594482-0.6019592 nm
 ## Label:  Reflectance. 
 ## Measured on 2022-03-08 15:02:47 UTC 
+## Reflectance of type &#39;total&#39;
 ## 
 ##     w.length           Rfr        
 ##  Min.   : 380.3   Min.   :0.0258  
@@ -1281,17 +1292,18 @@ file as is, one character string per line.</p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>day.dat <span class="ot">&lt;-</span> <span class="fu">read_csi_dat</span>(<span class="at">file =</span> cs.day.file)</span>
 <span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>day.dat</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 33
-##   TIMESTAMP           RECORD PAR_Den_Avg PAR_BF_tot_Avg
-##   &lt;dttm&gt;               &lt;dbl&gt;       &lt;dbl&gt;          &lt;dbl&gt;
-## 1 2016-07-27 00:00:00      0        20.9           401.
-## 2 2016-07-28 00:00:00      1       526.            592.
-## # … with 29 more variables: PAR_BF_diff_Avg &lt;dbl&gt;,
-## #   PAR_Den_Min &lt;dbl&gt;, PAR_Den_TMn &lt;dttm&gt;,
-## #   PAR_Den_Max &lt;dbl&gt;, PAR_Den_TMx &lt;dttm&gt;,
-## #   PAR_BF_tot_Min &lt;dbl&gt;, PAR_BF_tot_TMn &lt;dttm&gt;,
-## #   PAR_BF_tot_Max &lt;dbl&gt;, PAR_BF_tot_TMx &lt;dttm&gt;,
-## #   PAR_BF_diff_Min &lt;dbl&gt;, PAR_BF_diff_TMn &lt;dttm&gt;,
-## #   PAR_BF_diff_Max &lt;dbl&gt;, PAR_BF_diff_TMx &lt;dttm&gt;, …</code></pre>
+##   TIMESTAMP           RECORD PAR_Den_…¹ PAR_B…² PAR_B…³
+##   &lt;dttm&gt;               &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 2016-07-27 00:00:00      0       20.9    401.   -321.
+## 2 2016-07-28 00:00:00      1      526.     592.   -188.
+## # … with 28 more variables: PAR_Den_Min &lt;dbl&gt;,
+## #   PAR_Den_TMn &lt;dttm&gt;, PAR_Den_Max &lt;dbl&gt;,
+## #   PAR_Den_TMx &lt;dttm&gt;, PAR_BF_tot_Min &lt;dbl&gt;,
+## #   PAR_BF_tot_TMn &lt;dttm&gt;, PAR_BF_tot_Max &lt;dbl&gt;,
+## #   PAR_BF_tot_TMx &lt;dttm&gt;, PAR_BF_diff_Min &lt;dbl&gt;,
+## #   PAR_BF_diff_TMn &lt;dttm&gt;, PAR_BF_diff_Max &lt;dbl&gt;,
+## #   PAR_BF_diff_TMx &lt;dttm&gt;, AirTemp_Avg &lt;dbl&gt;, …
+## # ℹ Use `colnames()` to see all variable names</code></pre>
 <p>All information is preserved in the returned
 <code>tibble::tibble</code> object, which is derived from
 <code>data.frame</code>.</p>
@@ -1450,7 +1462,8 @@ output file from TUV has only time of day information.</p>
 ## 1     280. A         3.04e-15  1.83 2014-03-21 12:00:00
 ## 2     282. A         1.16e-13  1.83 2014-03-21 12:00:00
 ## 3     282. A         1.82e-12  1.83 2014-03-21 12:00:00
-## # … with 3,853 more rows</code></pre>
+## # … with 3,853 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <p>It is possible to extract individual spectra with subset, or as done
 here plot them in different panels.</p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(tuv.spct, <span class="at">annotations =</span> <span class="fu">c</span>(<span class="st">&quot;colour.guide&quot;</span>)) <span class="sc">+</span></span>
@@ -1483,10 +1496,10 @@ collection.</p>
 as visible to R. <strong>This is unlikely to be correct!</strong></p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>tuv_nd.spct <span class="ot">&lt;-</span> <span class="fu">read_tuv_usrout</span>(<span class="at">file =</span> tuv.file)</span>
 <span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">when_measured</span>(tuv_nd.spct)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-05-14 12:00:00 UTC&quot; &quot;2022-05-14 13:00:00 UTC&quot;
-## [3] &quot;2022-05-14 14:00:00 UTC&quot; &quot;2022-05-14 15:00:00 UTC&quot;
-## [5] &quot;2022-05-14 16:00:00 UTC&quot; &quot;2022-05-14 17:00:00 UTC&quot;
-## [7] &quot;2022-05-14 18:00:00 UTC&quot; &quot;2022-05-14 19:00:00 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2022-08-13 12:00:00 UTC&quot; &quot;2022-08-13 13:00:00 UTC&quot;
+## [3] &quot;2022-08-13 14:00:00 UTC&quot; &quot;2022-08-13 15:00:00 UTC&quot;
+## [5] &quot;2022-08-13 16:00:00 UTC&quot; &quot;2022-08-13 17:00:00 UTC&quot;
+## [7] &quot;2022-08-13 18:00:00 UTC&quot; &quot;2022-08-13 19:00:00 UTC&quot;</code></pre>
 </div>
 <div id="quick-tuv-calculator" class="section level3">
 <h3>Quick TUV calculator</h3>
@@ -1539,13 +1552,15 @@ available.</p>
 ## Time unit 1s
 ## 
 ## # A tibble: 140 × 7
-##   w.length s.e.irrad s.e.irrad.dir s.e.irrad.diff.down
-##      &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;               &lt;dbl&gt;
-## 1     280.  1.34e-14      3.89e-15            9.49e-15
-## 2     282.  4.33e-13      1.24e-13            3.09e-13
-## 3     282.  5.86e-12      1.66e-12            4.2 e-12
-## # … with 137 more rows, and 3 more variables:
-## #   s.e.irrad.diff.up &lt;dbl&gt;, angle &lt;dbl&gt;, date &lt;dttm&gt;</code></pre>
+##   w.length s.e.irrad s.e.irra…¹ s.e.ir…² s.e.ir…³ angle
+##      &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1     280.  1.34e-14   3.89e-15 9.49e-15 1.34e-15    45
+## 2     282.  4.33e-13   1.24e-13 3.09e-13 4.33e-14    45
+## 3     282.  5.86e-12   1.66e-12 4.2 e-12 5.86e-13    45
+## # … with 137 more rows, 1 more variable: date &lt;dttm&gt;,
+## #   and abbreviated variable names ¹​s.e.irrad.dir,
+## #   ²​s.e.irrad.diff.down, ³​s.e.irrad.diff.up
+## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
 </div>
 <div id="libradtran" class="section level3">
 <h3>libRadtran</h3>
@@ -1605,11 +1620,11 @@ read_uvspec_disort() follows.</p>
 <span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>uvspec.<span class="fl">02.</span>spct <span class="ot">&lt;-</span> <span class="fu">read_uvspec_disort</span>(uvspec.disort.file)</span></code></pre></div>
 <pre><code>## Warning: 611 parsing failures.
 ## row col  expected    actual                                                                                                          file
-##   1  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/RtmpUJF02Y/Rinst2b247ba13013/photobiologyInOut/extdata/uvspec-disort.dat&#39;
-##   2  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/RtmpUJF02Y/Rinst2b247ba13013/photobiologyInOut/extdata/uvspec-disort.dat&#39;
-##   3  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/RtmpUJF02Y/Rinst2b247ba13013/photobiologyInOut/extdata/uvspec-disort.dat&#39;
-##   4  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/RtmpUJF02Y/Rinst2b247ba13013/photobiologyInOut/extdata/uvspec-disort.dat&#39;
-##   5  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/RtmpUJF02Y/Rinst2b247ba13013/photobiologyInOut/extdata/uvspec-disort.dat&#39;
+##   1  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/Rtmpq0JZWz/Rinst3b3c1c4d116a/photobiologyInOut/extdata/uvspec-disort.dat&#39;
+##   2  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/Rtmpq0JZWz/Rinst3b3c1c4d116a/photobiologyInOut/extdata/uvspec-disort.dat&#39;
+##   3  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/Rtmpq0JZWz/Rinst3b3c1c4d116a/photobiologyInOut/extdata/uvspec-disort.dat&#39;
+##   4  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/Rtmpq0JZWz/Rinst3b3c1c4d116a/photobiologyInOut/extdata/uvspec-disort.dat&#39;
+##   5  -- 7 columns 8 columns &#39;C:/Users/Aphalo/AppData/Local/Temp/Rtmpq0JZWz/Rinst3b3c1c4d116a/photobiologyInOut/extdata/uvspec-disort.dat&#39;
 ## ... ... ......... ......... .............................................................................................................
 ## See problems(...) for more details.</code></pre>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uvspec.<span class="fl">02.</span>spct)</span></code></pre></div>
@@ -1633,7 +1648,7 @@ read_uvspec_disort() follows.</p>
 ##  3rd Qu.:0.5049  
 ##  Max.   :0.6058</code></pre>
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">comment</span>(uvspec.<span class="fl">02.</span>spct))</span></code></pre></div>
-<pre><code>## libRadtran file &#39;uvspec-disort.dat&#39; imported on 2022-05-14 18:13:16 UTC</code></pre>
+<pre><code>## libRadtran file &#39;uvspec-disort.dat&#39; imported on 2022-08-13 11:04:02 UTC</code></pre>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(uvspec.<span class="fl">02.</span>spct, <span class="at">unit.out =</span> <span class="st">&quot;photon&quot;</span>)</span></code></pre></div>
 <p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
 <p>The data contains also estimates of diffuse and direct spectral
@@ -1669,7 +1684,7 @@ to append the input file to the comment.</p>
 <span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="fu">read_file</span>(uvspec.disort.inp.file),</span>
 <span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">&quot;</span>)</span>
 <span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">comment</span>(uvspec.<span class="fl">02.</span>spct))</span></code></pre></div>
-<pre><code>## libRadtran file &#39;uvspec-disort.dat&#39; imported on 2022-05-14 18:13:16 UTC
+<pre><code>## libRadtran file &#39;uvspec-disort.dat&#39; imported on 2022-08-13 11:04:02 UTC
 ## 
 ## data_files_path uvspec_home/data/
 ## atmosphere_file uvspec_home/data/atmmod/afglms.dat
@@ -1727,15 +1742,17 @@ format. It also automatically converts <span class="math inline">\(mW\,m^{-2}\,n
 ## Time unit 1s
 ## 
 ## # A tibble: 3,055 × 5
-##   datetime            w.length s.e.irrad.dir
-##   &lt;dttm&gt;                 &lt;dbl&gt;         &lt;dbl&gt;
-## 1 2015-05-19 11:00:00      290      0       
-## 2 2015-05-19 11:00:00      291      0       
-## 3 2015-05-19 11:00:00      292      0       
-## 4 2015-05-19 11:00:00      293      1.89e-11
-## 5 2015-05-19 11:00:00      294      1.65e-10
-## # … with 3,050 more rows, and 2 more variables:
-## #   s.e.irrad.diff &lt;dbl&gt;, s.e.irrad &lt;dbl&gt;</code></pre>
+##   datetime            w.length s.e.irrad.dir s.e.irra…¹
+##   &lt;dttm&gt;                 &lt;dbl&gt;         &lt;dbl&gt;      &lt;dbl&gt;
+## 1 2015-05-19 11:00:00      290      0          0       
+## 2 2015-05-19 11:00:00      291      0          0       
+## 3 2015-05-19 11:00:00      292      0          0       
+## 4 2015-05-19 11:00:00      293      1.89e-11   3.44e-11
+## 5 2015-05-19 11:00:00      294      1.65e-10   2.76e-10
+## # … with 3,050 more rows, 1 more variable:
+## #   s.e.irrad &lt;dbl&gt;, and abbreviated variable name
+## #   ¹​s.e.irrad.diff
+## # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</code></pre>
 </div>
 <div id="scripts-developed-by-anders-lindfors" class="section level3">
 <h3>Scripts developed by Anders Lindfors</h3>
@@ -1784,7 +1801,8 @@ nanometres.</p>
 ## 1      290 0        
 ## 2      291 0.0000293
 ## 3      292 0.000724 
-## # … with 508 more rows</code></pre>
+## # … with 508 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <p>With function <code>read_m_fmi_cum</code> with an ``m’’ in the name
 we can read several files each containing a single spectrum. The
 returned object is a collection of source spectra.</p>
@@ -1815,6 +1833,7 @@ returned object is a collection of source spectra.</p>
 ## 2      291 0.0000293
 ## 3      292 0.000724 
 ## # … with 508 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## 
 ## --- END ---</code></pre>
 <p>Above we gave the names of the files explicitly, but as we show here,
@@ -1863,6 +1882,7 @@ where the files to be read are located.</p>
 ## 2      291 0.0000293
 ## 3      292 0.000724 
 ## # … with 508 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## 
 ## --- END ---</code></pre>
 <p>Files with spectral irradiance contain data for multiple spectra
@@ -1972,9 +1992,10 @@ be supplied by the user.</p>
 ## 1       157      300 0.0627
 ## 2       157      301 0.0654
 ## 3       157      302 0.0678
-## # … with 398 more rows</code></pre>
+## # … with 398 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">comment</span>(fred.spct))</span></code></pre></div>
-<pre><code>## FReD file &#39;FReDflowerID_157.csv&#39; imported on 2022-05-14 18:13:18 UTC</code></pre>
+<pre><code>## FReD file &#39;FReDflowerID_157.csv&#39; imported on 2022-08-13 11:04:03 UTC</code></pre>
 <div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(fred.spct)</span></code></pre></div>
 <p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
 </div>
@@ -2032,9 +2053,10 @@ Additional Information:  None.
 ## 1     380. 0.142
 ## 2     383. 0.143
 ## 3     385. 0.145
-## # … with 2,556 more rows</code></pre>
+## # … with 2,556 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">comment</span>(aster.spct))</span></code></pre></div>
-<pre><code>## ASTER database file &#39;drygrass-spectrum.txt&#39; imported on 2022-05-14 18:13:19 UTC
+<pre><code>## ASTER database file &#39;drygrass-spectrum.txt&#39; imported on 2022-08-13 11:04:04 UTC
 ## Name: Dry grass
 ## Type:  Vegetation
 ## Class:  Grasses
@@ -2242,6 +2264,7 @@ numeric argument to rescale the original data. The default multiplier is
 ## 2      385      2.36
 ## 3      390      2.94
 ## # … with 78 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: F2 ---
 ## Object: source_spct [81 x 2]
 ## Wavelength range 380-780 nm, step 5 nm 
@@ -2254,6 +2277,7 @@ numeric argument to rescale the original data. The default multiplier is
 ## 2      385      1.48
 ## 3      390      1.84
 ## # … with 78 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: F3 ---
 ## Object: source_spct [81 x 2]
 ## Wavelength range 380-780 nm, step 5 nm 
@@ -2266,6 +2290,7 @@ numeric argument to rescale the original data. The default multiplier is
 ## 2      385      1.02
 ## 3      390      1.26
 ## # … with 78 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## ..........................
 ## 9 other member spectra not shown
 ## 
@@ -2285,6 +2310,7 @@ numeric argument to rescale the original data. The default multiplier is
 ## 2      310     0
 ## 3      320     0
 ## # … with 43 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: G-533 ---
 ## Object: filter_spct [46 x 2]
 ## Wavelength range 300-750 nm, step 10 nm 
@@ -2298,6 +2324,7 @@ numeric argument to rescale the original data. The default multiplier is
 ## 2      310     0
 ## 3      320     0
 ## # … with 43 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: B-440 ---
 ## Object: filter_spct [46 x 2]
 ## Wavelength range 300-750 nm, step 10 nm 
@@ -2311,6 +2338,7 @@ numeric argument to rescale the original data. The default multiplier is
 ## 2      310     0
 ## 3      320     0
 ## # … with 43 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: LB-120 ---
 ## Object: filter_spct [46 x 2]
 ## Wavelength range 300-750 nm, step 10 nm 
@@ -2324,6 +2352,7 @@ numeric argument to rescale the original data. The default multiplier is
 ## 2      310 0.0058 
 ## 3      320 0.081  
 ## # … with 43 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## 
 ## --- END ---</code></pre>
 <div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a>fluorescent.spct <span class="ot">&lt;-</span> <span class="fu">colorSpec2spct</span>(colorSpec<span class="sc">::</span>Fs<span class="fl">.5</span>nm)</span>
@@ -2339,7 +2368,8 @@ numeric argument to rescale the original data. The default multiplier is
 ## 1 0.0014 0      0.0065      380
 ## 2 0.0022 0.0001 0.0105      385
 ## 3 0.0042 0.0001 0.0201      390
-## # … with 78 more rows</code></pre>
+## # … with 78 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 </div>
 <div id="to-colorspec" class="section level3">
 <h3>To ‘colorSpec’</h3>
@@ -2413,6 +2443,7 @@ summaries for three spectra.</p>
 <span id="cb194-2"><a href="#cb194-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sicalis.mspct[[<span class="dv">1</span>]])</span></code></pre></div>
 <pre><code>## Summary of reflector_spct [401 x 2] object: anonymous
 ## Wavelength range 300-700 nm, step 1 nm
+## Reflectance of type &#39;total&#39;
 ## 
 ##     w.length        Rfr          
 ##  Min.   :300   Min.   :0.001798  
@@ -2424,6 +2455,7 @@ summaries for three spectra.</p>
 <div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sicalis.mspct[[<span class="dv">2</span>]])</span></code></pre></div>
 <pre><code>## Summary of reflector_spct [401 x 2] object: anonymous
 ## Wavelength range 300-700 nm, step 1 nm
+## Reflectance of type &#39;total&#39;
 ## 
 ##     w.length        Rfr          
 ##  Min.   :300   Min.   :0.006783  
@@ -2435,6 +2467,7 @@ summaries for three spectra.</p>
 <div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="#cb198-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sicalis.mspct[[<span class="dv">3</span>]])</span></code></pre></div>
 <pre><code>## Summary of reflector_spct [401 x 2] object: anonymous
 ## Wavelength range 300-700 nm, step 1 nm
+## Reflectance of type &#39;total&#39;
 ## 
 ##     w.length        Rfr          
 ##  Min.   :300   Min.   :0.001191  
@@ -2454,7 +2487,7 @@ individual into a single spectra object for plotting with
 <p>Here we extract the ``crown’’ data from all individuals and plot
 these spectra in a single plot.</p>
 <div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sicalis.mspct[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>)])</span></code></pre></div>
-<pre><code>## Object: reflector_mspct [7 x 1]
+<pre><code>## Object: reflector_mspct [3]
 ## --- Member: ind1.C ---
 ## Object: reflector_spct [401 x 2]
 ## Wavelength range 300-700 nm, step 1 nm 
@@ -2467,6 +2500,7 @@ these spectra in a single plot.</p>
 ## 2      301 0.00773
 ## 3      302 0.00829
 ## # … with 398 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: ind2.C ---
 ## Object: reflector_spct [401 x 2]
 ## Wavelength range 300-700 nm, step 1 nm 
@@ -2479,6 +2513,7 @@ these spectra in a single plot.</p>
 ## 2      301 0.00233
 ## 3      302 0.00323
 ## # … with 398 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: ind3.C ---
 ## Object: reflector_spct [401 x 2]
 ## Wavelength range 300-700 nm, step 1 nm 
@@ -2491,6 +2526,7 @@ these spectra in a single plot.</p>
 ## 2      301 0       
 ## 3      302 0.00119 
 ## # … with 398 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: ind4.C ---
 ## Object: reflector_spct [401 x 2]
 ## Wavelength range 300-700 nm, step 1 nm 
@@ -2503,6 +2539,7 @@ these spectra in a single plot.</p>
 ## 2      301 0.00347
 ## 3      302 0.00413
 ## # … with 398 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: ind5.C ---
 ## Object: reflector_spct [401 x 2]
 ## Wavelength range 300-700 nm, step 1 nm 
@@ -2515,6 +2552,7 @@ these spectra in a single plot.</p>
 ## 2      301 0.00536
 ## 3      302 0.00655
 ## # … with 398 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: ind6.C ---
 ## Object: reflector_spct [401 x 2]
 ## Wavelength range 300-700 nm, step 1 nm 
@@ -2527,6 +2565,7 @@ these spectra in a single plot.</p>
 ## 2      301 0.000614
 ## 3      302 0.000193
 ## # … with 398 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## --- Member: ind7.C ---
 ## Object: reflector_spct [401 x 2]
 ## Wavelength range 300-700 nm, step 1 nm 
@@ -2539,6 +2578,7 @@ these spectra in a single plot.</p>
 ## 2      301 0.00104
 ## 3      302 0.00170
 ## # … with 398 more rows
+## # ℹ Use `print(n = ...)` to see more rows
 ## 
 ## --- END ---</code></pre>
 <div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">rbindspct</span>(sicalis.mspct[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>)])) <span class="sc">+</span></span>
@@ -2592,7 +2632,8 @@ universal time coordinates (“UTC”).</p>
 ## 1     189.     0    
 ## 2     189.     0    
 ## 3     190.    -0.909
-## # … with 2,045 more rows</code></pre>
+## # … with 2,045 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 </div>
 <div id="overriding-default-metadata" class="section level3">
 <h3>Overriding default metadata</h3>
@@ -2616,7 +2657,7 @@ date may not reflect the creation date and time.</p>
 <div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="#cb214-1" aria-hidden="true" tabindex="-1"></a>jaz03.spct <span class="ot">&lt;-</span> <span class="fu">read_oo_jazirrad</span>(<span class="at">file =</span> jaz.s.irrad.file,</span>
 <span id="cb214-2"><a href="#cb214-2" aria-hidden="true" tabindex="-1"></a>                               <span class="at">date =</span> <span class="fu">now</span>())</span>
 <span id="cb214-3"><a href="#cb214-3" aria-hidden="true" tabindex="-1"></a><span class="fu">getWhenMeasured</span>(jaz03.spct)</span></code></pre></div>
-<pre><code>## [1] &quot;2022-05-14 18:13:24 UTC&quot;</code></pre>
+<pre><code>## [1] &quot;2022-08-13 11:04:11 UTC&quot;</code></pre>
 </div>
 <div id="adding-additional-metadata" class="section level3">
 <h3>Adding additional metadata</h3>
@@ -2639,7 +2680,8 @@ using function <code>ggmap::geocode()</code> as shown here.</p>
 ## 1     189.     0    
 ## 2     189.     0    
 ## 3     190.    -0.909
-## # … with 2,045 more rows</code></pre>
+## # … with 2,045 more rows
+## # ℹ Use `print(n = ...)` to see more rows</code></pre>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getWhereMeasured</span>(jaz04.spct)</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 3
 ##     lon   lat address

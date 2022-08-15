@@ -1,5 +1,8 @@
 .onLoad <- function(libname, pkgname) {
-  options(colorSpec.logformat = "%t{%H:%M:%OS3} %l %n::%f(). %m",
-          colorSpec.loglevel = "WARN",
-          colorSpec.stoponerror = FALSE)
+  # depends on 'colorspec' version and on whether it has been attached or not
+  if (!any(grepl("colorspec", names(.Options)))) {
+    options(colorSpec.logformat = "%t{%H:%M:%OS3} %l %n::%f(). %m",
+            colorSpec.loglevel = "WARN",
+            colorSpec.stoponerror = TRUE)
+  }
 }
