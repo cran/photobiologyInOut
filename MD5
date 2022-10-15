@@ -1,6 +1,6 @@
-04940ca20c1785756b3f4f857188a57e *DESCRIPTION
-55d7eeb55320d7405302d6da6e2e858f *NAMESPACE
-9bd58f6aa7d9d9f5b6ddc4d33e5a071b *NEWS.md
+ba10e7b445872a279c9540fd7f4350bf *DESCRIPTION
+39759b30b4f9fc9943eac523839686cf *NAMESPACE
+5f8a4fffb872cef5243c1ce3c9e0e11b *NEWS.md
 c885579f3d42f2b6c6e2b68e9026cf9e *R/color-wrappers.r
 822b939b2dc23c5c22c196f1377e8d3e *R/foreign-conversion.r
 103ff3f9acb77476366b1e9ec8c7f24e *R/on-load.r
@@ -9,7 +9,7 @@ f4cae95e1117509f02364cbd0fb302c6 *R/photobiologyInOut.r
 19a9924bb216cf318e40878301e2f995 *R/read-avaspec-csv.r
 a225cec06c7b0f2f54ad2fa1a1644095 *R/read-cid-spectravue-csv.r
 118001c341f681ecd9da07932d60be31 *R/read-csi-dat.r
-083bbf878da6194495a02ee73df149a7 *R/read-fmi-cum.R
+622fac7cbf08a7e74a5b2bef31fcd794 *R/read-fmi-cum.R
 585221e2e0b29655c2dc9a1dfbbc95a7 *R/read-foreign2mspct.r
 66755e8353bf8a1f598b156f9e530bf6 *R/read-fred-csv.r
 29b8cc376caa2f33b44733bf8db4f8a7 *R/read-libradtran.r
@@ -19,16 +19,17 @@ bcf6d5c0856491959664a2f581b35aca *R/read-licor-prn.r
 4ec99241be7f6cfd74c1d5a2291c169e *R/read-oojaz-file.r
 e70a6dd97cf6cb3b5ce075222652e07c *R/read-oopi-file.r
 a5a34fef86702c9d7118b09e04370c21 *R/read-ooss-file.r
-e12d484db33db4b11a8d208c92c9a4ad *R/read-tuv-file.r
+081ec2a434d8b7c575fe2a74abf284b8 *R/read-psi-spectrapen-csv.r
+ace5604abe4cedd435b2d1834f59fd0a *R/read-tuv-file.r
 ae3e34b137044373c25942a6bb86a206 *R/read-wasatch-csv.r
 b7ae4837013d7e0c0d9ae7dd70ef0c4b *R/read-yoctopuce-csv.r
 25a2bbcdedbae643a684853950e29cc6 *README.md
 afbe4209b3bb961ba3e41cbfe79ea507 *build/partial.rdb
 289a62e2b59dc36b32e3625542fab747 *build/vignette.rds
 513db777f0565d1b92ee39e5013ffd9c *inst/CITATION
-c3409b0c8c90744a733e2224df867555 *inst/doc/user-guide.R
-9aa4530e5a992ac8beb79d465fb7da3a *inst/doc/user-guide.Rmd
-06e064eaa5a7e117e3a77b7076767725 *inst/doc/user-guide.html
+3f7421c5d5c51270054af9c39940d535 *inst/doc/user-guide.R
+a188479d7d4db259a1f2141a5f90166c *inst/doc/user-guide.Rmd
+7423cf136ce21fd051b5cd6945e91971 *inst/doc/user-guide.html
 5cbcc304724982c1cb3c49d0aa55fc7f *inst/extdata/2013-05-01.hel
 e5881c2cb49f1bdabeca1a53900efdda *inst/extdata/2014-08-21_cum.hel
 afc5b7ea01d616f52f9b4364dd40c0e1 *inst/extdata/2014-08-22_cum.hel
@@ -65,6 +66,7 @@ ba863e80daf9537255c316f2e0f96df1 *inst/extdata/spectrum-avaspec.csv
 1578c21429931f67affeb5cd29d83522 *inst/extdata/spectrum-comma.SSIrrad
 091ee7e4be733b602f7fc97b19d05145 *inst/extdata/spectrum-comma.jaz
 17ac7e7de41933aaa05b1c3247a6f046 *inst/extdata/spectrum-licor-long.PRN
+da9507471f668a31ee9a696b0a956fe6 *inst/extdata/spectrum-psi-spectrapen-SP.csv
 d5822c73c70d0efdcbcbfc10de85de15 *inst/extdata/spectrum-seq-dark.pi
 ecd366a44b3af57e9d57c67e7732139a *inst/extdata/spectrum-seq0.pi
 672f6cb109262f32ba4fcabc82ece84a *inst/extdata/spectrum.DTA
@@ -101,6 +103,7 @@ c3badafd3c80efd507bc478a39cf5d2c *man/read_licor_prn.Rd
 5ee771d1d16aa1b28a9b9b38cc72ee3d *man/read_oo_pidata.Rd
 a3249e14d625daa05abe95452008c795 *man/read_oo_ssirrad.Rd
 785c1a5ff5b041493e89ad26e308303f *man/read_qtuv_txt.Rd
+fd506a063f2d973fe219d47577096dde *man/read_spectrapen_csv.Rd
 37211ac2a7b71780eee3cffee206ac06 *man/read_tuv_usrout.Rd
 49e51a7a037ec959d79c513a509bce4e *man/read_uvspec_disort.Rd
 c5f67e3360c4db896461ecb4406b9bab *man/read_uvspec_disort_vesa.Rd
@@ -120,7 +123,8 @@ b9d8373ace9a1bbadcb17ea8d21c4429 *tests/testthat/test-fred.R
 dacf54a135ef54078f473ad7548e2d18 *tests/testthat/test-licor.R
 bc2cb9593abd7a5cb3ca66b6353a6366 *tests/testthat/test-macam.R
 71f911b4e2869c4b3dff9ebe42259fbb *tests/testthat/test-oo.R
+11d4165eb1cd3936d2b6eff7004d7de6 *tests/testthat/test-psi.R
 3d47695b58be3b46682a5ccba502ee19 *tests/testthat/test-tuv.R
 f6a359bc1f678c9ceafc0afc467dfde2 *tests/testthat/test-wasatch.R
 bc2ee674a392474aca8a680292928d26 *tests/testthat/test-yoctopuce.R
-9aa4530e5a992ac8beb79d465fb7da3a *vignettes/user-guide.Rmd
+a188479d7d4db259a1f2141a5f90166c *vignettes/user-guide.Rmd

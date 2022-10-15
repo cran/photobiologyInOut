@@ -216,7 +216,7 @@ read_fmi2mspct <- function(file,
     zenith.angle <- as.numeric(stringr::word(header, start = 5L, end = 5L))
     
     z <-
-      readr::read_table2(
+      readr::read_table(
         file = file,
         col_names = c("minutes", "w.length", "s.e.irrad"),
         col_types = readr::cols(minutes = readr::col_number(),

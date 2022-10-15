@@ -112,6 +112,7 @@ Functions for importing measured spectral data.
 | read_m_licor_prn() | LI-COR LI-1800         | PC1800 (MS-DOS)   | source_mspct    |
 | read_m_licor_prn() | LI-COR LI-1800         | PC1800 (MS-DOS)   | filter_mspct    |
 | read_m_licor_prn() | LI-COR LI-1800         | PC1800 (MS-DOS)   | reflector_mspct |
+| read_spectrapen_csv() | PSI SpectraPen      | *instrument* (?)    | source_spct     |
 
 ### Ocean Optics Jaz
 
@@ -614,6 +615,55 @@ licor.spct
 cat(comment(licor.spct))
 autoplot(licor.spct)
 ```
+
+### The SpectraPen spectroradiometer from PSI
+
+This all-in-one spectroradiometer measures spectral irradiance, and returns the data in a `.CSV` file with one column per spectrum. The data are returned expressed in energy or photon based units.
+
+The first few lines of a data block look like this:
+
+```
+Irradiance 	 [µW/cm2/nm],
+Time,11/10/2022 7:08:01 PM,11/10/2022 7:08:05 PM,11/10/2022 7:08:10 PM,11/10/2022 7:08:32 PM,11/10/2022 7:08:36 PM,11/10/2022 7:08:42 PM,
+Index,13,14,15,16,17,18,
+Name,,,,,,,
+GPS,,,,,,,
+[nm],
+327.1,3.733005E+000,3.711488E+000,3.914620E+000,9.741472E+000,9.176950E+000,1.050528E+001
+329,3.557857E+000,3.256521E+000,3.686638E+000,8.320147E+000,8.764947E+000,8.995773E+000
+330.8,3.250507E+000,2.988691E+000,3.100541E+000,7.933364E+000,8.187113E+000,8.819886E+000
+...
+```
+or
+
+```
+Irradiance 	 [µE/m2/s/nm],
+
+Time,11/10/2022 7:08:01 PM,11/10/2022 7:08:05 PM,11/10/2022 7:08:10 PM,11/10/2022 7:08:32 PM,11/10/2022 7:08:36 PM,11/10/2022 7:08:42 PM,
+Index,13,14,15,16,17,18,
+Name,,,,,,,
+GPS,,,,,,,
+[nm],
+327.1,1.020666E-001,1.014783E-001,1.070323E-001,2.663483E-001,2.509133E-001,2.872321E-001
+329,9.783817E-002,8.955168E-002,1.013796E-001,2.287973E-001,2.410289E-001,2.473764E-001
+330.8,8.989830E-002,8.265734E-002,8.575075E-002,2.194107E-001,2.264286E-001,2.439290E-001
+```
+
+```{r}
+  file.name <- 
+    system.file("extdata", "spectrum-psi-spectrapen-SP.csv", 
+                package = "photobiologyInOut", mustWork = TRUE)
+  psi.mspct <- read_spectrapen_csv(file = file.name,
+                                  tz = "UTC")
+  summary(psi.mspct)
+  autoplot(psi.mspct, annotations = "")
+```
+```{r}
+summary(psi.mspct[["spct.14"]])
+autoplot(psi.mspct[["spct.14"]])
+```
+
+**Note:** It is clear from the figure above that this spectrometer suffers badly from straylight in the UV-A region, and readings at wavelengths shorter than 400 nm in the presence of stronger radiation at longer wavelengths are to be discarded.
 
 ### The leaf spectrometer from CID Bio-Science
 

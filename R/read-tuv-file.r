@@ -294,14 +294,14 @@ read_qtuv_txt <- function(file,
   
   # read spectrum
   spct.tb <-
-    readr::read_table2(file, skip = spct.header.idx,
-                       col_types = readr::cols(.default = readr::col_double()),
-                       col_names = c("w.length.s", "w.length.l",
-                                     "s.e.irrad.dir",
-                                     "s.e.irrad.diff.down", "s.e.irrad.diff.up",
-                                     "s.e.irrad"),
-                       progress = FALSE,
-                       n_max = length.spct)
+    readr::read_table(file, skip = spct.header.idx,
+                      col_types = readr::cols(.default = readr::col_double()),
+                      col_names = c("w.length.s", "w.length.l",
+                                    "s.e.irrad.dir",
+                                    "s.e.irrad.diff.down", "s.e.irrad.diff.up",
+                                    "s.e.irrad"),
+                      progress = FALSE,
+                      n_max = length.spct)
   spct.tb <- stats::na.omit(spct.tb)
   # convert to spectrum object
   z <-

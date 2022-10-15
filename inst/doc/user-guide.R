@@ -163,6 +163,19 @@ autoplot(licor.spct)
 
 ## ----------------------------------------------------
   file.name <- 
+    system.file("extdata", "spectrum-psi-spectrapen-SP.csv", 
+                package = "photobiologyInOut", mustWork = TRUE)
+  psi.mspct <- read_spectrapen_csv(file = file.name,
+                                  tz = "UTC")
+  summary(psi.mspct)
+  autoplot(psi.mspct, annotations = "")
+
+## ----------------------------------------------------
+summary(psi.mspct[["spct.14"]])
+autoplot(psi.mspct[["spct.14"]])
+
+## ----------------------------------------------------
+  file.name <- 
     system.file("extdata", "cid-spectravue-Rpc-Measurements.csv", 
                 package = "photobiologyInOut", mustWork = TRUE)
   cid_Rpc.spct <- read_cid_spectravue_csv(file = file.name)
