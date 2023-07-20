@@ -9,6 +9,16 @@ editor_options:
 Add support for StellarNet, Brewer, and Bentham spectrometers (examples
 of data files are welcome for these and other instruments).
 
+# photobiologyInOut 0.4.27
+
+- Add functions `mspct2fdata()` and `spct2fdata()` to export spectra as `fdata`
+objects for use with package 'fda.usc', and functions `fdata2spct()` and 
+`fdata2mspct()` to import the 'fdata' objects with functional data analysis
+results back into objects of one of the classes from package 'photobiology'.
+Currently classes `source_spct`, `response_spct`, `filter_spct`, and 
+`reflector_spct` and the matching 'mspct' collections are recognized 
+automatically in both directions.
+
 # photobiologyInOut 0.4.26
 
 - Add function `read_spectrapen_csv()` supporting PSI's SpectraPen spectrometer.

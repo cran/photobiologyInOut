@@ -841,3 +841,4 @@ as.colorSpec.chroma_spct <- function(x,
                        wavelength = x[["w.length"]],
                        quantity = 'energy->neural')
 }
+

@@ -99,7 +99,7 @@ Enlighten, the free software from Wasatch Photonics can save spectra in
 \section{Acknowledgements}{
 
 We thank Ruud Niesen from Photon Mission 
-(\url{https://www.photonmission.com/}) for organizing the loan of the
+(\url{https://photonmission.com/}) for organizing the loan of the
 spectrometer used to produce the various files needed for the development of 
 this function.
 }
