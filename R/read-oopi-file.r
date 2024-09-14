@@ -27,7 +27,7 @@
 #' 
 #' @export
 #' 
-#' @references \url{https://www.oceaninsight.com/} \url{https://www.raspberrypi.org/}
+#' @references \url{https://www.oceanoptics.com/} \url{https://www.raspberrypi.org/}
 #' 
 #' @note The header in these files has very little information.
 #' The file contains a time in milliseconds but as the Raspberry Pi board

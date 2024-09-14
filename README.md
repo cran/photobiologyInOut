@@ -1,12 +1,19 @@
 
 # photobiologyInOut <img src="man/figures/logo.png" align="right" width="120" />
 
+<!-- badges: start -->
+
 [![CRAN
 version](https://www.r-pkg.org/badges/version-last-release/photobiologyInOut)](https://cran.r-project.org/package=photobiologyInOut)
 [![cran
 checks](https://badges.cranchecks.info/worst/photobiologyInOut.svg)](https://cran.r-project.org/web/checks/check_results_photobiologyInOut.html)
+[![photobiologyInOut status
+badge](https://aphalo.r-universe.dev/badges/photobiologyInOut)](https://aphalo.r-universe.dev/photobiologyInOut)
 [![R build
 status](https://github.com/aphalo/photobiologyInOut/workflows/R-CMD-check/badge.svg)](https://github.com/aphalo/photobiologyInOut/actions)
+[![Documentation](https://img.shields.io/badge/documentation-photobiologyInOut-informational.svg)](https://docs.r4photobiology.info/photobiologyInOut/)
+[![doi](https://img.shields.io/badge/doi-10.32614/CRAN.package.photobiologyInOut-blue.svg)](https://doi.org/10.32614/CRAN.package.photobiologyInOut)
+<!-- badges: end -->
 
 Package ‘**photobiologyInOut**’ provides functions for importing
 spectral data from diverse sources including instrument-specific files,
@@ -16,9 +23,9 @@ conversion of spectral data from/to classes defined in other R packages.
 Package ‘**photobiologyInOut**’ complements other packages in the
 ‘**r4photobiology suite**’ by allowing reading and writing “foreign”
 spectral data as well as reading non-spectral data acquired with data
-loggers. The functions transfer metadata from file headers to attributes
-of the returned objects, in most cases both the headers as text and
-parsed metadata extracted from them.
+loggers. The functions transfer metadata from file headers or companion
+metadata files to attributes of the returned objects, in most cases both
+the headers as text and parsed metadata extracted from them.
 
 Data files from **spectrometers** from the following suppliers are
 currently supported: CID Bio-Science, Wasatch Photonics, Avantes,
@@ -28,14 +35,15 @@ Data files from **data loggers** from the following suppliers are
 currently supported: Campbell Scientific and YoctoPuce.
 
 Data files from output by **radiation transfer models**: libRadtran and
-TUV.
+TUV, including running simulations with the Quick TUV calculator.
 
 Data objects of classes defined in **R packages**: ‘hyperSpec’ (2-way),
 ‘colorSpec’, ‘pavo’ and ‘fda.usc’ (2-way).
 
 Data files downloaded from **repositories of spectral data**: ASTER
-(NASA’s ECOSTRESS Spectral Library) and FReD (Floral Reflectance
-Database).
+(NASA’s ECOSTRESS Spectral Library), FReD (Floral Reflectance Database)
+and CIE’s (International Commision of Illumination) data tables,
+corresponding to CIE standards.
 
 Developing a package like this is a never-ending task as I have only a
 limited sample of output files for testing and formats are quite
@@ -51,16 +59,18 @@ calculations described at the
 
 **The functions in this package work with the example files I have had
 access to for testing, but they may not work with your own files as file
-formats vary.**
+formats vary and are subject to revision.**
 
 **PLEASE, BE VERY CAREFUL WHEN USING THIS PACKAGE. DO CHECK THAT UNITS
 USED IN THE IMPORTED FILE ARE THOSE EXPECTED BY THESE FUNCTIONS AND THAT
 THE VALUES IN THE RETRIEVED DATA ARE THOSE EXPECTED!**
 
-*If the functions in this package do not work with your files, they
-hopefully will be useful as examples for developing your own functions.
-If you develop new functions or improve the existing ones, please, do
-contribute them back to this project.*
+*If the functions in this package do not work with your files, these
+functions hopefully will be useful as examples for developing your own
+functions. If you develop new functions or improve the existing ones,
+please, do contribute them back to this project as a pull request at
+GitHub or contact the maintainer. Sharing with the maintainer files that
+fail to be read correctly is also of great help.*
 
 ## Installation
 
@@ -70,11 +80,20 @@ Installation of the most recent stable version from CRAN:
 install.packages("photobiologyInOut")
 ```
 
+Installation of the current unstable version from R-Universe CRAN-like
+repository:
+
+``` r
+install.packages('photobiologyInOut', 
+                 repos = c('https://aphalo.r-universe.dev', 
+                           'https://cloud.r-project.org'))
+```
+
 Installation of the current unstable version from GitHub:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("aphalo/photobiologyInOut")
+# install.packages("remotes")
+remotes::install_github("aphalo/photobiologyInOut")
 ```
 
 ## Documentation
@@ -118,7 +137,7 @@ publications, please cite according to:
 
 ``` r
 citation("photobiologyInOut")
-#> To cite package 'photobiologyInOut' in publications, please use:
+#> To cite package ‘photobiologyInOut’ in publications use:
 #> 
 #>   Aphalo, Pedro J. (2015) The r4photobiology suite. UV4Plants Bulletin,
 #>   2015:1, 21-29. DOI:10.19232/uv4pb.2015.1.14
@@ -139,6 +158,6 @@ citation("photobiologyInOut")
 
 ## License
 
-© 2015-2023 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
+© 2015-2024 Pedro J. Aphalo (<pedro.aphalo@helsinki.fi>). Released under
 the GPL, version 2 or greater. This software carries no warranty of any
 kind.

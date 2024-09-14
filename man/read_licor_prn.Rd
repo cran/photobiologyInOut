@@ -20,7 +20,7 @@ read_m_licor_prn(
   date = NULL,
   geocode = NULL,
   label = NULL,
-  tz = Sys.timezone(),
+  tz = NULL,
   locale = readr::default_locale(),
   s.qty = NULL
 )
@@ -79,6 +79,8 @@ Function \code{read_m_licor_prn()} calls \code{red_licor_prn()}
 The LI-1800 spectroradiometer does not store the year as part of the
 data, only month, day, and time of day. Because of this, in the current
 version, if \code{NULL} is the argument to date, year is set to 0000.
+In addition, the argument passed to \code{tz} does not recognize "summer-time" 
+shifts if the year is unknown (date read from the file header).
 }
 \examples{
 

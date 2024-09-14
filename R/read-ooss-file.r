@@ -22,7 +22,7 @@
 #'   
 #' @return A source_spct object.
 #' @export
-#' @references \url{https://www.oceaninsight.com/}
+#' @references \url{https://www.oceanoptics.com/}
 #' @keywords misc
 #' 
 #' @examples

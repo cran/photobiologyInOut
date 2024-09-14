@@ -24,7 +24,7 @@
 #'   like the default time zone, encoding, decimal mark, big mark, and day/month
 #'   names.
 #' @param range	numeric A vector of length two, or any other object for which
-#'   function code{range()} will return range of wavelengths expressed in
+#'   function \code{range()} will return range of wavelengths expressed in
 #'   nanometres.
 #' @param simplify logical If TRUE, single spectra are returned as individual
 #'   spectra instead of collections of length one.
@@ -93,7 +93,7 @@
 #'   \code{object_spct} or \code{generic_mspct}.
 #'
 #' @export
-#' @references \url{https://cid-inc.com/}
+#' @references \emph{https://cid-inc.com/}
 #'
 #' @examples
 #'

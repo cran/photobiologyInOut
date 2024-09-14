@@ -102,5 +102,5 @@ Although the parameter is called \code{date} a date time is accepted
 
 }
 \references{
-\url{https://www.oceaninsight.com/}
+\url{https://www.oceanoptics.com/}
 }

@@ -5,7 +5,7 @@ library("readr")
 
 context("import from TUV")
 
-test_that("read Quick TUV", {
+test_that("read Quick TUV txt", {
 
   file.name <- 
     system.file("extdata", "qtuv.txt", 
@@ -13,7 +13,8 @@ test_that("read Quick TUV", {
 
   qtuv.spct <- 
     read_qtuv_txt(file = file.name,
-                  ozone.du = 300)
+                  ozone.du = 300,
+                  added.vars = c("sun.elevation", "date"))
   
   expect_equal(nrow(qtuv.spct), 140L)
   expect_equal(ncol(qtuv.spct), 7L)
@@ -33,7 +34,7 @@ test_that("read Quick TUV", {
       "s.e.irrad.dir",
       "s.e.irrad.diff.down",
       "s.e.irrad.diff.up",
-      "angle",
+      "sun.elevation",
       "date"
     )
   )
@@ -42,10 +43,44 @@ test_that("read Quick TUV", {
   expect_true(all(is.na(getWhereMeasured(qtuv.spct))))
   expect_named(getWhereMeasured(qtuv.spct), c("lon", "lat", "address"))
   expect_equal(getWhatMeasured(qtuv.spct), 
-               "Quick TUV spectral simulation File: qtuv.txt")
+               "Solar spectrum (model simulation). File: qtuv.txt")
   expect_equal(getTimeUnit(qtuv.spct), "second")
   expect_equal(length(comment(qtuv.spct)), 1L)
 
+  qtuv.spct <- 
+    read_qtuv_txt(file = file.name,
+                  ozone.du = 300,
+                  added.vars = NULL)
+  
+  expect_equal(nrow(qtuv.spct), 140L)
+  expect_equal(ncol(qtuv.spct), 5L)
+  expect_equal(qtuv.spct[["w.length"]][1L], 280.5, tolerance = 0.0001)
+  expect_equal(qtuv.spct[["w.length"]][140L], 419.5, tolerance = 0.0001)
+  expect_is(qtuv.spct[["w.length"]], "numeric")
+  expect_equal(sum(is.na(qtuv.spct[["w.length"]])), 0)
+  expect_true(all(sign(qtuv.spct[["w.length"]]) > 0))
+  expect_is(qtuv.spct[[2]], "numeric")
+  expect_equal(sum(is.na(qtuv.spct[["s.e.irrad"]])), 0)
+  expect_is(qtuv.spct, "source_spct")
+  expect_named(
+    qtuv.spct,
+    c(
+      "w.length",
+      "s.e.irrad",
+      "s.e.irrad.dir",
+      "s.e.irrad.diff.down",
+      "s.e.irrad.diff.up"
+    )
+  )
+  expect_equal(format(getWhenMeasured(qtuv.spct)),
+               format(ymd("2015-06-30")))
+  expect_true(all(is.na(getWhereMeasured(qtuv.spct))))
+  expect_named(getWhereMeasured(qtuv.spct), c("lon", "lat", "address"))
+  expect_equal(getWhatMeasured(qtuv.spct), 
+               "Solar spectrum (model simulation). File: qtuv.txt")
+  expect_equal(getTimeUnit(qtuv.spct), "second")
+  expect_equal(length(comment(qtuv.spct)), 1L)
+  
   skip_on_cran()
   file.name <- 
     system.file("extdata", "qtuv-long.txt", 
@@ -53,7 +88,8 @@ test_that("read Quick TUV", {
   
   qtuv_long.spct <- 
     read_qtuv_txt(file = file.name,
-                  ozone.du = 300)
+                  ozone.du = 300,
+                  added.vars = c("sun.elevation", "date"))
   
   expect_equal(nrow(qtuv_long.spct), 500L)
   expect_equal(ncol(qtuv_long.spct), 7L)
@@ -73,7 +109,7 @@ test_that("read Quick TUV", {
       "s.e.irrad.dir",
       "s.e.irrad.diff.down",
       "s.e.irrad.diff.up",
-      "angle",
+      "sun.elevation",
       "date"
     )
   )
@@ -82,7 +118,7 @@ test_that("read Quick TUV", {
   expect_equal(getWhereMeasured(qtuv_long.spct), 
                tibble::tibble(lon = -15, lat = 60, address = NA_character_))
   expect_equal(getWhatMeasured(qtuv_long.spct), 
-               "Quick TUV spectral simulation File: qtuv-long.txt")
+               "Solar spectrum (model simulation). File: qtuv-long.txt")
   expect_equal(getTimeUnit(qtuv_long.spct), "second")
   expect_equal(length(comment(qtuv_long.spct)), 1)
   
@@ -113,7 +149,8 @@ test_that("read Quick TUV", {
   
   qtuv_spct_summ.spct <- 
     read_qtuv_txt(file = file.name,
-                  ozone.du = 300)
+                  ozone.du = 300,
+                  added.vars = c("sun.elevation", "date"))
   
   expect_equal(nrow(qtuv_spct_summ.spct), 140L)
   expect_equal(ncol(qtuv_spct_summ.spct), 7L)
@@ -133,7 +170,7 @@ test_that("read Quick TUV", {
       "s.e.irrad.dir",
       "s.e.irrad.diff.down",
       "s.e.irrad.diff.up",
-      "angle",
+      "sun.elevation",
       "date"
     )
   )
@@ -143,7 +180,7 @@ test_that("read Quick TUV", {
                tibble::tibble(lon = 0.0, lat = 0.0, address = NA_character_))
   expect_named(getWhereMeasured(qtuv_spct_summ.spct), c("lon", "lat", "address"))
   expect_equal(getWhatMeasured(qtuv_spct_summ.spct), 
-               "Quick TUV spectral simulation File: qtuv-spct-and-summaries.txt")
+               "Solar spectrum (model simulation). File: qtuv-spct-and-summaries.txt")
   expect_equal(getTimeUnit(qtuv_spct_summ.spct), "second")
   expect_equal(length(comment(qtuv_spct_summ.spct)), 1L)
   
@@ -154,7 +191,8 @@ test_that("read Quick TUV", {
   
   qtuv_html.spct <- 
     read_qtuv_txt(file = file.name,
-                  ozone.du = 300)
+                  ozone.du = 300,
+                  added.vars = c("sun.elevation", "date"))
   
   expect_equal(nrow(qtuv_html.spct), 500L)
   expect_equal(ncol(qtuv_html.spct), 7L)
@@ -169,7 +207,7 @@ test_that("read Quick TUV", {
       "s.e.irrad.dir",
       "s.e.irrad.diff.down",
       "s.e.irrad.diff.up",
-      "angle",
+      "sun.elevation",
       "date"
     )
   )
@@ -177,10 +215,70 @@ test_that("read Quick TUV", {
                format(ymd("2015-06-30")))
   expect_true(all(is.na(getWhereMeasured(qtuv_html.spct))))
   expect_equal(getWhatMeasured(qtuv_html.spct), 
-               "Quick TUV spectral simulation File: tuv-azimuth-00-O3-300.html")
+               "Solar spectrum (model simulation). File: tuv-azimuth-00-O3-300.html")
   expect_equal(getTimeUnit(qtuv_html.spct), "second")
   expect_equal(length(comment(qtuv_html.spct)), 1L)
   
+})
+
+test_that("read Quick TUV HTML", {
+  
+  file.name <- 
+    system.file("extdata", "qtuv-00.htm", 
+                package = "photobiologyInOut", mustWork = TRUE)
+  
+  qtuv_00_htm.spct <- 
+    read_qtuv_txt(file = file.name,
+                  ozone.du = 300,
+                  added.vars = c("time",
+                                 "sun.elevation",
+                                 "zenith.angle",
+                                 "ozone.du", 
+                                 "date",
+                                 "angle"))
+  
+  expect_equal(nrow(qtuv_00_htm.spct), 410L)
+  expect_equal(ncol(qtuv_00_htm.spct), 11L)
+  expect_equal(qtuv_00_htm.spct[["w.length"]][1L], 290.5, tolerance = 0.0001)
+  expect_equal(qtuv_00_htm.spct[["w.length"]][410L], 699.5, tolerance = 0.0001)
+  expect_is(qtuv_00_htm.spct[["w.length"]], "numeric")
+  expect_equal(sum(is.na(qtuv_00_htm.spct[["w.length"]])), 0)
+  expect_true(all(sign(qtuv_00_htm.spct[["w.length"]]) > 0))
+  expect_is(qtuv_00_htm.spct[[2]], "numeric")
+  expect_equal(sum(is.na(qtuv_00_htm.spct[["s.e.irrad"]])), 0)
+  expect_is(qtuv_00_htm.spct, "source_spct")
+  expect_named(
+    qtuv_00_htm.spct,
+    c(
+      "w.length",
+      "s.e.irrad",
+      "s.e.irrad.dir",
+      "s.e.irrad.diff.down",
+      "s.e.irrad.diff.up",
+      "time",
+      "sun.elevation",
+      "zenith.angle",
+      "ozone.du",
+      "angle",
+      "date"
+    )
+  )
+  expect_equal(qtuv_00_htm.spct[["ozone.du"]][1L], 300)
+  expect_equal(qtuv_00_htm.spct[["angle"]][1L], 0)
+  expect_equal(qtuv_00_htm.spct[["zenith.angle"]][1L], 0)
+  expect_equal(qtuv_00_htm.spct[["sun.elevation"]][1L], 90)
+#  expect_equal(qtuv_00_htm.spct[["date"]][1L], 300)
+  
+  expect_equal(format(getWhenMeasured(qtuv_00_htm.spct)),
+               format(ymd("2015-06-30")))
+  expect_true(all(is.na(getWhereMeasured(qtuv_00_htm.spct))))
+  expect_named(getWhereMeasured(qtuv_00_htm.spct), c("lon", "lat", "address"))
+  expect_equal(getWhatMeasured(qtuv_00_htm.spct), 
+               "Solar spectrum (model simulation). File: qtuv-00.htm")
+  expect_equal(getTimeUnit(qtuv_00_htm.spct), "second")
+  expect_equal(length(comment(qtuv_00_htm.spct)), 1L)
+  
+
 })
 
 

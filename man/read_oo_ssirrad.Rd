@@ -70,6 +70,6 @@ The company formerly named Ocean Optics is now called Ocean Insight.
 
 }
 \references{
-\url{https://www.oceaninsight.com/}
+\url{https://www.oceanoptics.com/}
 }
 \keyword{misc}

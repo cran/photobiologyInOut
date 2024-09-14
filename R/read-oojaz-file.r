@@ -36,7 +36,7 @@
 #' 
 #' @export
 #' 
-#' @references \url{https://www.oceaninsight.com/}
+#' @references \url{https://www.oceanoptics.com/}
 #' 
 #' @examples
 #' 

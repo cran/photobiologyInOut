@@ -36,6 +36,10 @@ spct_CRI <- function(spct,
                      attach = FALSE, 
                      tol = 5.4e-3,
                      named = FALSE) {
+  if (!requireNamespace("spacesXYZ", quietly = TRUE)) { 
+    warning("Package 'spacesXYZ' needs to be installed to compute CRI.")
+    return(NA_real_)
+  }
   spct.name <- substitute(spct)
   if (is.name(spct.name)) {
     spct.name <- paste(as.character(spct.name), "_", sep = "")
@@ -101,6 +105,10 @@ spct_CCT <- function(spct,
                      locus = 'robertson', 
                      strict = FALSE,
                      named = FALSE) {
+  if (!requireNamespace("spacesXYZ", quietly = TRUE)) { 
+    warning("Package 'spacesXYZ' needs to be installed to compute CCT.")
+    return(NA_real_)
+  }
   spct.name <- substitute(spct)
   if (is.name(spct.name)) {
     spct.name <- paste(as.character(spct.name), "_", sep = "")
@@ -162,6 +170,10 @@ spct_SSI <- function(spct,
                      isotherms = 'mccamy', 
                      locus = 'robertson',
                      named = FALSE) {
+  if (!requireNamespace("spacesXYZ", quietly = TRUE)) { 
+    warning("Package 'spacesXYZ' needs to be installed to compute SSI.")
+    return(NA_real_)
+  }
   spct.name <- substitute(spct)
   if (is.name(spct.name)) {
     spct.name <- paste(as.character(spct.name), "_", sep = "")

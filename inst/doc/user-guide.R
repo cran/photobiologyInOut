@@ -1,4 +1,4 @@
-## ---- setup, include=FALSE, cache=FALSE--------------
+## ----setup, include=FALSE, cache=FALSE---------------
 library(knitr)
 # Are the packages used in examples installed?
 eval_chunks <- requireNamespace("ggspectra", quietly = TRUE) &&
@@ -20,7 +20,7 @@ options(replace.assign = TRUE, width = 55,
 # strings are not recognized by all versions of R
 Sys.setenv(TZ = 'UTC')
 
-## ---- message=FALSE----------------------------------
+## ----message=FALSE-----------------------------------
 library(photobiology)
 library(photobiologyWavebands)
 library(photobiologyInOut)
@@ -189,7 +189,7 @@ cs.day.file <-
   system.file("extdata", "cr6-day.dat", 
               package = "photobiologyInOut", mustWork = TRUE)
 
-## ---- eval=FALSE-------------------------------------
+## ----eval=FALSE--------------------------------------
 #  # not run
 #  read_lines(yoctopuce_hour.file, n_max = 10)
 
@@ -209,7 +209,7 @@ yoctopuce_hour.file <-
   system.file("extdata", "yoctopuce-data.csv", 
               package = "photobiologyInOut", mustWork = TRUE)
 
-## ---- eval=FALSE-------------------------------------
+## ----eval=FALSE--------------------------------------
 #  # not run
 #  read_lines(yoctopuce_hour.file, n_max = 10)
 
@@ -226,7 +226,7 @@ tuv.spct <- read_tuv_usrout(file = tuv.file,
 summary(subset(tuv.spct, spct.idx == "A"))
 tuv.spct
 
-## ---- fig.height=10----------------------------------
+## ----fig.height=10-----------------------------------
 autoplot(tuv.spct, annotations = c("colour.guide")) +
   facet_wrap(~as.character(date), ncol = 2)
 
@@ -307,7 +307,7 @@ class(z.mspct)
 getWhenMeasured(z.mspct)
 z.mspct
 
-## ---- eval=FALSE-------------------------------------
+## ----eval=FALSE--------------------------------------
 #  fmi.files <- list.files(".", "*cum.hel")
 #  fmi.files <- paste(".", fmi.files, sep = "")
 #  z1.mspct <- read_m_fmi_cum(fmi.files)
@@ -315,7 +315,7 @@ z.mspct
 #  getWhenMeasured(z1.mspct)
 #  z1.mspct
 
-## ---- message=FALSE----------------------------------
+## ----message=FALSE-----------------------------------
 # because of Google's query limits call will frequently fail without a key
 # my.geocode <- ggmap::geocode("Kumpula, Helsinki, Finland", source = "google")
 my.geocode <- data.frame(lon = 24.96474, lat = 60.20911)
@@ -363,18 +363,18 @@ aster.spct
 cat(comment(aster.spct))
 autoplot(aster.spct)
 
-## ---- eval=eval_hyperSpec----------------------------
+## ----eval=eval_hyperSpec-----------------------------
 z2.hspct <- mspct2hyperSpec(z2.mspct, "s.e.irrad")
 class(z2.hspct)
 # plot(z2.hspct)
 
-## ---- eval=eval_hyperSpec----------------------------
+## ----eval=eval_hyperSpec-----------------------------
 data(laser)
 class(laser)
 laser
 plot(laser)
 
-## ---- eval=eval_hyperSpec----------------------------
+## ----eval=eval_hyperSpec-----------------------------
 wl(laser) <- list (
   wl = 1e7 / (1/405e-7 - wl (laser)),
   label = expression (lambda / nm)
@@ -387,29 +387,29 @@ ggplot(laser.mspct[[1]]) +
   geom_line() +
   stat_peaks(geom = "text", vjust = -1, label.fmt = "%.6g nm", color = "red")
 
-## ---- eval = eval_colorSpec--------------------------
+## ----eval = eval_colorSpec---------------------------
 # bug that needs to be fixed
 fluorescent.mspct <- colorSpec2mspct(colorSpec::Fs.5nm)
 print(fluorescent.mspct, n = 3, n.members = 3)
 
-## ---- eval = eval_colorSpec--------------------------
+## ----eval = eval_colorSpec---------------------------
 colorSpec2mspct(colorSpec::Hoya)
 
-## ---- eval = eval_colorSpec--------------------------
+## ----eval = eval_colorSpec---------------------------
 fluorescent.spct <- colorSpec2spct(colorSpec::Fs.5nm)
 autoplot(fluorescent.spct, annotations = "")
 
-## ---- eval = eval_colorSpec--------------------------
+## ----eval = eval_colorSpec---------------------------
 colorSpec2chroma_spct(colorSpec::xyz1931.5nm)
 
-## ---- eval = eval_colorSpec--------------------------
+## ----eval = eval_colorSpec---------------------------
 sun.cspec <- spct2colorSpec(sun.spct)
 plot(sun.cspec, col = "blue")
 
-## ---- eval = eval_colorSpec--------------------------
+## ----eval = eval_colorSpec---------------------------
 spct2colorSpec(yellow_gel.spct)
 
-## ---- eval = eval_colorSpec--------------------------
+## ----eval = eval_colorSpec---------------------------
 chroma_spct2colorSpec(beesxyzCMF.spct)
 
 ## ----------------------------------------------------
@@ -418,24 +418,24 @@ spct_CRI(white_led.source_spct) # color rendition index
 spct_CRI(white_led.source_spct, named = TRUE)
 spct_SSI(white_led.source_spct, sun.spct) # spectral similarity index
 
-## ---- eval = eval_pavo-------------------------------
+## ----eval = eval_pavo--------------------------------
 data(sicalis)
 class(sicalis)
 names(sicalis)
 
-## ---- eval = eval_pavo-------------------------------
+## ----eval = eval_pavo--------------------------------
 sicalis.mspct <- rspec2mspct(sicalis, "reflector_spct", "Rpc")
 summary(sicalis.mspct[[1]])
 summary(sicalis.mspct[[2]])
 summary(sicalis.mspct[[3]])
 
-## ---- eval = eval_pavo-------------------------------
+## ----eval = eval_pavo--------------------------------
 ggplot(rbindspct(sicalis.mspct[1:3])) +
   aes(linetype = spct.idx) +
   ylim(0,0.3) +
   geom_line()
 
-## ---- eval = eval_pavo-------------------------------
+## ----eval = eval_pavo--------------------------------
 print(sicalis.mspct[c(TRUE, FALSE, FALSE)])
 ggplot(rbindspct(sicalis.mspct[c(TRUE, FALSE, FALSE)])) +
   aes(linetype = spct.idx) +
@@ -443,11 +443,11 @@ ggplot(rbindspct(sicalis.mspct[c(TRUE, FALSE, FALSE)])) +
   geom_line() +
   ggtitle("'crown' reflectance spectra")
 
-## ---- eval = eval_pavo-------------------------------
+## ----eval = eval_pavo--------------------------------
 refl.by.band <- reflectance(sicalis.mspct, w.band = list(Red(), Green(), Blue(), UVA()))
 refl.by.band$body.part <- rep(c("crown", "throat", "breast"), 7)
 
-## ---- eval = eval_pavo-------------------------------
+## ----eval = eval_pavo--------------------------------
 refl.red <- reflectance(sicalis.mspct, w.band = Red())
 names(refl.red)[2] <- "red.reflectance"
 refl.red$body.part <- rep(c("crown", "throat", "breast"), 7)
@@ -471,22 +471,22 @@ jaz.s.irrad.file <-
   system.file("extdata", "spectrum.JazIrrad", 
               package = "photobiologyInOut", mustWork = TRUE)
 
-## ---- warning=FALSE----------------------------------
+## ----warning=FALSE-----------------------------------
 jaz01.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = NULL)
 getWhenMeasured(jaz01.spct)
 
-## ---- warning=FALSE----------------------------------
+## ----warning=FALSE-----------------------------------
 jaz02.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = ymd_hms("2015-11-15 12:00:00"))
 getWhenMeasured(jaz02.spct)
 
-## ---- warning=FALSE----------------------------------
+## ----warning=FALSE-----------------------------------
 jaz03.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = now())
 getWhenMeasured(jaz03.spct)
 
-## ---- message=FALSE,warning=FALSE--------------------
+## ----message=FALSE,warning=FALSE---------------------
 my.geocode <- data.frame(lon = 25.02006, lat = 60.22525)
 jaz04.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                geocode = my.geocode)

@@ -78,5 +78,5 @@ and triggers no warnings.
 
 }
 \references{
-\url{https://www.oceaninsight.com/} \url{https://www.raspberrypi.org/}
+\url{https://www.oceanoptics.com/} \url{https://www.raspberrypi.org/}
 }

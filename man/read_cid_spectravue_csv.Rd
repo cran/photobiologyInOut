@@ -43,7 +43,7 @@ like the default time zone, encoding, decimal mark, big mark, and day/month
 names.}
 
 \item{range}{numeric A vector of length two, or any other object for which
-function code{range()} will return range of wavelengths expressed in
+function \code{range()} will return range of wavelengths expressed in
 nanometres.}
 
 \item{simplify}{logical If TRUE, single spectra are returned as individual
@@ -162,5 +162,5 @@ values are wrong by about an order of magnitude.
 
 }
 \references{
-\url{https://cid-inc.com/}
+\emph{https://cid-inc.com/}
 }

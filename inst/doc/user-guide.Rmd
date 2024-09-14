@@ -88,31 +88,31 @@ Functions for importing measured spectral data.
 
 | R function             | Instrument             | Program           | `class` of value |
 |:-----------------------|:-----------------------|:------------------|:-----------------|
-| read_oo_ssirrad()    | Ocean Optics spectrom. | SpectraSuite      | source_spct     |
-| read_oo_ssdata()     | Ocean Optics spectrom. | SpectraSuite      | raw_spct        |
-| read_oo_jazirrad()   | Ocean Optics Jaz       | *instrument*      | source_spct     |
-| read_oo_jazpc()      | Ocean Optics Jaz       | *instrument*      | filter_spct     |
-| read_oo_jazpc()      | Ocean Optics Jaz       | *instrument*      | reflector_spct  |
-| read_oo_jazdata()    | Ocean Optics Jaz       | *instrument*      | raw_spct        |
-| read_oo_pidata()     | Ocean Optics spectrom. | STS DK (Raspbian) | raw_spct        |
-| read_wasatch_csv()   | Wasatch Phot. spectrom. | Enlighten        | raw_spct        |
-| read_wasatch_csv()   | Wasatch Phot. spectrom. | Enlighten        | filter_spct     |
-| read_wasatch_csv()   | Wasatch Phot. spectrom. | Enlighten        | reflector_spct  |
-| read_wasatch_csv()   | Wasatch Phot. spectrom. | Enlighten        | source_spct     |
-| read_cid_spectravue_csv()   | CID Bio-Science CI-710s | *instrument*      | filter_spct     |
-| read_cid_spectravue_csv()   | CID Bio-Science CI-710s | *instrument*      | reflector_spct  |
-| read_cid_spectravue_csv()   | CID Bio-Science CI-710s | *instrument*      | object_spct     |
-| read_avaspec_csv()   | Avantes spectrom.      | *instrument?*     | source_spct     |
-| read_macam_file()    | Macam                  | *instrument*      | source_spct     |
-| read_li180_txt()    | LI-COR LI-180          | *instrument*      | source_spct     |
-| read_m_li180_txt()  | LI-COR LI-180          | *instrument*      | source_mspct    |
-| read_licor_prn()    | LI-COR LI-1800         | PC1800 (MS-DOS)   | source_spct     |
-| read_licor_prn()    | LI-COR LI-1800         | PC1800 (MS-DOS)   | filter_spct     |
-| read_licor_prn()    | LI-COR LI-1800         | PC1800 (MS-DOS)   | reflector_spct  |
-| read_m_licor_prn() | LI-COR LI-1800         | PC1800 (MS-DOS)   | source_mspct    |
-| read_m_licor_prn() | LI-COR LI-1800         | PC1800 (MS-DOS)   | filter_mspct    |
-| read_m_licor_prn() | LI-COR LI-1800         | PC1800 (MS-DOS)   | reflector_mspct |
-| read_spectrapen_csv() | PSI SpectraPen      | *instrument* (?)    | source_spct     |
+| `read_oo_ssirrad()`    | Ocean Optics spectrom. | SpectraSuite      | `source_spct`     |
+| `read_oo_ssdata()`     | Ocean Optics spectrom. | SpectraSuite      | `raw_spct`        |
+| `read_oo_jazirrad()`   | Ocean Optics Jaz       | *instrument*      | `source_spct`     |
+| `read_oo_jazpc()`      | Ocean Optics Jaz       | *instrument*      | `filter_spct`     |
+| `read_oo_jazpc()`      | Ocean Optics Jaz       | *instrument*      | `reflector_spct`  |
+| `read_oo_jazdata()`    | Ocean Optics Jaz       | *instrument*      | `raw_spct`        |
+| `read_oo_pidata()`     | Ocean Optics spectrom. | STS DK (Raspbian) | `raw_spct`        |
+| `read_wasatch_csv()`   | Wasatch Phot. spectrom. | Enlighten        | `raw_spct`        |
+| `read_wasatch_csv()`   | Wasatch Phot. spectrom. | Enlighten        | `filter_spct`     |
+| `read_wasatch_csv()`   | Wasatch Phot. spectrom. | Enlighten        | `reflector_spct`  |
+| `read_wasatch_csv()`   | Wasatch Phot. spectrom. | Enlighten        | `source_spct`     |
+| `read_cid_spectravue_csv()`   | CID Bio-Science CI-710s | *instrument*      | `filter_spct`     |
+| `read_cid_spectravue_csv()`   | CID Bio-Science CI-710s | *instrument*      | `reflector_spct`  |
+| `read_cid_spectravue_csv()`   | CID Bio-Science CI-710s | *instrument*      | `object_spct`     |
+| `read_avaspec_csv()`   | Avantes spectrom.      | *instrument?*     | `source_spct`     |
+| `read_macam_file()`    | Macam                  | *instrument*      | `source_spct`     |
+| `read_li180_txt()`    | LI-COR LI-180          | *instrument*      | `source_spct`     |
+| `read_m_li180_txt()`  | LI-COR LI-180          | *instrument*      | `source_mspct`    |
+| `read_licor_prn()`    | LI-COR LI-1800         | PC1800 (MS-DOS)   | `source_spct`     |
+| `read_licor_prn()`    | LI-COR LI-1800         | PC1800 (MS-DOS)   | `filter_spct`     |
+| `read_licor_prn()`    | LI-COR LI-1800         | PC1800 (MS-DOS)   | `reflector_spct`  |
+| `read_m_licor_prn()` | LI-COR LI-1800         | PC1800 (MS-DOS)   | `source_mspct`    |
+| `read_m_licor_prn()` | LI-COR LI-1800         | PC1800 (MS-DOS)   | `filter_mspct`    |
+| `read_m_licor_prn()` | LI-COR LI-1800         | PC1800 (MS-DOS)   | `reflector_mspct` |
+| `read_spectrapen_csv()` | PSI SpectraPen      | *instrument* (?)    | `source_spct`     |
 
 ### Ocean Optics Jaz
 

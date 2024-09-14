@@ -72,12 +72,12 @@ spectrometer.
 }
 \note{
 See \code{\link[readr]{read_table}} for details of acceptable values
-  for \code{file}. Individual spectra are names based on time and date in
-  ISO format, at the time zone given by \code{tz} but the time shift 
-  subtracted. Say for times expressed in headers at UTC + 120 min, we use
-  \code{tz = UTC} and {time.shift.min = 120} to convert times to UTC. This
-  is different from using \code{tz = EET}, which is not invariant through
-  the course of the year because of daylight saving time. Local time zones is
-  not necessarily consistent across years because of changes in legislation.
-  In contrast UTC is more consistent, making it preferable for time series.
+  for \code{file}. Individual spectra are names based on time and date in ISO
+  format, at the time zone given by \code{tz} but the time shift subtracted.
+  Say for times expressed in headers at UTC + 120 min, we use \code{tz = UTC}
+  and \code{time.shift.min = 120} to convert times to UTC. This is different
+  from using \code{tz = EET}, which is not invariant through the course of
+  the year because of daylight saving time. Local time zones is not
+  necessarily consistent across years because of changes in legislation. In
+  contrast UTC is more consistent, making it preferable for time series.
 }
