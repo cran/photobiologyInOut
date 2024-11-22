@@ -143,7 +143,7 @@ autoplot(li180.spct, unit.out = "photon")
 licor.file <- 
   system.file("extdata", "spectrum.PRN", 
               package = "photobiologyInOut", mustWork = TRUE)
-licor.spct <- read_licor_prn(file = licor.file, tz = "EET")
+licor.spct <- read_licor_prn(file = licor.file, tz = "Europe/Helsinki")
 
 ## ----------------------------------------------------
 licor.spct
@@ -190,8 +190,8 @@ cs.day.file <-
               package = "photobiologyInOut", mustWork = TRUE)
 
 ## ----eval=FALSE--------------------------------------
-#  # not run
-#  read_lines(yoctopuce_hour.file, n_max = 10)
+# # not run
+# read_lines(yoctopuce_hour.file, n_max = 10)
 
 ## ----------------------------------------------------
 day.dat <- read_csi_dat(file = cs.day.file)
@@ -210,8 +210,8 @@ yoctopuce_hour.file <-
               package = "photobiologyInOut", mustWork = TRUE)
 
 ## ----eval=FALSE--------------------------------------
-#  # not run
-#  read_lines(yoctopuce_hour.file, n_max = 10)
+# # not run
+# read_lines(yoctopuce_hour.file, n_max = 10)
 
 ## ----------------------------------------------------
 hour.dat <- read_yoctopuce_csv(file = yoctopuce_hour.file)
@@ -308,12 +308,12 @@ getWhenMeasured(z.mspct)
 z.mspct
 
 ## ----eval=FALSE--------------------------------------
-#  fmi.files <- list.files(".", "*cum.hel")
-#  fmi.files <- paste(".", fmi.files, sep = "")
-#  z1.mspct <- read_m_fmi_cum(fmi.files)
-#  class(z1.mspct)
-#  getWhenMeasured(z1.mspct)
-#  z1.mspct
+# fmi.files <- list.files(".", "*cum.hel")
+# fmi.files <- paste(".", fmi.files, sep = "")
+# z1.mspct <- read_m_fmi_cum(fmi.files)
+# class(z1.mspct)
+# getWhenMeasured(z1.mspct)
+# z1.mspct
 
 ## ----message=FALSE-----------------------------------
 # because of Google's query limits call will frequently fail without a key
@@ -459,7 +459,7 @@ ggplot(refl.red, aes(x = body.part, y = red.reflectance)) +
 jaz.irrad.comma.file <- 
   system.file("extdata", "spectrum-comma.JazIrrad", 
               package = "photobiologyInOut", mustWork = TRUE)
-my.locale <- locale(decimal_mark = ",", tz = "EET")
+my.locale <- locale(decimal_mark = ",", tz = "Europe/Helsinki")
 jaz00.spct <- read_oo_jazirrad(file = jaz.irrad.comma.file,
                                locale = my.locale)
 

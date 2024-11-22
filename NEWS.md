@@ -9,6 +9,11 @@ editor_options:
 Add support for StellarNet, Brewer, and Bentham spectrometers (examples
 of data files are welcome for these and other instruments).
 
+## photobiologyInOut 0.4.29
+
+- Update function `qtuv_m_s.e.irrad()` adding support for collections of simulated spectral irradiance for multiple altidues.
+- Update time zone names, replacing "EET" by "Europe/Helsinki", and "CET" by "Europe/Zurich" in examples and unit tests. The old short abbreviations are no longer supported in upcoming R (>= 4.5.0).
+
 ## photobiologyInOut 0.4.28
 
 - Track change in package 'colorSpec' (1.5-0) to avoid an error by triggering

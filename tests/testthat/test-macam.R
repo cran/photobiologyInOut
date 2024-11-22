@@ -10,7 +10,7 @@ test_that("single spectrum (quantum)", {
     system.file("extdata", "spectrum.DTA", 
                 package = "photobiologyInOut", mustWork = TRUE)
   macam.spct <- read_macam_dta(file = file.name,
-                               tz = "EET")
+                               tz = "Europe/Helsinki")
   
   expect_equal(nrow(macam.spct), 151)
   expect_equal(ncol(macam.spct), 2)
@@ -24,8 +24,8 @@ test_that("single spectrum (quantum)", {
   expect_equal(sum(is.na(macam.spct[[2]])), 0)
   expect_is(macam.spct, "source_spct")
   expect_named(macam.spct, c("w.length", "s.e.irrad"))
-  expect_equal(as.numeric(getWhenMeasured(macam.spct), tz = "EET"),
-               as.numeric(ymd_hms("1997-05-19 17:44:58", tz = "EET"), tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(macam.spct), tz = "Europe/Helsinki"),
+               as.numeric(ymd_hms("1997-05-19 17:44:58", tz = "Europe/Helsinki"), tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(macam.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_gt(length(getWhatMeasured(macam.spct)), 0)

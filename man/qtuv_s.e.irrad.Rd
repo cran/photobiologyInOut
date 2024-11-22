@@ -15,7 +15,7 @@ qtuv_s.e.irrad(
   ozone.du = 300,
   albedo = 0.1,
   ground.altitude = 0,
-  measurement.altitude = 0,
+  measurement.altitude = NULL,
   clouds = data.frame(optical.depth = 0, base = 4, top = 5),
   aerosols = data.frame(optical.depth = 0.235, ssaaer = 0.99, alpha = 1),
   num.streams = 2,
@@ -36,7 +36,7 @@ qtuv_m_s.e.irrad(
   ozone.du = 300,
   albedo = 0.1,
   ground.altitude = 0,
-  measurement.altitude = 0,
+  measurement.altitude = NULL,
   clouds = data.frame(optical.depth = 0, base = 4, top = 5),
   aerosols = data.frame(optical.depth = 0.235, ssaaer = 0.99, alpha = 1),
   num.streams = 2,
@@ -106,7 +106,7 @@ In the case of \code{qtuv_s.e.irrad()}, a source_spct object obtained
   by finding the center of each wavelength interval in the Quick TUV output
   file, and adding the variables listed in \code{added.vars}. In the case of
   \code{qtuv_m_s.e.irrad()}, a source_mspct object containing a collection of
-  spectra.
+  such spectra.
 }
 \description{
 Call the Quick TUV calculator web server and return a \code{source_spct}
@@ -132,6 +132,12 @@ The Quick TUV calculator, is an on-line freely accessible server
   used for the parameters in the FORTRAN code of the TUV model. In the case
   of \code{w.length} two ways of specifying wavelengths are supported. Some
   defaults also differ from those of the Quick TUV calculator.
+  
+  In the current implementation, \code{qtuv_m_s.e.irrad()}, accepts multiple
+  values as arguments for only one parameter at a time. In the case of
+  elevation, both `ground.elevation` and `measurement.elevation` can have
+  each one or more values. When too many values are passed in the call, only
+  the first one is used.
 }
 \note{
 The Quick TUV calculator has multiple output modes that return

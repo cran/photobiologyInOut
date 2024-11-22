@@ -405,7 +405,7 @@ read_qtuv_txt <- function(file,
 #'   by finding the center of each wavelength interval in the Quick TUV output
 #'   file, and adding the variables listed in \code{added.vars}. In the case of
 #'   \code{qtuv_m_s.e.irrad()}, a source_mspct object containing a collection of
-#'   spectra.
+#'   such spectra.
 #'   
 #' @section Side effect: If a file name is passed as argument, the data as
 #'   downloaded are saved into persistent files, one file per spectrum. The
@@ -434,6 +434,12 @@ read_qtuv_txt <- function(file,
 #'   used for the parameters in the FORTRAN code of the TUV model. In the case
 #'   of \code{w.length} two ways of specifying wavelengths are supported. Some
 #'   defaults also differ from those of the Quick TUV calculator.
+#'   
+#'   In the current implementation, \code{qtuv_m_s.e.irrad()}, accepts multiple
+#'   values as arguments for only one parameter at a time. In the case of
+#'   elevation, both `ground.elevation` and `measurement.elevation` can have
+#'   each one or more values. When too many values are passed in the call, only
+#'   the first one is used.
 #' 
 #' @note The Quick TUV calculator has multiple output modes that return
 #'   different types of computed values. The use of output mode 5 is hard-coded
@@ -495,7 +501,7 @@ qtuv_s.e.irrad <-
            ozone.du = 300, 
            albedo = 0.1, 
            ground.altitude = 0, 
-           measurement.altitude = 0, 
+           measurement.altitude = NULL, 
            clouds = data.frame(optical.depth = 0.00, 
                                base = 4.00, 
                                top = 5.00),
@@ -517,6 +523,12 @@ qtuv_s.e.irrad <-
     }
     stopifnot("'num.streams' must be 2 or 4" = num.streams %in% c(-2L, 4L))
     
+    if (is.null(measurement.altitude) || measurement.altitude < ground.altitude) {
+      measurement.altitude <- ground.altitude
+    }
+    if (any(ground.altitude > 10)) {
+      stop("Altitude must be expressed in km!")
+    }
     # Select inputMode
     if (is.null(sun.elevation)) {
       # use geocode and time
@@ -644,7 +656,7 @@ qtuv_m_s.e.irrad <-
            ozone.du = 300, 
            albedo = 0.1, 
            ground.altitude = 0, 
-           measurement.altitude = 0, 
+           measurement.altitude = NULL, 
            clouds = data.frame(optical.depth = 0.00, 
                                base = 4.00, 
                                top = 5.00),
@@ -665,6 +677,17 @@ qtuv_m_s.e.irrad <-
       num.streams <- -2L
     }
     stopifnot("'num.streams' must be 2 or 4" = num.streams %in% c(-2L, 4L))
+    
+    # ensure consistent length of altitudes
+    if (is.null(measurement.altitude)) {
+      measurement.altitude <- ground.altitude
+    } else if (length(measurement.altitude) > length(ground.altitude)) {
+      ground.altitude <- rep_len(ground.altitude, length.out = length(measurement.altitude))
+    } else if (length(ground.altitude) > length(measurement.altitude)) {
+      measurement.altitude <- rep_len(measurement.altitude, length.out = length(ground.altitude))
+    }
+    altitudes <- data.frame(measurement = measurement.altitude,
+                            ground = ground.altitude)
     
     if (length(ozone.du) > 1L) {
       if (length(ozone.du) > 25) {
@@ -688,8 +711,8 @@ qtuv_m_s.e.irrad <-
                          locale = locale,
                          ozone.du = ozone, 
                          albedo = albedo, 
-                         ground.altitude = ground.altitude, 
-                         measurement.altitude = measurement.altitude, 
+                         ground.altitude = altitudes[1, "ground"], 
+                         measurement.altitude = altitudes[1, "measurement"], 
                          clouds = clouds[1, ],
                          aerosols = aerosols[1, ],
                          num.streams = num.streams,
@@ -720,8 +743,8 @@ qtuv_m_s.e.irrad <-
                          locale = locale,
                          ozone.du = ozone.du[[1]], 
                          albedo = albedo, 
-                         ground.altitude = ground.altitude, 
-                         measurement.altitude = measurement.altitude, 
+                         ground.altitude = altitudes[1, "ground"], 
+                         measurement.altitude = altitudes[1, "measurement"], 
                          clouds = clouds[1, ],
                          aerosols = aerosols[1, ],
                          num.streams = num.streams,
@@ -753,8 +776,8 @@ qtuv_m_s.e.irrad <-
                          locale = locale,
                          ozone.du = ozone.du[[1]], 
                          albedo = albedo, 
-                         ground.altitude = ground.altitude, 
-                         measurement.altitude = measurement.altitude, 
+                         ground.altitude = altitudes[1, "ground"], 
+                         measurement.altitude = altitudes[1, "measurement"], 
                          clouds = clouds[1, ],
                          aerosols = aerosols[1, ],
                          num.streams = num.streams,
@@ -793,8 +816,8 @@ qtuv_m_s.e.irrad <-
                          locale = locale,
                          ozone.du = ozone.du[[1]], 
                          albedo = albedo, 
-                         ground.altitude = ground.altitude, 
-                         measurement.altitude = measurement.altitude, 
+                         ground.altitude = altitudes[1, "ground"], 
+                         measurement.altitude = altitudes[1, "measurement"], 
                          clouds = clouds[1, ],
                          aerosols = aerosols[1, ],
                          num.streams = num.streams,
@@ -833,8 +856,8 @@ qtuv_m_s.e.irrad <-
                          locale = locale,
                          ozone.du = ozone.du[[1]], 
                          albedo = albedo, 
-                         ground.altitude = ground.altitude, 
-                         measurement.altitude = measurement.altitude, 
+                         ground.altitude = altitudes[1, "ground"], 
+                         measurement.altitude = altitudes[1, "measurement"], 
                          clouds = clouds[i, ],
                          aerosols = aerosols[1, ],
                          num.streams = num.streams,
@@ -873,8 +896,8 @@ qtuv_m_s.e.irrad <-
                          locale = locale,
                          ozone.du = ozone.du[[1]], 
                          albedo = albedo, 
-                         ground.altitude = ground.altitude, 
-                         measurement.altitude = measurement.altitude, 
+                         ground.altitude = altitudes[1, "ground"], 
+                         measurement.altitude = altitudes[1, "measurement"], 
                          clouds = clouds[1, ],
                          aerosols = aerosols[i, ],
                          num.streams = num.streams,
@@ -883,7 +906,47 @@ qtuv_m_s.e.irrad <-
                          label = label,
                          file = file.name)
       }
-    } else {
+    } else if (nrow(altitudes) > 1L) {
+      if (nrow(altitudes) > 25) {
+        message("Please, do not overload the Quick TUV calculator")
+      }
+      if (!"label" %in% colnames(altitudes) || 
+          any(is.na(altitudes[["label"]]))) {
+        altitudes[["label"]] <- 
+          paste("label", 1L:nrow(altitudes), sep = ".")
+      } else {
+        altitudes[["label"]] <- make.unique(altitudes[["label"]])
+      }
+      z <- list()
+      # use index to walk through data frame rows
+      for (i in seq_along(altitudes[[1]])) {
+        member.name <- paste("altitudes", altitudes[i, "label"], sep = ".")
+        if (!is.null(file) && is.character(file)) {
+          file.name <- paste(gsub("\\.txt$", "", file), 
+                             "-", make.names(member.name), ".txt", sep = "")
+        } else {
+          file.name <- NULL
+        }
+        z[[paste(member.name)]] <-
+          qtuv_s.e.irrad(w.length = w.length, 
+                         sun.elevation = sun.elevation[[1]],
+                         geocode = geocode[1, ], 
+                         time = time[[1]],
+                         tz = tz,
+                         locale = locale,
+                         ozone.du = ozone.du[[1]], 
+                         albedo = albedo, 
+                         ground.altitude = altitudes[i, "ground"], 
+                         measurement.altitude = altitudes[i, "measurement"], 
+                         clouds = clouds[1, ],
+                         aerosols = aerosols[1, ],
+                         num.streams = num.streams,
+                         spectra = spectra,
+                         added.vars = added.vars,
+                         label = label,
+                         file = file.name)
+      }
+    }else {
       z <- list(
         qtuv_s.e.irrad(w.length = w.length, 
                        sun.elevation = sun.elevation[[1]],
@@ -893,8 +956,8 @@ qtuv_m_s.e.irrad <-
                        locale = locale,
                        ozone.du = ozone.du[[1]], 
                        albedo = albedo, 
-                       ground.altitude = ground.altitude, 
-                       measurement.altitude = measurement.altitude, 
+                       ground.altitude = ground.altitude[[1]], 
+                       measurement.altitude = measurement.altitude[[1]], 
                        clouds = clouds[1, ],
                        aerosols = aerosols[1, ],
                        num.streams = num.streams,

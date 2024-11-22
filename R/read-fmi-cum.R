@@ -183,7 +183,7 @@ read_m_fmi_cum <- function(files,
 #'   format, at the time zone given by \code{tz} but the time shift subtracted.
 #'   Say for times expressed in headers at UTC + 120 min, we use \code{tz = UTC}
 #'   and \code{time.shift.min = 120} to convert times to UTC. This is different
-#'   from using \code{tz = EET}, which is not invariant through the course of
+#'   from using \code{tz = Europe/Helsinki}, which is not invariant through the course of
 #'   the year because of daylight saving time. Local time zones is not
 #'   necessarily consistent across years because of changes in legislation. In
 #'   contrast UTC is more consistent, making it preferable for time series.

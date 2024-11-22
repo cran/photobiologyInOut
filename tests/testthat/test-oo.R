@@ -13,7 +13,7 @@ test_that("jaz", {
   # warnings triggered by negative irradiance values in file
   suppressWarnings(jaz.spct <- 
                      read_oo_jazirrad(file = file.name,
-                                      tz = "EET"))
+                                      tz = "Europe/Helsinki"))
   
   expect_equal(nrow(jaz.spct), 2048)
   expect_equal(ncol(jaz.spct), 2)
@@ -26,8 +26,8 @@ test_that("jaz", {
   expect_equal(sum(is.na(jaz.spct[[2]])), 0)
   expect_is(jaz.spct, "source_spct")
   expect_named(jaz.spct, c("w.length", "s.e.irrad"))
-  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
-               as.numeric(ymd_hms("2015-02-03 09:44:41", tz = "EET"), tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "Europe/Helsinki"),
+               as.numeric(ymd_hms("2015-02-03 09:44:41", tz = "Europe/Helsinki"), tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(jaz.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum.JazIrrad")
@@ -38,7 +38,7 @@ test_that("jaz", {
   # warnings triggered by negative irradiance values in file
   suppressWarnings(jaz.spct <- 
                      read_oo_jazirrad(file = file.name,
-                                      date = ymd_hms("2016-01-01 00:00:01", tz = "EET")))
+                                      date = ymd_hms("2016-01-01 00:00:01", tz = "Europe/Helsinki")))
   
   expect_equal(nrow(jaz.spct), 2048)
   expect_equal(ncol(jaz.spct), 2)
@@ -51,8 +51,8 @@ test_that("jaz", {
   expect_equal(sum(is.na(jaz.spct[[2]])), 0)
   expect_is(jaz.spct, "source_spct")
   expect_named(jaz.spct, c("w.length", "s.e.irrad"))
-  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
-               as.numeric(ymd_hms("2016-01-01 00:00:01", tz = "EET"), tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "Europe/Helsinki"),
+               as.numeric(ymd_hms("2016-01-01 00:00:01", tz = "Europe/Helsinki"), tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(jaz.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum.JazIrrad")
@@ -70,7 +70,7 @@ test_that("jaz_Tpc", {
   suppressWarnings(jaz.spct <- 
                      read_oo_jazpc(file = file.name,
                                    qty.in = "Rpc",
-                                      tz = "EET"))
+                                      tz = "Europe/Helsinki"))
   
   expect_equal(nrow(jaz.spct), 2048)
   expect_equal(ncol(jaz.spct), 2)
@@ -83,8 +83,8 @@ test_that("jaz_Tpc", {
   expect_equal(sum(is.na(jaz.spct[[2]])), 0)
   expect_is(jaz.spct, "reflector_spct")
   expect_named(jaz.spct, c("w.length", "Rfr"))
-  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
-               as.numeric(ymd_hms("2018-09-17 14:58:29", tz = "EET"), tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "Europe/Helsinki"),
+               as.numeric(ymd_hms("2018-09-17 14:58:29", tz = "Europe/Helsinki"), tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(jaz.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: reflectance.jaz")
@@ -101,7 +101,7 @@ test_that("jaz_Rpc", {
   # warnings triggered by negative irradiance values in file
   suppressWarnings(jaz.spct <- 
                      read_oo_jazpc(file = file.name,
-                                   tz = "EET"))
+                                   tz = "Europe/Helsinki"))
   
   expect_equal(nrow(jaz.spct), 2048)
   expect_equal(ncol(jaz.spct), 2)
@@ -114,8 +114,8 @@ test_that("jaz_Rpc", {
   expect_equal(sum(is.na(jaz.spct[[2]])), 0)
   expect_is(jaz.spct, "filter_spct")
   expect_named(jaz.spct, c("w.length", "Tfr"))
-  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
-               as.numeric(ymd_hms("2018-09-17 14:58:29", tz = "EET"), tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "Europe/Helsinki"),
+               as.numeric(ymd_hms("2018-09-17 14:58:29", tz = "Europe/Helsinki"), tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(jaz.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: reflectance.jaz")
@@ -132,7 +132,7 @@ test_that("jaz_raw", {
                 package = "photobiologyInOut", mustWork = TRUE)
 
   jaz.spct <- read_oo_jazdata(file = file.name, 
-                              tz = "EET")
+                              tz = "Europe/Helsinki")
   
   expect_equal(nrow(jaz.spct), 2048)
   expect_equal(ncol(jaz.spct), 2)
@@ -145,15 +145,15 @@ test_that("jaz_raw", {
   expect_equal(sum(is.na(jaz.spct[[2]])), 0)
   expect_is(jaz.spct, "raw_spct")
   expect_named(jaz.spct, c("w.length", "counts"))
-  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
-               as.numeric(ymd_hms("2016-04-25 12:49:02", tz = "EET"), tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "Europe/Helsinki"),
+               as.numeric(ymd_hms("2016-04-25 12:49:02", tz = "Europe/Helsinki"), tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(jaz.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum.jaz")
   expect_gt(length(comment(jaz.spct)), 0)
   
   jaz.spct <- read_oo_jazdata(file = file.name,
-                              date = ymd_hms("2016-01-01 00:00:01", tz = "EET"))
+                              date = ymd_hms("2016-01-01 00:00:01", tz = "Europe/Helsinki"))
   
   expect_equal(nrow(jaz.spct), 2048)
   expect_equal(ncol(jaz.spct), 2)
@@ -166,8 +166,8 @@ test_that("jaz_raw", {
   expect_equal(sum(is.na(jaz.spct[[2]])), 0)
   expect_is(jaz.spct, "raw_spct")
   expect_named(jaz.spct, c("w.length", "counts"))
-  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
-               as.numeric(ymd_hms("2016-01-01 00:00:01", tz = "EET"), tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "Europe/Helsinki"),
+               as.numeric(ymd_hms("2016-01-01 00:00:01", tz = "Europe/Helsinki"), tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(jaz.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum.jaz")
@@ -182,7 +182,7 @@ test_that("SpectraSuite", {
     system.file("extdata", "spectrum.SSIrrad", 
                 package = "photobiologyInOut", mustWork = TRUE)
   ss.spct <- read_oo_ssirrad(file = file.name, 
-                             tz = "CET")
+                             tz = "Europe/Zurich")
   
   expect_equal(nrow(ss.spct), 1044)
   expect_equal(ncol(ss.spct), 2)
@@ -195,8 +195,8 @@ test_that("SpectraSuite", {
   expect_equal(sum(is.na(ss.spct[[2]])), 0)
   expect_is(ss.spct, "source_spct")
   expect_named(ss.spct, c("w.length", "s.e.irrad"))
-  expect_equal(as.numeric(getWhenMeasured(ss.spct), tz = "CET"),
-               as.numeric(ymd_hms("2013-05-06 15:13:40", tz = "CET"), tz = "CET"))
+  expect_equal(as.numeric(getWhenMeasured(ss.spct), tz = "Europe/Zurich"),
+               as.numeric(ymd_hms("2013-05-06 15:13:40", tz = "Europe/Zurich"), tz = "Europe/Zurich"))
   expect_equal(getWhereMeasured(ss.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(ss.spct), "File: spectrum.SSIrrad")
@@ -210,7 +210,7 @@ test_that("jazz-comma", {
     system.file("extdata", "spectrum-comma.JazIrrad", 
                 package = "photobiologyInOut", mustWork = TRUE)
   my.locale <- readr::locale("en", decimal_mark = ",", 
-                             tz = "EET")
+                             tz = "Europe/Helsinki")
   # warnings triggered by negative irradiance values in file
   suppressWarnings(jaz.spct <- 
                      read_oo_jazirrad(file = file.name, 
@@ -227,8 +227,8 @@ test_that("jazz-comma", {
   expect_equal(sum(is.na(jaz.spct[[2]])), 0)
   expect_is(jaz.spct, "source_spct")
   expect_named(jaz.spct, c("w.length", "s.e.irrad"))
-  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
-               as.numeric(ymd_hms("2015-02-03 09:44:41", tz = "EET"), tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "Europe/Helsinki"),
+               as.numeric(ymd_hms("2015-02-03 09:44:41", tz = "Europe/Helsinki"), tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(jaz.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum-comma.JazIrrad")
@@ -241,7 +241,7 @@ test_that("jazz_raw-comma", {
   file.name <- 
     system.file("extdata", "spectrum-comma.jaz", 
                 package = "photobiologyInOut", mustWork = TRUE)
-  my.locale <- readr::locale("en", decimal_mark = ",", tz = "EET")
+  my.locale <- readr::locale("en", decimal_mark = ",", tz = "Europe/Helsinki")
   jaz.spct <- read_oo_jazdata(file = file.name, 
                               locale = my.locale)
   
@@ -256,8 +256,8 @@ test_that("jazz_raw-comma", {
   expect_equal(sum(is.na(jaz.spct[[2]])), 0)
   expect_is(jaz.spct, "raw_spct")
   expect_named(jaz.spct, c("w.length", "counts"))
-  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "EET"),
-               as.numeric(ymd_hms("2016-04-25 12:49:02", tz = "EET"), tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(jaz.spct), tz = "Europe/Helsinki"),
+               as.numeric(ymd_hms("2016-04-25 12:49:02", tz = "Europe/Helsinki"), tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(jaz.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(jaz.spct), "File: spectrum-comma.jaz")
@@ -270,7 +270,7 @@ test_that("SpectraSuite-comma", {
   file.name <- 
     system.file("extdata", "spectrum-comma.SSIrrad", 
                 package = "photobiologyInOut", mustWork = TRUE)
-  my.locale <- readr::locale("en", decimal_mark = ",", tz = "CET")
+  my.locale <- readr::locale("en", decimal_mark = ",", tz = "Europe/Zurich")
 
   ss.spct <- read_oo_ssirrad(file = file.name, 
                              locale = my.locale)
@@ -286,8 +286,8 @@ test_that("SpectraSuite-comma", {
   expect_equal(sum(is.na(ss.spct[[2]])), 0)
   expect_is(ss.spct, "source_spct")
   expect_named(ss.spct, c("w.length", "s.e.irrad"))
-  expect_equal(as.numeric(getWhenMeasured(ss.spct), tz = "CET"), 
-               as.numeric(ymd_hms("2013-05-06 15:13:40", tz = "CET"), tz = "CET"))
+  expect_equal(as.numeric(getWhenMeasured(ss.spct), tz = "Europe/Zurich"), 
+               as.numeric(ymd_hms("2013-05-06 15:13:40", tz = "Europe/Zurich"), tz = "Europe/Zurich"))
   expect_equal(getWhereMeasured(ss.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(ss.spct), "File: spectrum-comma.SSIrrad")
@@ -300,7 +300,7 @@ test_that("pi_raw", {
   file.name <- 
     system.file("extdata", "spectrum.pi", 
                 package = "photobiologyInOut", mustWork = TRUE)
-  my.date <- now(tzone = "EET")
+  my.date <- now(tzone = "Europe/Helsinki")
   pi.spct <- read_oo_pidata(file = file.name, 
                             date = my.date,
                             npixels = 2048)
@@ -316,8 +316,8 @@ test_that("pi_raw", {
   expect_equal(sum(is.na(pi.spct[[2]])), 0)
   expect_is(pi.spct, "raw_spct")
   expect_named(pi.spct, c("w.length", "counts"))
-  expect_equal(as.numeric(getWhenMeasured(pi.spct), tz = "EET"),
-               as.numeric(my.date, tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(pi.spct), tz = "Europe/Helsinki"),
+               as.numeric(my.date, tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(pi.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(pi.spct), "File: spectrum.pi")
@@ -326,7 +326,7 @@ test_that("pi_raw", {
   file.name <- 
     system.file("extdata", "spectrum-seq-dark.pi", 
                 package = "photobiologyInOut", mustWork = TRUE)
-  my.date <- now(tzone = "EET")
+  my.date <- now(tzone = "Europe/Helsinki")
   pi.spct <- read_oo_pidata(file = file.name, 
                             date = my.date,
                             npixels = 2048)
@@ -342,8 +342,8 @@ test_that("pi_raw", {
   expect_equal(sum(is.na(pi.spct[[2]])), 0)
   expect_is(pi.spct, "raw_spct")
   expect_named(pi.spct, c("w.length", "counts"))
-  expect_equal(as.numeric(getWhenMeasured(pi.spct), tz = "EET"),
-               as.numeric(my.date, tz = "EET"))
+  expect_equal(as.numeric(getWhenMeasured(pi.spct), tz = "Europe/Helsinki"),
+               as.numeric(my.date, tz = "Europe/Helsinki"))
   expect_equal(getWhereMeasured(pi.spct), 
                tibble::tibble(lon = NA_real_, lat = NA_real_, address = NA_character_))
   expect_equal(getWhatMeasured(pi.spct), "File: spectrum-seq-dark.pi")

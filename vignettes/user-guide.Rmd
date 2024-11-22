@@ -564,7 +564,7 @@ Function `read_licor_prn` will automatically detect whether the data is energy o
 licor.file <- 
   system.file("extdata", "spectrum.PRN", 
               package = "photobiologyInOut", mustWork = TRUE)
-licor.spct <- read_licor_prn(file = licor.file, tz = "EET")
+licor.spct <- read_licor_prn(file = licor.file, tz = "Europe/Helsinki")
 ```
 
 Even when using to correct argument for `tz` the time will still default to UTC when the spectrum is printed or plotted, but this time expressed in UTC may still be shifted from the correct time in the time zone where measurements were acquired as without year information it is impossible to adjust for daylight saving time and other shifts in local times that have changed over the years as a result of changes in legislation. 
@@ -1331,7 +1331,7 @@ Most functions in this package have a parameter `locale`, that accepts `readr::l
 jaz.irrad.comma.file <- 
   system.file("extdata", "spectrum-comma.JazIrrad", 
               package = "photobiologyInOut", mustWork = TRUE)
-my.locale <- locale(decimal_mark = ",", tz = "EET")
+my.locale <- locale(decimal_mark = ",", tz = "Europe/Helsinki")
 jaz00.spct <- read_oo_jazirrad(file = jaz.irrad.comma.file,
                                locale = my.locale)
 ```

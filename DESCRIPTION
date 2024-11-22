@@ -1,8 +1,8 @@
 Package: photobiologyInOut
 Type: Package
 Title: Read Spectral and Logged Data from Foreign Files
-Version: 0.4.28-1
-Date: 2024-09-14
+Version: 0.4.29
+Date: 2024-11-22
 Authors@R: 
    c(
     person("Pedro J.", "Aphalo", email = "pedro.aphalo@helsinki.fi", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3385-972X")),
@@ -34,10 +34,10 @@ URL: https://docs.r4photobiology.info/photobiologyInOut/
 BugReports: https://github.com/aphalo/photobiologyinout/issues/
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-09-14 14:38:16 UTC; Aphalo
+Packaged: 2024-11-22 13:59:14 UTC; aphalo
 Author: Pedro J. Aphalo [aut, cre] (<https://orcid.org/0000-0003-3385-972X>),
   Titta K. Kotilainen [ctb] (<https://orcid.org/0000-0002-2822-9734>),
   Glenn Davis [ctb]
 Maintainer: Pedro J. Aphalo <pedro.aphalo@helsinki.fi>
 Repository: CRAN
-Date/Publication: 2024-09-14 15:20:02 UTC
+Date/Publication: 2024-11-22 23:00:03 UTC
