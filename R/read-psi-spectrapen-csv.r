@@ -126,7 +126,7 @@ read_spectrapen_csv <- function(file,
     tmp.spct[[spct.data.var]] <- tmp.spct[[spct.data.var]] * scale.factor
     when_measured(tmp.spct) <- spct_times[i]
     what_measured(tmp.spct) <- spct_names[i]
-    where_measured(tmp.spct) <- na_geocode()
+    where_measured(tmp.spct) <- SunCalcMeeus::na_geocode()
     how_measured(tmp.spct) <- "PSI SpectraPen handheld array spectrometer"
     comment(tmp.spct) <- comment.text
     z.mspct[[i]] <- tmp.spct

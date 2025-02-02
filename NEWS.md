@@ -9,10 +9,20 @@ editor_options:
 Add support for StellarNet, Brewer, and Bentham spectrometers (examples
 of data files are welcome for these and other instruments).
 
+## photobiologyInOut 0.4.30
+
+- Update function `read_CIE_csv()` to also support reading of trichromatic 
+ coordinates into `chroma_spct` objects.
+- Depend on 'SunCalcMeeus' as functions were migrated from 'photobiology' in
+version 0.12.0.
+
 ## photobiologyInOut 0.4.29
 
-- Update function `qtuv_m_s.e.irrad()` adding support for collections of simulated spectral irradiance for multiple altidues.
-- Update time zone names, replacing "EET" by "Europe/Helsinki", and "CET" by "Europe/Zurich" in examples and unit tests. The old short abbreviations are no longer supported in upcoming R (>= 4.5.0).
+- Update function `qtuv_m_s.e.irrad()` adding support for collections of 
+simulated spectral irradiance for multiple altitudes.
+- Update time zone names, replacing "EET" by "Europe/Helsinki", and "CET" by 
+"Europe/Zurich" in examples and unit tests. The old short abbreviations are no 
+longer supported in upcoming R (>= 4.5.0).
 
 ## photobiologyInOut 0.4.28
 
@@ -22,12 +32,18 @@ a warning, instead. Affects functions `spct_CRI()`, `spct_CCT()`, and
 - **Code breaking** Update `read_qtuv_txt()` not to add by default 
 variables `angle` and `date` to the returned `source_spct` object. Support
 addition on user request of variables `sun.elevation`, `zenith.angle`,
-`time`, and `ozone.du`, and for backwards compatibility, but deprecated, `date` and `angle`, individually and in any combination. 
-- Update `read_qtuv_txt()` to handle text/HTML files from Quick TUV saved with embedded _new line escapes_ (`"\n") instead of actual new lines. This seems to be a change in the output from the on-line Quick TUV calculator and/or in how web browsers handle it.
+`time`, and `ozone.du`, and for backwards compatibility, but deprecated, `date` 
+and `angle`, individually and in any combination. 
+- Update `read_qtuv_txt()` to handle text/HTML files from Quick TUV saved with 
+embedded _new line escapes_ (`"\n") instead of actual new lines. This seems to 
+be a change in the output from the on-line Quick TUV calculator and/or in how 
+web browsers handle it.
 - Add function `qtuv_s.e.irrad()` to directly obtain simulated spectral
 irradiance from the Quick TUV calculator.
-- Add function `qtuv_m_s.e.irrad()` to directly obtain collections of simulated spectral irradiance for multiple values of arguments for input parameters.
-- Add function `read_CIE_csv()` to read the CSV and JSON files from CIE, recently published at the [CIE Datasets page](https://cie.co.at/data-tables).
+- Add function `qtuv_m_s.e.irrad()` to directly obtain collections of simulated 
+spectral irradiance for multiple values of arguments for input parameters.
+- Add function `read_CIE_csv()` to read the CSV and JSON files from CIE, 
+recently published at the [CIE Datasets page](https://cie.co.at/data-tables).
 
 ## photobiologyInOut 0.4.27
 

@@ -179,7 +179,7 @@ read_cid_spectravue_csv <-
   # I do not have information about the format used for Coordinates
   headers[["where.measured"]] <-
     if (is.null(geocode) || is.na(geocode)) {
-      photobiology::na_geocode()
+      SunCalcMeeus::na_geocode()
     } else {
       geocode
     }
@@ -251,7 +251,7 @@ read_cid_spectravue_csv <-
             paste(headers[col, ], collapse = "\n"), sep = "\n")
     
     photobiology::setWhenMeasured(z, headers[col, "when.measured"])
-    photobiology::setWhereMeasured(z, photobiology::na_geocode())
+    photobiology::setWhereMeasured(z, SunCalcMeeus::na_geocode())
     photobiology::setWhatMeasured(z, paste(label, headers[["Tag"]][col]))
     photobiology::setHowMeasured(z, "CID Bio-Science SpectraVue CI-710s leaf spectrometer")
     

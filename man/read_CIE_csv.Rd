@@ -7,9 +7,9 @@
 read_CIE_csv(file.name, label = NULL, simplify = FALSE)
 }
 \arguments{
-\item{file.name}{character string}
+\item{file.name}{character string Name of CSV file.}
 
-\item{label}{character string, but if \code{NULL} metadata read from the
+\item{label}{character string. If \code{NULL} metadata read from the
 JSON file is used, and if \code{NA} the \code{"what.measured"} attribute 
 is not set, and if a character string is passed, it is used to set 
 the \code{"what.measured"} attribute.}
@@ -18,9 +18,11 @@ the \code{"what.measured"} attribute.}
 spectrum, extract the spectral object from the collection.}
 }
 \value{
-Depending on the contents of the file, a \code{source_spct} object, a
-  \code{response_spct} object, or a \code{chroma_spct} object, containing
-  both data and metadata.
+Depending on the contents of the file, a \code{source_mspct} or
+  \code{source_spct} object, a \code{response_spct} or \code{response_spct}
+  object, or a \code{chroma_spct} object, containing both data and metadata.
+  The whole metadata JSON converted into an R `list` is stored in attribute
+  "header".
 }
 \description{
 Reads a CSV spectral data file and its companion JSON file with metadata as
@@ -34,7 +36,7 @@ JSON file contains extensive metadata. The type of spectral data is encoded
 as part of the file name. If the original file name of the CSV file is passed
 as argument to parameter \code{file}, the function can retrieve all data and
 metadata, enough to return an R object of the correct class. The JSON file
-must be located in the same folder.
+must be located in the same folder as the CSV file.
 }
 \examples{
 

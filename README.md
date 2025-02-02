@@ -9,8 +9,7 @@ version](https://www.r-pkg.org/badges/version-last-release/photobiologyInOut)](h
 checks](https://badges.cranchecks.info/worst/photobiologyInOut.svg)](https://cran.r-project.org/web/checks/check_results_photobiologyInOut.html)
 [![photobiologyInOut status
 badge](https://aphalo.r-universe.dev/badges/photobiologyInOut)](https://aphalo.r-universe.dev/photobiologyInOut)
-[![R build
-status](https://github.com/aphalo/photobiologyInOut/workflows/R-CMD-check/badge.svg)](https://github.com/aphalo/photobiologyInOut/actions)
+[![R-CMD-check](https://github.com/aphalo/photobiologyInOut/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aphalo/photobiologyInOut/actions/workflows/R-CMD-check.yaml)
 [![Documentation](https://img.shields.io/badge/documentation-photobiologyInOut-informational.svg)](https://docs.r4photobiology.info/photobiologyInOut/)
 [![doi](https://img.shields.io/badge/doi-10.32614/CRAN.package.photobiologyInOut-blue.svg)](https://doi.org/10.32614/CRAN.package.photobiologyInOut)
 <!-- badges: end -->
