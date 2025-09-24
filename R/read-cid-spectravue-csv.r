@@ -3,29 +3,10 @@
 #' Read wavelength and spectral data from Measurements.CSV files exported from
 #' CID Bio-Sciences' \strong{SpectraVue CI-710s} (not the older CI-710!) leaf
 #' spectrometer, importing them into R. Available metadata is also extracted
-#' from the file. \code{read_cid_spectravue_csv()} only accepts "row oriented"
-#' CSV files. These may contain multiple spectra, one per row.
+#' from the file. Functio \code{read_cid_spectravue_csv()} only accepts "row 
+#' oriented" CSV files. These may contain multiple spectra, one per row.
 #'
-#' @param file character
-#' @param date a \code{POSIXct} object to use to set the \code{"when.measured"}
-#'   attribute. If \code{NULL}, the default, the date and time are extracted
-#'   from the file.
-#' @param geocode A data frame with columns \code{lon} and \code{lat} used to
-#'   set attribute \code{"where.measured"}. If \code{NULL}, the default, the
-#'   geocode is extracted from the file, if present, and if \code{NA} the
-#'   "where.measured" attribute is not set.
-#' @param label character string. If \code{NULL}, the default, the value of the
-#'   "tag" present in the file is used, and if \code{NA} the "what.measured"
-#'   attribute is not set.
-#' @param tz character Time zone is by default that of the machine's locale.
-#' @param locale The locale controls defaults that vary from place to place. The
-#'   default locale is US-centric (like R), but you can use
-#'   \code{\link[readr]{locale}} to create your own locale that controls things
-#'   like the default time zone, encoding, decimal mark, big mark, and day/month
-#'   names.
-#' @param range	numeric A vector of length two, or any other object for which
-#'   function \code{range()} will return range of wavelengths expressed in
-#'   nanometres.
+#' @inheritParams read_oo_ovirrad
 #' @param simplify logical If TRUE, single spectra are returned as individual
 #'   spectra instead of collections of length one.
 #' @param absorbance.to character Affects only absorbance measurements:
@@ -37,12 +18,12 @@
 #'   `filter_spct` object.
 #'
 #' @details SpectraVue's row-wise spectral \code{Measurements.CSV} files contain
-#'   columns with metadata on the right edge, followed by columns with data for
+#'   columns with metadata on the left edge, followed by columns with data for
 #'   each of the 2048 pixels or wavelengths. The value in column "Mode"
 #'   indicates the quantity measured, decoded into variables \code{Tpc},
-#'   \code{Rpc} or \code{A}. The data the rows in the CSV file are read and
-#'   stored in \code{filter_spct},  \code{reflector_spct} or \code{object_spct}
-#'   objects. These objects are collected into a single \code{filter_mspct},
+#'   \code{Rpc} or \code{A}. The data in each row of the CSV file are read and
+#'   stored in a \code{filter_spct}, \code{reflector_spct} or \code{object_spct}
+#'   object. These objects are collected into a single \code{filter_mspct},
 #'   \code{reflector_mspct}, \code{object_mspct} or \code{generic_spct} object
 #'   and returned.
 #'
@@ -68,8 +49,8 @@
 #'   this preserves all the acquired data.
 #'
 #' @section Specular \emph{vs.} total reflectance: This function assumes that
-#'   SpectraVue returns close to \emph{total} reflectance readings. Given the optics
-#'   of the instrument this is likely only an approximation.
+#'   SpectraVue returns close to \emph{total} reflectance readings. Given the
+#'   optics of the instrument this is likely only a weak approximation.
 #'
 #' @note SpectraVue creates three or four \code{.CSV} files for each series of
 #'   measurements saved. Of these files, this function reads the one with name
@@ -87,7 +68,8 @@
 #' design flaw and that they are working on a solution for the problem. In
 #' practice, reflectance seems biased but usable as an instrument-specific
 #' quantity with arbitrary units. Transmittance and absorbance seem useless as
-#' values are wrong by about an order of magnitude.
+#' values are wrong by about an order of magnitude. As of 2025-06-29 they are
+#' still to contact me again.
 #' 
 #' @return An object of class \code{filter_spct}, \code{relector_spct},
 #'   \code{object_spct} or \code{generic_mspct}.
@@ -177,13 +159,8 @@ read_cid_spectravue_csv <-
     }
   
   # I do not have information about the format used for Coordinates
-  headers[["where.measured"]] <-
-    if (is.null(geocode) || is.na(geocode)) {
-      SunCalcMeeus::na_geocode()
-    } else {
-      geocode
-    }
-  
+  headers[["where.measured"]] <- geocode
+
   # fill missing Tags
   selector <- is.na(headers[["Tag"]])
   headers[["Tag"]][selector] <- "NN"

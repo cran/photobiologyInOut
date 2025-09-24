@@ -1,29 +1,15 @@
 #' Read File Saved by Ocean Optics' SpectraSuite.
 #' 
-#' Reads and parses the header of a processed data file as output by
-#' SpectraSuite to extract the whole header remark field. The time field is
-#' retrieved and decoded. SpectraSuite was a program, now replaced by OceanView.
-#' The company formerly named Ocean Optics is now called Ocean Insight.
+#' Reads the spectral data and in addition parses the header of a energy
+#' irradiance data file as output by SpectraSuite. SpectraSuite is a program 
+#' from Ocean Optics used to measure UV, visible and NIR radiation with array
+#' spectrometers from the same company. OceanView replaces the no longer 
+#' supported SpectraSuite program.
 #' 
-#' @param file character string
-#' @param date a \code{POSIXct} object to use to set the \code{"when.measured"}
-#'   attribute. If \code{NULL}, the default, the date is extracted from the
-#'   file header.
-#' @param geocode A data frame with columns \code{lon} and \code{lat} used to
-#'   set attribute \code{"where.measured"}.
-#' @param label character string, but if \code{NULL} the value of \code{file} is
-#'   used, and if \code{NA} the "what.measured" attribute is not set.
-#' @param tz character Time zone is by default read from the file.
-#' @param locale	The locale controls defaults that vary from place to place. The
-#'   default locale is US-centric (like R), but you can use
-#'   \code{\link[readr]{locale}} to create your own locale that controls things
-#'   like the default time zone, encoding, decimal mark, big mark, and day/month
-#'   names.
+#' @inherit read_oo_ovirrad details return references
+#' @inheritParams read_oo_ovirrad
 #'   
-#' @return A source_spct object.
 #' @export
-#' @references \url{https://www.oceanoptics.com/}
-#' @keywords misc
 #' 
 #' @examples
 #' 
@@ -36,6 +22,7 @@
 #'  ooss.spct
 #'  getWhenMeasured(ooss.spct)
 #'  getWhatMeasured(ooss.spct)
+#'  getHowMeasured(ooss.spct)
 #'  cat(comment(ooss.spct))
 #' 
 read_oo_ssirrad <- function(file,
@@ -43,7 +30,8 @@ read_oo_ssirrad <- function(file,
                             geocode = NULL,
                             label = NULL,
                             tz = NULL,
-                            locale = readr::default_locale()) {
+                            locale = readr::default_locale(),
+                            range = NULL) {
   if (is.null(tz)) {
     tz <- locale$tz
   }
@@ -61,8 +49,9 @@ read_oo_ssirrad <- function(file,
     warning("Input file was not created by SpectrSuite as expected: skipping")
     return(photobiology::source_spct())
   }
-  file_header <- scan(file = file, nlines = 16, 
+  file_header <- scan(file = file, nlines = 20, 
                       skip = 0, what="character", 
+                      blank.lines.skip = FALSE, # to get start of data 
                       sep = "\n", quiet = TRUE)
   NonASCII <- tools::showNonASCII(file_header)
   if (length(NonASCII) > 0L) {
@@ -72,11 +61,24 @@ read_oo_ssirrad <- function(file,
     file_header <- iconv(file_header, to = "ASCII", sub = " ")
   }
   
+  ln.idx <- which(grepl("^Number of Pixels in Processed Spectrum: ",
+                        file_header))
   npixels <- as.integer(sub("Number of Pixels in Processed Spectrum: ", "", 
-                            file_header[16], fixed = TRUE))
+                            file_header[ln.idx], fixed = TRUE))
+  stopifnot("Header parsing failure" = 
+              !is.na(npixels) && is.integer(npixels) && length(npixels == 1))
+  
+  ln.idx <- which(grepl("^Spectrometers: ", file_header))
+  sr.sn <- trimws(sub("Spectrometers: ", "", 
+                      file_header[ln.idx], fixed = TRUE))
+  
+  ln.idx <- which(grepl("^User: ", file_header))
+  sr.user <- trimws(sub("User: ", "",  file_header[ln.idx], fixed = TRUE))
   
   if (is.null(date)) {
-    line03 <- sub("Date: [[:alpha:]]{3} ", "", file_header[3])
+    ln.idx <- which(grepl("^Date: ",
+                          file_header))
+    line03 <- sub("Date: [[:alpha:]]{3} ", "", file_header[ln.idx])
     if (is.null(tz)) {
       tz <- sub("^(.{16})([[:upper:]]{3,4})(.{5})$", "\\2", line03)
       if (nchar(tz) == 4) {
@@ -86,31 +88,45 @@ read_oo_ssirrad <- function(file,
     date <- lubridate::parse_date_time(line03, "mdHMSy", tz = tz, locale = "C")
   }
   
+  to.skip <- which(grepl("^>>>>>Begin", file_header))
+  stopifnot("Header parsing failure" = 
+              !is.na(to.skip) && is.integer(to.skip) && length(to.skip == 1))
+  
   z <- readr::read_tsv(
     file = file,
     col_names = c("w.length", "s.e.irrad"),
-    skip = 17,
+    skip = to.skip,
     n_max = npixels,
     col_types = readr::cols(),
     progress = FALSE,
     locale = locale
   )
   
-  # dots <- list(~s.e.irrad * 1e-2) # uW cm-2 nm-1 -> W m-2 nm-1
-  # z <- dplyr::mutate_(z, .dots = stats::setNames(dots, "s.e.irrad"))
-
   z[["s.e.irrad"]] <- z[["s.e.irrad"]] * 1e-2 # uW cm-2 nm-1 -> W m-2 nm-1
 
-    old.opts <- options("photobiology.strict.range" = NA_integer_)
+  old.opts <- options("photobiology.strict.range" = NA_integer_)
   z <- photobiology::as.source_spct(z, time.unit = "second")
+  if (!is.null(range)) {
+    z <- photobiology::clip_wl(z, range)
+  }
   options(old.opts)
 
   comment(z) <-
-    paste(paste("Ocean Optics Spectra Suite irradiance file '", file, "' imported on ", 
-                lubridate::now(tzone = "UTC"), " UTC", sep = ""),
-          paste(file_header, collapse = "\n"), 
-          sep = "\n")
+    paste("Ocean Optics SpectraSuite irradiance file '", basename(file), 
+          "' imported on ", 
+          lubridate::round_date(lubridate::now(tzone = "UTC")), " UTC ",
+          "with function 'read_oo_ssirrad()'.\n",
+          "R packages 'photobiologyInOut' ", 
+          utils::packageVersion(pkg = "photobiologyInOut"), 
+          " and 'photobiology' ",
+          utils::packageVersion(pkg = "photobiology"), 
+          " were used.", sep = "")
   
+  how.measured <- paste("Measured by user ", sr.user, 
+                        " with Ocean Optics spectrometer with s.n. ",
+                        sr.sn, " and SpectraSuite software.", sep = "")
+  
+  photobiology::setHowMeasured(z, how.measured)
   photobiology::setWhenMeasured(z, date)
   photobiology::setWhereMeasured(z, geocode)
   photobiology::setWhatMeasured(z, label)
@@ -178,7 +194,8 @@ read_oo_ssdata<- function(file,
   options(old.opts)
 
   comment(z) <-
-    paste(paste("Ocean Optics Spectra Suite raw counts file '", basename(file), "' imported on ", 
+    paste(paste("Ocean Optics Spectra Suite raw counts file '", 
+                basename(file), "' imported on ", 
                 lubridate::now(tzone = "UTC"), " UTC", sep = ""),
           paste(file_header, collapse = "\n"), 
           sep = "\n")

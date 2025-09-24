@@ -19,31 +19,32 @@ read_cid_spectravue_csv(
 )
 }
 \arguments{
-\item{file}{character}
+\item{file}{character string Path to the file to be read, following R's
+use of forward slashes as separator for folder names.}
 
 \item{date}{a \code{POSIXct} object to use to set the \code{"when.measured"}
-attribute. If \code{NULL}, the default, the date and time are extracted
-from the file.}
+attribute. If \code{NULL}, the default, the date is extracted from the
+file header.}
 
-\item{geocode}{A data frame with columns \code{lon} and \code{lat} used to
-set attribute \code{"where.measured"}. If \code{NULL}, the default, the
-geocode is extracted from the file, if present, and if \code{NA} the
-"where.measured" attribute is not set.}
+\item{geocode}{A data frame with columns \code{lon} and \code{lat}, and
+optionally \code{address} used to set attribute \code{"where.measured"}.}
 
-\item{label}{character string. If \code{NULL}, the default, the value of the
-"tag" present in the file is used, and if \code{NA} the "what.measured"
-attribute is not set.}
+\item{label}{character string to which to set the \code{"what.measured"} 
+attribute. If \code{NULL} the value of \code{basename(file)} is used, 
+and if \code{NA} the \code{"what.measured"} attribute is not set.}
 
-\item{tz}{character Time zone is by default that of the machine's locale.}
+\item{tz}{character A time zone recognized by R. If \code{NULL}, the default,
+it is extracted from `locale`.}
 
-\item{locale}{The locale controls defaults that vary from place to place. The
-default locale is US-centric (like R), but you can use
+\item{locale}{The locale controls defaults that vary from place to place. 
+ The default locale is US-centric (like R), but you can use
 \code{\link[readr]{locale}} to create your own locale that controls things
 like the default time zone, encoding, decimal mark, big mark, and day/month
-names.}
+names. Its value must match that used to write the imported file, which
+is not necessarily the default one or the local one.}
 
-\item{range}{numeric A vector of length two, or any other object for which
-function \code{range()} will return range of wavelengths expressed in
+\item{range}{a numeric vector of length two, or any other object for which
+function \code{range()} will return a range of wavelengths expressed in
 nanometres.}
 
 \item{simplify}{logical If TRUE, single spectra are returned as individual
@@ -67,17 +68,17 @@ An object of class \code{filter_spct}, \code{relector_spct},
 Read wavelength and spectral data from Measurements.CSV files exported from
 CID Bio-Sciences' \strong{SpectraVue CI-710s} (not the older CI-710!) leaf
 spectrometer, importing them into R. Available metadata is also extracted
-from the file. \code{read_cid_spectravue_csv()} only accepts "row oriented"
-CSV files. These may contain multiple spectra, one per row.
+from the file. Functio \code{read_cid_spectravue_csv()} only accepts "row 
+oriented" CSV files. These may contain multiple spectra, one per row.
 }
 \details{
 SpectraVue's row-wise spectral \code{Measurements.CSV} files contain
-  columns with metadata on the right edge, followed by columns with data for
+  columns with metadata on the left edge, followed by columns with data for
   each of the 2048 pixels or wavelengths. The value in column "Mode"
   indicates the quantity measured, decoded into variables \code{Tpc},
-  \code{Rpc} or \code{A}. The data the rows in the CSV file are read and
-  stored in \code{filter_spct},  \code{reflector_spct} or \code{object_spct}
-  objects. These objects are collected into a single \code{filter_mspct},
+  \code{Rpc} or \code{A}. The data in each row of the CSV file are read and
+  stored in a \code{filter_spct}, \code{reflector_spct} or \code{object_spct}
+  object. These objects are collected into a single \code{filter_mspct},
   \code{reflector_mspct}, \code{object_mspct} or \code{generic_spct} object
   and returned.
 
@@ -117,8 +118,8 @@ SpectraVue creates three or four \code{.CSV} files for each series of
 
 \section{Specular \emph{vs.} total reflectance}{
  This function assumes that
-  SpectraVue returns close to \emph{total} reflectance readings. Given the optics
-  of the instrument this is likely only an approximation.
+  SpectraVue returns close to \emph{total} reflectance readings. Given the
+  optics of the instrument this is likely only a weak approximation.
 }
 
 \section{Warning!!}{
@@ -128,7 +129,8 @@ wrong!) values of transmittance measured by this instrument are due to a
 design flaw and that they are working on a solution for the problem. In
 practice, reflectance seems biased but usable as an instrument-specific
 quantity with arbitrary units. Transmittance and absorbance seem useless as
-values are wrong by about an order of magnitude.
+values are wrong by about an order of magnitude. As of 2025-06-29 they are
+still to contact me again.
 }
 
 \examples{

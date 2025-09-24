@@ -12,7 +12,8 @@ read_oo_jazirrad(
   geocode = NULL,
   label = NULL,
   tz = NULL,
-  locale = readr::default_locale()
+  locale = readr::default_locale(),
+  unit.in = "energy"
 )
 
 read_oo_jazpc(
@@ -37,26 +38,32 @@ read_oo_jazdata(
 )
 }
 \arguments{
-\item{file}{character string.}
+\item{file}{character string Path to the file to be read, following R's
+use of forward slashes as separator for folder names.}
 
 \item{date}{a \code{POSIXct} object to use to set the \code{"when.measured"}
 attribute. If \code{NULL}, the default, the date is extracted from the
 file header.}
 
-\item{geocode}{A data frame with columns \code{lon} and \code{lat} used to
-set attribute \code{"where.measured"}.}
+\item{geocode}{A data frame with columns \code{lon} and \code{lat}, and
+optionally \code{address} used to set attribute \code{"where.measured"}.}
 
-\item{label}{character string, but if \code{NULL} the value of \code{file} is
-used, and if \code{NA} the "what.measured" attribute is not set.}
+\item{label}{character string to which to set the \code{"what.measured"} 
+attribute. If \code{NULL} the value of \code{basename(file)} is used, 
+and if \code{NA} the \code{"what.measured"} attribute is not set.}
 
-\item{tz}{character Time zone used for interpreting times saved in the file
-header.}
+\item{tz}{character A time zone recognized by R. If \code{NULL}, the default,
+it is extracted from `locale`.}
 
-\item{locale}{The locale controls defaults that vary from place to place. The
-default locale is US-centric (like R), but you can use
+\item{locale}{The locale controls defaults that vary from place to place. 
+ The default locale is US-centric (like R), but you can use
 \code{\link[readr]{locale}} to create your own locale that controls things
 like the default time zone, encoding, decimal mark, big mark, and day/month
-names.}
+names. Its value must match that used to write the imported file, which
+is not necessarily the default one or the local one.}
+
+\item{unit.in}{character One of "energy", "photon" (or "quantum"), for data
+in uW cm-2 nm-1 and umol cm-2 nm-1.}
 
 \item{qty.in}{character string, one of "Tpc" (spectral transmittance, \%), "A"
 (spectral absorbance), or "Rpc" (spectral reflectance, \%).}
@@ -74,7 +81,6 @@ Reads and parses the header of processed data text files output by
 Jaz instruments extracting the spectral data from the body of the file 
 and the metadata, including time and date of measurement from the header.
 Jaz modular spectrometers were manufactured by Ocean Optics.
-The company formerly named Ocean Optics is now called Ocean Insight.
 }
 \details{
 Function \code{read_oo_jazirrad} can read processed irradiance
@@ -93,12 +99,24 @@ Although the parameter is called \code{date} a date time is accepted
    system.file("extdata", "spectrum.jaz", 
                package = "photobiologyInOut", mustWork = TRUE)
                 
- jaz.spct <- read_oo_jazpc(file = file.name)
+ jaz.filter_spct <- read_oo_jazpc(file = file.name)
  
- jaz.spct
- getWhenMeasured(jaz.spct)
- getWhatMeasured(jaz.spct)
- cat(comment(jaz.spct))
+ jaz.filter_spct
+ getWhenMeasured(jaz.filter_spct)
+ getWhatMeasured(jaz.filter_spct)
+ cat(comment(jaz.filter_spct))
+
+ file.name <- 
+   system.file("extdata", "spectrum.JazIrrad", 
+               package = "photobiologyInOut", mustWork = TRUE)
+                
+ jaz.source_spct <- read_oo_jazirrad(file = file.name, unit.in = "energy")
+ 
+ jaz.source_spct
+ getWhenMeasured(jaz.source_spct)
+ getWhatMeasured(jaz.source_spct)
+ cat(comment(jaz.source_spct))
+ q_irrad(jaz.source_spct, waveband(c(400, 700)), scale.factor = 1e6) # mol -> umol
 
 }
 \references{

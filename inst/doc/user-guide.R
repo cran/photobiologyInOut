@@ -51,7 +51,7 @@ jazraw.spct <- trim_wl(jazraw.spct, range = c(250, 900))
 autoplot(jazraw.spct)
 
 ## ----------------------------------------------------
-getWhenMeasured(jazraw.spct)
+when_measured(jazraw.spct)
 
 ## ----------------------------------------------------
 getInstrDesc(jazraw.spct)
@@ -295,7 +295,7 @@ fmi.file <-
               package = "photobiologyInOut", mustWork = TRUE)
 z.spct <- read_fmi_cum(fmi.file)
 class_spct(z.spct)
-getWhenMeasured(z.spct)
+when_measured(z.spct)
 z.spct
 
 ## ----------------------------------------------------
@@ -304,7 +304,7 @@ fmi.files <-
               package = "photobiologyInOut", mustWork = TRUE)
 z.mspct <- read_m_fmi_cum(fmi.files)
 class(z.mspct)
-getWhenMeasured(z.mspct)
+when_measured(z.mspct)
 z.mspct
 
 ## ----eval=FALSE--------------------------------------
@@ -312,7 +312,7 @@ z.mspct
 # fmi.files <- paste(".", fmi.files, sep = "")
 # z1.mspct <- read_m_fmi_cum(fmi.files)
 # class(z1.mspct)
-# getWhenMeasured(z1.mspct)
+# when_measured(z1.mspct)
 # z1.mspct
 
 ## ----message=FALSE-----------------------------------
@@ -323,8 +323,8 @@ z2.mspct <-
   read_m_fmi_cum(fmi.files,
                  geocode = my.geocode)
 class(z2.mspct)
-getWhenMeasured(z2.mspct)
-getWhereMeasured(z2.mspct)
+when_measured(z2.mspct)
+where_measured(z2.mspct)
 z2.mspct
 
 ## ----------------------------------------------------
@@ -333,11 +333,11 @@ fmi.file <-
               package = "photobiologyInOut", mustWork = TRUE)
 z3.mspct <- read_fmi2mspct(fmi.file)
 class(z3.mspct)[1:2]
-getWhenMeasured(z3.mspct[[1]])
+when_measured(z3.mspct[[1]])
 length(z3.mspct)
 names(z3.mspct)
-getWhenMeasured(z3.mspct[[1]])
-getWhatMeasured(z3.mspct[[1]])
+when_measured(z3.mspct[[1]])
+what_measured(z3.mspct[[1]])
 
 ## ----------------------------------------------------
 fred.file <- 
@@ -474,22 +474,22 @@ jaz.s.irrad.file <-
 ## ----warning=FALSE-----------------------------------
 jaz01.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = NULL)
-getWhenMeasured(jaz01.spct)
+when_measured(jaz01.spct)
 
 ## ----warning=FALSE-----------------------------------
 jaz02.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = ymd_hms("2015-11-15 12:00:00"))
-getWhenMeasured(jaz02.spct)
+when_measured(jaz02.spct)
 
 ## ----warning=FALSE-----------------------------------
 jaz03.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                date = now())
-getWhenMeasured(jaz03.spct)
+when_measured(jaz03.spct)
 
 ## ----message=FALSE,warning=FALSE---------------------
 my.geocode <- data.frame(lon = 25.02006, lat = 60.22525)
 jaz04.spct <- read_oo_jazirrad(file = jaz.s.irrad.file,
                                geocode = my.geocode)
 jaz04.spct
-getWhereMeasured(jaz04.spct)
+where_measured(jaz04.spct)
 

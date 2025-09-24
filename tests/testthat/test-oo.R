@@ -218,6 +218,10 @@ test_that("jazz-comma", {
   
   expect_equal(nrow(jaz.spct), 2048)
   expect_equal(ncol(jaz.spct), 2)
+  expect_equal(jaz.spct[1, "w.length"], 188.8252, tolerance = 0.0001)
+  expect_equal(jaz.spct[2048, "w.length"], 1033.148, tolerance = 0.0001)
+  expect_equal(jaz.spct[200, "s.e.irrad"], 0.00021909, tolerance = 0.0001)
+  expect_equal(jaz.spct[1500, "s.e.irrad"], 0.00102288, tolerance = 0.0001)
   expect_equal(jaz.spct[1, 1], 188.8252, tolerance = 0.0001)
   expect_equal(jaz.spct[2048, 1], 1033.148, tolerance = 0.0001)
   expect_is(jaz.spct[[1]], "numeric")

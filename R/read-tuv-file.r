@@ -40,9 +40,6 @@ read_tuv_usrout <- function(file,
   if (is.null(tz)) {
     tz <- locale$tz
   }
-  if (is.null(geocode)) {
-    geocode <- tibble::tibble(lon = NA_real_, lat = NA_real_)
-  }
 
   label.file <- paste("File: ", basename(file), sep = "")
   if (is.null(label)) {
@@ -113,7 +110,7 @@ read_tuv_usrout <- function(file,
                             collapse = "\n"), 
                       sep = "\n")
   photobiology::setWhatMeasured(z, paste("TUV spectral simulation", label))
-  photobiology::setWhereMeasured(z, geocode)
+  photobiology::setWhereMeasured(z, geocode, simplify = TRUE)
   photobiology::setWhenMeasured(z, unique(z[["date"]]))
   attr(z, "file.header") <- file_header
   z
